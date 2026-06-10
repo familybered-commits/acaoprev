@@ -39,6 +39,11 @@
   .nav-brand img { height: 44px; width: 44px; object-fit: contain; }
   .nav-brand-name { font-family: 'Marcellus', serif; font-size: 1.15rem; letter-spacing: 0.24em; color: var(--white); transition: color 0.25s; }
   .nav-brand:hover .nav-brand-name { color: var(--gold); }
+  .nav-toggle { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px; padding: 0 10px; background: none; border: 1px solid var(--border-strong); border-radius: 2px; cursor: pointer; }
+  .nav-toggle span { display: block; height: 1.5px; width: 100%; background: var(--gold); transition: transform 0.25s, opacity 0.25s; }
+  nav.nav-open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  nav.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+  nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
   .nav-links a {
     text-decoration: none; font-size: 0.78rem; font-weight: 500;
@@ -267,9 +272,20 @@
     .team-grid { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 768px) {
-    nav { flex-wrap: wrap; height: auto; padding-top: 0.8rem; padding-bottom: 0.8rem; justify-content: center; }
-    .nav-links { gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
-    .nav-brand img { height: 36px; width: 36px; }
+    .nav-toggle { display: flex; }
+    .nav-brand img { height: 38px; width: 38px; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; gap: 0;
+      background: rgba(10,10,10,0.98); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-strong);
+      padding: 0.5rem 1.5rem 1.25rem;
+    }
+    nav.nav-open .nav-links { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a { display: block; padding: 0.95rem 0.25rem; border-bottom: 1px solid var(--border); letter-spacing: 0.12em; }
+    .nav-links li:last-child a { border-bottom: none; }
+    .nav-links .nav-cta { margin-top: 0.75rem; text-align: center; }
     .team-grid { grid-template-columns: repeat(2, 1fr); }
     .contato-layout { grid-template-columns: 1fr; gap: 3rem; }
     .hero-logo-overlay { display: none; }
@@ -277,7 +293,6 @@
   }
   @media (max-width: 500px) {
     .team-grid { grid-template-columns: 1fr 1fr; }
-    nav { justify-content: center; }
   }
   /* ===== Subpágina Consulta Online ===== */
   .subpage { display: none; padding: clamp(7rem, 12vh, 9rem) clamp(1.5rem, 8vw, 8rem) 5rem; max-width: 1100px; margin: 0 auto; }
@@ -338,6 +353,9 @@
   <a href="#home" class="nav-brand">
     <span class="nav-brand-name">AÇÃOPREV</span>
   </a>
+  <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <ul class="nav-links">
     <li><a href="#areas">Áreas de Atuação</a></li>
     <li><a href="#quem-somos">Quem Somos</a></li>
@@ -803,6 +821,22 @@
       } finally {
         btn.disabled = false; btn.textContent = 'Solicitar reunião';
       }
+    });
+  }
+
+  // Menu móvel (hambúrguer)
+  const navEl = document.querySelector('nav');
+  const navToggle = document.querySelector('.nav-toggle');
+  if (navEl && navToggle) {
+    navToggle.addEventListener('click', () => {
+      const open = navEl.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', open);
+    });
+    navEl.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => {
+        navEl.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 
