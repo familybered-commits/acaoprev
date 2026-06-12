@@ -937,7 +937,7 @@
       }
       btn.disabled = true; btn.textContent = 'Enviando...';
       try {
-        const resp = await fetch('/', { method: 'POST', body: new FormData(consultaForm) });
+        const resp = await fetch('/api/consulta', { method: 'POST', body: new FormData(consultaForm) });
         if (!resp.ok) throw new Error();
         fb.className = 'form-feedback ok';
         fb.textContent = 'Documentos recebidos com sucesso! Nossa equipe fará a contagem do seu tempo de contribuição e retornará em até 2 dias úteis.';
@@ -963,7 +963,7 @@
       const btn = contatoForm.querySelector('.form-submit');
       btn.disabled = true; btn.textContent = 'Enviando...';
       try {
-        const resp = await fetch('/', {
+        const resp = await fetch('/api/contato', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams(new FormData(contatoForm)).toString()
