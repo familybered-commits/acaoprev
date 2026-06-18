@@ -1042,5 +1042,51 @@
     footerEl.insertBefore(clone, footerEl.querySelector('.footer-text'));
   }
 </script>
+
+<!-- ============================================================
+     FORMULÁRIOS OCULTOS — Detecção Netlify Forms
+     ============================================================ -->
+
+<!-- Formulário: contato -->
+<form name="contato" netlify netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="contato">
+  <input name="bot-field">
+  <input type="text" name="nome">
+  <input type="tel" name="whatsapp">
+  <input type="email" name="email">
+  <select name="area"><option value=""></option></select>
+  <textarea name="mensagem"></textarea>
+</form>
+
+<!-- Formulário: consulta-online -->
+<form name="consulta-online" netlify netlify-honeypot="bot-field" hidden enctype="multipart/form-data">
+  <input type="hidden" name="form-name" value="consulta-online">
+  <input name="bot-field">
+  <input type="text" name="nome">
+  <input type="date" name="nascimento">
+  <input type="tel" name="whatsapp">
+  <input type="email" name="email">
+  <input type="file" name="cnis">
+  <input type="file" name="ctps">
+  <textarea name="observacoes"></textarea>
+  <input type="checkbox" name="lgpd">
+</form>
+
+<!-- Formulário: parceiros -->
+<form name="parceiros" netlify netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="parceiros">
+  <input name="bot-field">
+  <input type="text" name="nome">
+  <input type="text" name="oab">
+  <input type="text" name="cidade">
+  <input type="text" name="escritorio">
+  <input type="email" name="email">
+  <input type="tel" name="whatsapp">
+  <select name="area"><option value=""></option></select>
+  <input type="text" name="disponibilidade">
+  <textarea name="mensagem"></textarea>
+  <input type="checkbox" name="lgpd">
+</form>
+
 </body>
 </html>
