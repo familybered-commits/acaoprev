@@ -58,6 +58,14 @@
     transition: background 0.25s, color 0.25s !important;
   }
   .nav-cta:hover { background: var(--gold) !important; color: var(--dark) !important; }
+  .nav-portal {
+    color: var(--text-secondary) !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.15em;
+    opacity: 0.55;
+    transition: opacity 0.25s !important;
+  }
+  .nav-portal:hover { opacity: 1 !important; color: var(--gold) !important; }
 
   /* HERO */
   .hero {
@@ -394,6 +402,7 @@
     <li><a href="#quem-somos">Quem Somos</a></li>
     <li><a href="#consulta-online">Avaliação Gratuita</a></li>
     <li><a href="#parceiros">Seja Parceiro</a></li>
+    <li><a href="portal-colaboradores.html" class="nav-portal">Portal</a></li>
     <li><a href="#contato" class="nav-cta">Fale Conosco</a></li>
   </ul>
 </nav>
@@ -937,7 +946,7 @@
       }
       btn.disabled = true; btn.textContent = 'Enviando...';
       try {
-        const resp = await fetch('/api/consulta', { method: 'POST', body: new FormData(consultaForm) });
+        const resp = await fetch('/', { method: 'POST', body: new FormData(consultaForm) });
         if (!resp.ok) throw new Error();
         fb.className = 'form-feedback ok';
         fb.textContent = 'Documentos recebidos com sucesso! Nossa equipe fará a contagem do seu tempo de contribuição e retornará em até 2 dias úteis.';
@@ -963,7 +972,7 @@
       const btn = contatoForm.querySelector('.form-submit');
       btn.disabled = true; btn.textContent = 'Enviando...';
       try {
-        const resp = await fetch('/api/contato', {
+        const resp = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams(new FormData(contatoForm)).toString()
@@ -990,7 +999,7 @@
       const btn = parceirosForm.querySelector('.form-submit');
       btn.disabled = true; btn.textContent = 'Enviando...';
       try {
-        const resp = await fetch('/api/parceiros', {
+        const resp = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams(new FormData(parceirosForm)).toString()
@@ -1042,51 +1051,5 @@
     footerEl.insertBefore(clone, footerEl.querySelector('.footer-text'));
   }
 </script>
-
-<!-- ============================================================
-     FORMULÁRIOS OCULTOS — Detecção Netlify Forms
-     ============================================================ -->
-
-<!-- Formulário: contato -->
-<form name="contato" netlify netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="contato">
-  <input name="bot-field">
-  <input type="text" name="nome">
-  <input type="tel" name="whatsapp">
-  <input type="email" name="email">
-  <select name="area"><option value=""></option></select>
-  <textarea name="mensagem"></textarea>
-</form>
-
-<!-- Formulário: consulta-online -->
-<form name="consulta-online" netlify netlify-honeypot="bot-field" hidden enctype="multipart/form-data">
-  <input type="hidden" name="form-name" value="consulta-online">
-  <input name="bot-field">
-  <input type="text" name="nome">
-  <input type="date" name="nascimento">
-  <input type="tel" name="whatsapp">
-  <input type="email" name="email">
-  <input type="file" name="cnis">
-  <input type="file" name="ctps">
-  <textarea name="observacoes"></textarea>
-  <input type="checkbox" name="lgpd">
-</form>
-
-<!-- Formulário: parceiros -->
-<form name="parceiros" netlify netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="parceiros">
-  <input name="bot-field">
-  <input type="text" name="nome">
-  <input type="text" name="oab">
-  <input type="text" name="cidade">
-  <input type="text" name="escritorio">
-  <input type="email" name="email">
-  <input type="tel" name="whatsapp">
-  <select name="area"><option value=""></option></select>
-  <input type="text" name="disponibilidade">
-  <textarea name="mensagem"></textarea>
-  <input type="checkbox" name="lgpd">
-</form>
-
 </body>
 </html>
