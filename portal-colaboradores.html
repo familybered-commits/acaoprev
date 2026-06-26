@@ -402,6 +402,72 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .tnav-btn.tprimary:hover{opacity:.85}
 .tnav-btn:disabled{opacity:.3;cursor:default;pointer-events:none}
 .tut-step-count{font-size:.6rem;color:var(--t3);letter-spacing:.07em}
+
+/* ══════════════ OPERAÇÃO TAB ══════════════ */
+.op-wrap{display:flex;flex-direction:column;flex:1;overflow-y:auto;padding:14px clamp(1rem,4vw,2rem);gap:16px}
+.op-wrap::-webkit-scrollbar{width:3px}
+.op-wrap::-webkit-scrollbar-thumb{background:var(--brd);border-radius:2px}
+
+.op-materia{background:var(--d3);border:1px solid var(--brd);border-radius:12px;overflow:hidden}
+.op-mat-hd{padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;
+  border-bottom:1px solid var(--brd);transition:background .18s;user-select:none}
+.op-mat-hd:hover{background:rgba(201,168,76,.04)}
+.op-mat-hd.open{background:rgba(201,168,76,.06)}
+.op-mat-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-family:'Marcellus',serif;font-size:.75rem;border:1.5px solid;flex-shrink:0}
+.op-mat-title{font-family:'Marcellus',serif;font-size:.9rem;color:var(--text);flex:1}
+.op-mat-sub{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--t2)}
+.op-chevron{font-size:.7rem;color:var(--t3);transition:transform .22s}
+.op-mat-hd.open .op-chevron{transform:rotate(180deg)}
+
+.op-mat-body{display:none;padding:14px 16px;flex-direction:column;gap:14px}
+.op-mat-body.open{display:flex}
+
+.op-section-label{font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--t3);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--brd)}
+
+/* nome field */
+.op-nome-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.op-nome-lbl{font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);white-space:nowrap}
+.op-nome-in{background:var(--d4);border:1px solid var(--brd);border-radius:6px;
+  padding:7px 11px;color:var(--text);font-size:.8rem;font-family:'Lora',serif;
+  outline:none;flex:1;min-width:160px;transition:border-color .2s}
+.op-nome-in:focus{border-color:var(--gold)}
+.op-nome-in::placeholder{color:var(--t3)}
+
+/* scripts prontos */
+.op-scripts{display:flex;flex-direction:column;gap:8px}
+.op-script-item{background:var(--d4);border:1px solid var(--brd);border-radius:8px;overflow:hidden}
+.op-script-hd{padding:8px 12px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--brd);background:rgba(0,0,0,.15)}
+.op-script-etapa{width:20px;height:20px;border-radius:50%;background:var(--d3);
+  border:1px solid var(--brds);display:flex;align-items:center;justify-content:center;
+  font-size:.58rem;color:var(--gold);font-family:'Marcellus',serif;flex-shrink:0}
+.op-script-name{font-size:.72rem;color:var(--text);flex:1;font-family:'Marcellus',serif}
+.op-copy-btn{background:none;border:1px solid var(--brd);border-radius:4px;
+  padding:3px 10px;font-size:.6rem;color:var(--t2);cursor:pointer;font-family:'Lora',serif;
+  transition:all .18s;white-space:nowrap}
+.op-copy-btn:hover{border-color:var(--gold);color:var(--gold)}
+.op-copy-btn.copied{border-color:#5db85d;color:#5db85d}
+.op-script-txt{padding:10px 12px;font-size:.76rem;color:var(--text);line-height:1.7;
+  white-space:pre-wrap;font-family:'Lora',serif}
+
+/* arquivos */
+.op-files{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.op-file-card{background:var(--d4);border:1px solid var(--brd);border-radius:8px;
+  padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.op-file-icon{font-size:1.4rem;line-height:1}
+.op-file-name{font-family:'Marcellus',serif;font-size:.78rem;color:var(--text)}
+.op-file-desc{font-size:.65rem;color:var(--t2);line-height:1.5}
+.op-file-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.op-file-btn{background:var(--gold);border:none;border-radius:5px;color:var(--dark);
+  padding:5px 11px;font-size:.63rem;letter-spacing:.07em;font-family:'Marcellus',serif;
+  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px;
+  transition:opacity .18s}
+.op-file-btn:hover{opacity:.82}
+.op-file-btn.ghost{background:none;border:1px solid var(--brd);color:var(--t2)}
+.op-file-btn.ghost:hover{border-color:var(--gold);color:var(--gold);opacity:1}
+
 </style>
 </head>
 <body>
@@ -458,6 +524,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <button class="tbtn" data-tab="scripts">Scripts</button>
     <button class="tbtn" data-tab="funil">Funil</button>
     <button class="tbtn" data-tab="perfil">Perfil do Lead</button>
+    <button class="tbtn" data-tab="operacao">Operação</button>
   </div>
 
   <!-- ─ LEADS ─ -->
@@ -612,6 +679,161 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
           <div class="pd-hist" id="pdHist"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+
+  <!-- ─ OPERAÇÃO ─ -->
+  <div class="tpane" id="tab-operacao" style="display:none">
+    <div class="op-wrap">
+
+      <!-- ══ AUXÍLIO-ACIDENTE ══ -->
+      <div class="op-materia">
+        <div class="op-mat-hd" onclick="opToggle(this)">
+          <div class="op-mat-icon" style="color:#7878d4;border-color:#7878d4">AA</div>
+          <div style="flex:1"><div class="op-mat-title">Auxílio-Acidente</div><div class="op-mat-sub">Scripts + Arquivos</div></div>
+          <span class="op-chevron">▼</span>
+        </div>
+        <div class="op-mat-body">
+
+          <!-- Nome do lead -->
+          <div>
+            <div class="op-section-label">Nome do lead</div>
+            <div class="op-nome-row">
+              <span class="op-nome-lbl">Nome:</span>
+              <input class="op-nome-in" type="text" placeholder="Digite o nome do lead..." oninput="opUpdateScripts('aa')" id="op-nome-aa">
+            </div>
+          </div>
+
+          <!-- Scripts -->
+          <div>
+            <div class="op-section-label">Scripts prontos</div>
+            <div class="op-scripts" id="op-scripts-aa"></div>
+          </div>
+
+          <!-- Arquivos -->
+          <div>
+            <div class="op-section-label">Arquivos para envio</div>
+            <div class="op-files">
+              <div class="op-file-card">
+                <div class="op-file-icon">📄</div>
+                <div class="op-file-name">Folder — Auxílio-Acidente</div>
+                <div class="op-file-desc">PDF informativo da tese para enviar ao lead na Etapa 1</div>
+                <div class="op-file-btns">
+                  <a class="op-file-btn" href="folder_auxilio_acidente.pdf" download>⬇ Baixar</a>
+                  <a class="op-file-btn ghost" href="folder_auxilio_acidente.pdf" target="_blank">Abrir</a>
+                </div>
+              </div>
+              <div class="op-file-card">
+                <div class="op-file-icon">🎙️</div>
+                <div class="op-file-name">Áudio de apresentação</div>
+                <div class="op-file-desc">Áudio de abordagem inicial para enviar na Etapa 2</div>
+                <div class="op-file-btns">
+                  <a class="op-file-btn" href="audio_auxilio_acidente.m4a" download>⬇ Baixar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══ ISENÇÃO DE IR ══ -->
+      <div class="op-materia">
+        <div class="op-mat-hd" onclick="opToggle(this)">
+          <div class="op-mat-icon" style="color:#5db85d;border-color:#5db85d">IR</div>
+          <div style="flex:1"><div class="op-mat-title">Isenção de IR</div><div class="op-mat-sub">Scripts + Arquivos</div></div>
+          <span class="op-chevron">▼</span>
+        </div>
+        <div class="op-mat-body">
+
+          <div>
+            <div class="op-section-label">Nome do lead</div>
+            <div class="op-nome-row">
+              <span class="op-nome-lbl">Nome:</span>
+              <input class="op-nome-in" type="text" placeholder="Digite o nome do lead..." oninput="opUpdateScripts('ir')" id="op-nome-ir">
+            </div>
+          </div>
+
+          <div>
+            <div class="op-section-label">Scripts prontos</div>
+            <div class="op-scripts" id="op-scripts-ir"></div>
+          </div>
+
+          <div>
+            <div class="op-section-label">Arquivos para envio</div>
+            <div class="op-files">
+              <div class="op-file-card">
+                <div class="op-file-icon">📄</div>
+                <div class="op-file-name">Folder — Isenção de IR</div>
+                <div class="op-file-desc">PDF informativo da tese para enviar ao lead na Etapa 1</div>
+                <div class="op-file-btns">
+                  <a class="op-file-btn" href="folder_isencao_ir.pdf" download>⬇ Baixar</a>
+                  <a class="op-file-btn ghost" href="folder_isencao_ir.pdf" target="_blank">Abrir</a>
+                </div>
+              </div>
+              <div class="op-file-card">
+                <div class="op-file-icon">🎙️</div>
+                <div class="op-file-name">Áudio de apresentação</div>
+                <div class="op-file-desc">Áudio de abordagem inicial para enviar na Etapa 2</div>
+                <div class="op-file-btns">
+                  <a class="op-file-btn" href="audio_isencao_ir.m4a" download>⬇ Baixar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══ ACP DOS TETOS ══ -->
+      <div class="op-materia">
+        <div class="op-mat-hd" onclick="opToggle(this)">
+          <div class="op-mat-icon" style="color:var(--gold);border-color:var(--gold)">AT</div>
+          <div style="flex:1"><div class="op-mat-title">ACP dos Tetos</div><div class="op-mat-sub">Scripts + Arquivos</div></div>
+          <span class="op-chevron">▼</span>
+        </div>
+        <div class="op-mat-body">
+
+          <div>
+            <div class="op-section-label">Nome do lead</div>
+            <div class="op-nome-row">
+              <span class="op-nome-lbl">Nome:</span>
+              <input class="op-nome-in" type="text" placeholder="Digite o nome do lead..." oninput="opUpdateScripts('at')" id="op-nome-at">
+            </div>
+          </div>
+
+          <div>
+            <div class="op-section-label">Scripts prontos</div>
+            <div class="op-scripts" id="op-scripts-at"></div>
+          </div>
+
+          <div>
+            <div class="op-section-label">Arquivos para envio</div>
+            <div class="op-files">
+              <div class="op-file-card">
+                <div class="op-file-icon">📄</div>
+                <div class="op-file-name">Folder — ACP dos Tetos</div>
+                <div class="op-file-desc">PDF informativo da tese para enviar ao lead na Etapa 1</div>
+                <div class="op-file-btns">
+                  <a class="op-file-btn" href="folder_acp_tetos.pdf" download>⬇ Baixar</a>
+                  <a class="op-file-btn ghost" href="folder_acp_tetos.pdf" target="_blank">Abrir</a>
+                </div>
+              </div>
+              <div class="op-file-card">
+                <div class="op-file-icon">🎙️</div>
+                <div class="op-file-name">Áudio de apresentação</div>
+                <div class="op-file-desc">Áudio de abordagem inicial para enviar na Etapa 2</div>
+                <div class="op-file-btns">
+                  <a class="op-file-btn" href="audio_acp_tetos.m4a" download>⬇ Baixar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1066,7 +1288,7 @@ function savePw(){
 // ═══════════════════════════════════════════════════════════
 function activateTab(name){
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
-  ['leads','scripts','funil','perfil'].forEach(t=>{
+  ['leads','scripts','funil','perfil','operacao'].forEach(t=>{
     const el=document.getElementById('tab-'+t);
     if(!el) return;
     const on=t===name;
@@ -1075,6 +1297,7 @@ function activateTab(name){
   });
   if(name==='funil')  renderFunil();
   if(name==='perfil') renderPerfilCards();
+  if(name==='operacao') opInit();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1418,6 +1641,152 @@ document.getElementById('btnECancel').onclick = closeEdit;
 document.getElementById('btnESave').onclick = saveEdit;
 document.getElementById('btnGenScript').onclick = genScript;
 document.getElementById('btnGenPerfil').onclick = genAnalise;
+
+// ═══════════════════════════════════════════════════════════
+// OPERAÇÃO
+// ═══════════════════════════════════════════════════════════
+const OP_SCRIPTS = {
+  aa: [
+    { etapa: 1, nome: 'Folder + apresentação',
+      txt: `Olá, [NOME]! Tudo bem? Espero que esteja tendo um ótimo dia! 😊
+
+Aqui é o Rafael, da AÇÃOPREV Advocacia, escritório especializado em direitos previdenciários.
+
+Estou enviando um material sobre um benefício do INSS que muita gente desconhece — o Auxílio-Acidente. Quem sofreu acidente ou doença e ficou com alguma sequela pode ter direito a uma indenização mensal, paga junto com o salário e com valores atrasados de até 5 anos.
+
+Dê uma olhada no folder que estou enviando! 📄` },
+    { etapa: 2, nome: 'Mensagem de áudio',
+      txt: `[NOME], enviei um áudio aqui para te explicar melhor. Pode ouvir quando tiver um momento! 🎙️
+
+(Envie o áudio: audio_auxilio_acidente.m4a)` },
+    { etapa: 3, nome: 'Follow-up (48h)',
+      txt: `Olá, [NOME]! Tudo bem? 😊
+
+Passei aqui só para saber se você teve a chance de ver o material que enviei sobre o Auxílio-Acidente.
+
+Qualquer dúvida, é só me falar — fico à disposição!` },
+    { etapa: 4, nome: 'Conversa / qualificação',
+      txt: `Olá, [NOME]! Que bom falar com você! 😊
+
+Para entender melhor o seu caso e saber se você tem direito ao Auxílio-Acidente, me conta: você sofreu algum acidente ou problema de saúde relacionado ao trabalho? Ficou com alguma limitação, mesmo que pequena?
+
+A análise é totalmente gratuita e sem compromisso.` },
+    { etapa: 5, nome: 'Convite para ligação',
+      txt: `Olá, [NOME]! Tudo bem? 😊
+
+Pelo que conversamos, acredito que vale muito a pena avaliamos o seu caso com mais calma. Que tal uma rápida ligação ou videochamada esta semana? São só 10 minutinhos e a avaliação é gratuita.
+
+Qual seria o melhor horário para você?` }
+  ],
+  ir: [
+    { etapa: 1, nome: 'Folder + apresentação',
+      txt: `Olá, [NOME]! Tudo bem? Espero que esteja bem! 😊
+
+Aqui é o Rafael, da AÇÃOPREV Advocacia, escritório especializado em direitos previdenciários.
+
+Queria compartilhar uma informação importante: aposentados e pensionistas com doenças graves têm direito a não pagar Imposto de Renda sobre o benefício — e quem já pagou indevidamente pode recuperar até 5 anos de valores.
+
+Mandei um folder explicando tudo. Dê uma olhada! 📄` },
+    { etapa: 2, nome: 'Mensagem de áudio',
+      txt: `[NOME], gravei um áudio rápido explicando melhor esse direito. Pode ouvir quando quiser! 🎙️
+
+(Envie o áudio: audio_isencao_ir.m4a)` },
+    { etapa: 3, nome: 'Follow-up (48h)',
+      txt: `Olá, [NOME]! Tudo bem? 😊
+
+Passei aqui só para saber se você viu o material que enviei sobre a Isenção de IR para aposentados.
+
+Se tiver alguma dúvida ou quiser saber se esse direito se aplica ao seu caso, é só me chamar — fico à disposição!` },
+    { etapa: 4, nome: 'Conversa / qualificação',
+      txt: `Olá, [NOME]! Que bom falar com você! 😊
+
+Para avaliarmos se você tem direito à isenção de IR, me conta: você recebe aposentadoria ou pensão do INSS? Tem alguma condição de saúde diagnosticada, como problema cardíaco, diabetes, câncer ou outra doença grave?
+
+A análise é gratuita e pode representar uma diferença importante no seu benefício mensal.` },
+    { etapa: 5, nome: 'Convite para ligação',
+      txt: `Olá, [NOME]! Tudo bem? 😊
+
+Acredito que o seu caso merece uma avaliação mais detalhada. Que tal uma ligação rápida esta semana? São só alguns minutos e pode resultar em um acréscimo real no seu benefício mensal.
+
+Qual horário seria melhor para você?` }
+  ],
+  at: [
+    { etapa: 1, nome: 'Folder + apresentação',
+      txt: `Olá, [NOME]! Tudo bem? Espero que esteja tendo um ótimo dia! 😊
+
+Aqui é o Rafael, da AÇÃOPREV Advocacia, escritório especializado em direitos previdenciários.
+
+Queria compartilhar algo que pode ser muito relevante: quem recebe aposentadoria ou pensão do INSS concedida antes de 2004 pode ter direito a uma revisão do benefício e a valores atrasados desde 2006 — com correção e juros. É um direito reconhecido pelo Supremo Tribunal Federal.
+
+Mandei um folder explicando tudo com detalhes. Vale a leitura! 📄` },
+    { etapa: 2, nome: 'Mensagem de áudio',
+      txt: `[NOME], gravei um áudio explicando melhor essa revisão. Pode ouvir quando tiver um momento! 🎙️
+
+(Envie o áudio: audio_acp_tetos.m4a)` },
+    { etapa: 3, nome: 'Follow-up (48h)',
+      txt: `Olá, [NOME]! Tudo bem? 😊
+
+Passei aqui só para saber se você teve chance de ver o material sobre a revisão de benefício pelo INSS.
+
+Qualquer dúvida, estou à disposição. Basta me chamar por aqui!` },
+    { etapa: 4, nome: 'Conversa / qualificação',
+      txt: `Olá, [NOME]! Que bom falar com você! 😊
+
+Para saber se você tem direito à revisão, me conta: quando seu benefício foi concedido pelo INSS? É aposentadoria, pensão ou outro benefício?
+
+A análise é gratuita — só precisamos da carta de concessão do INSS para verificar.` },
+    { etapa: 5, nome: 'Convite para ligação',
+      txt: `Olá, [NOME]! Tudo bem? 😊
+
+Pelo que conversamos, acredito que vale muito avaliarmos o seu caso com calma. Que tal uma ligação rápida esta semana? São poucos minutos e pode resultar em um valor significativo de atrasados.
+
+Qual horário seria melhor para você?` }
+  ]
+};
+
+let opNomes = { aa: '', ir: '', at: '' };
+
+function opInit(){
+  ['aa','ir','at'].forEach(k => opRenderScripts(k));
+}
+
+function opUpdateScripts(key){
+  opNomes[key] = document.getElementById('op-nome-'+key).value.trim() || '[NOME]';
+  opRenderScripts(key);
+}
+
+function opRenderScripts(key){
+  const nome = opNomes[key] || '[NOME]';
+  const container = document.getElementById('op-scripts-'+key);
+  if(!container) return;
+  container.innerHTML = OP_SCRIPTS[key].map((s,i) => {
+    const txt = s.txt.replace(/\[NOME\]/g, nome);
+    return `<div class="op-script-item">
+      <div class="op-script-hd">
+        <div class="op-script-etapa">${s.etapa}</div>
+        <div class="op-script-name">${s.nome}</div>
+        <button class="op-copy-btn" onclick="opCopy(this, '${key}', ${i})">Copiar</button>
+      </div>
+      <div class="op-script-txt" id="op-txt-${key}-${i}">${escH(txt)}</div>
+    </div>`;
+  }).join('');
+}
+
+function opCopy(btn, key, idx){
+  const nome = opNomes[key] || '[NOME]';
+  const txt = OP_SCRIPTS[key][idx].txt.replace(/\[NOME\]/g, nome);
+  navigator.clipboard.writeText(txt).then(() => {
+    btn.textContent = '✓ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function opToggle(hd){
+  hd.classList.toggle('open');
+  const body = hd.nextElementSibling;
+  body.classList.toggle('open');
+}
 
 // ═══════════════════════════════════════════════════════════
 // TUTORIAL
