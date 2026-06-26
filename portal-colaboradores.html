@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portal do Colaborador · AÇÃOPREV</title>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -15,6 +14,7 @@
 }
 html,body{height:100%;font-family:'Lora',serif;background:var(--dark);color:var(--text);font-size:14px;line-height:1.6}
 
+/* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97);
   backdrop-filter:blur(12px);border-bottom:1px solid var(--brd);
   padding:0 clamp(1rem,4vw,3rem);display:flex;align-items:center;
@@ -24,70 +24,73 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   text-decoration:none;border:1px solid var(--brds);padding:6px 14px;border-radius:2px;transition:all .22s}
 .nback:hover{color:var(--gold);border-color:var(--gold)}
 
+/* ── SCREENS ── */
 .sc{display:none;min-height:100vh;padding-top:64px}
 .sc.on{display:flex;flex-direction:column}
 
-/* ── LOADING ── */
-#s-loading{align-items:center;justify-content:center}
-.spinner{width:36px;height:36px;border:2px solid var(--brd);border-top-color:var(--gold);
-  border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── AUTH ── */
-#s-auth{align-items:center;justify-content:center;padding:3rem 1.5rem}
-.abox{width:100%;max-width:380px}
-.abrow{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+/* ══════════════ LOGIN ══════════════ */
+#s-login{align-items:center;justify-content:center;padding:3rem 1.5rem}
+.lbox{width:100%;max-width:520px;text-align:center}
+.lbrow{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
   margin-bottom:.9rem;display:flex;align-items:center;justify-content:center;gap:10px}
-.abrow::before,.abrow::after{content:'';width:32px;height:1px;background:var(--gold)}
-.atitle{font-family:'Marcellus',serif;font-size:clamp(1.3rem,3vw,1.8rem);margin-bottom:.4rem;
-  letter-spacing:.04em;text-align:center}
-.asub{font-size:.75rem;color:var(--t2);margin-bottom:1.8rem;text-align:center}
-.auth-tabs{display:flex;gap:0;margin-bottom:1.4rem;border-bottom:1px solid var(--brd)}
-.auth-tab{padding:8px 18px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;
-  background:none;border-top:none;border-left:none;border-right:none;
-  font-family:'Lora',serif;transition:color .2s,border-color .2s}
-.auth-tab.on{color:var(--gold);border-bottom-color:var(--gold)}
-.auth-form{display:flex;flex-direction:column;gap:12px}
-.fld{display:flex;flex-direction:column;gap:4px}
-.fld label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
-.fld input{background:var(--d3);border:1px solid var(--brd);border-radius:6px;
-  padding:10px 13px;color:var(--text);font-size:.82rem;font-family:'Lora',serif;
-  outline:none;width:100%;transition:border-color .2s}
-.fld input:focus{border-color:var(--gold)}
-.btn-auth{background:var(--gold);border:none;border-radius:6px;color:var(--dark);
-  padding:11px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
-  cursor:pointer;font-family:'Marcellus',serif;transition:opacity .2s;width:100%;margin-top:4px}
-.btn-auth:hover{opacity:.85}
-.btn-auth:disabled{opacity:.4;cursor:not-allowed}
-.auth-err{font-size:.7rem;color:#d9534f;min-height:.9rem;text-align:center}
-.auth-ok{font-size:.7rem;color:#5db85d;min-height:.9rem;text-align:center}
-.auth-note{font-size:.68rem;color:var(--t3);text-align:center;margin-top:4px}
-.lnk-auth{color:var(--t2);cursor:pointer;text-decoration:underline}
-.lnk-auth:hover{color:var(--gold)}
+.lbrow::before,.lbrow::after{content:'';width:32px;height:1px;background:var(--gold)}
+.ltitle{font-family:'Marcellus',serif;font-size:clamp(1.3rem,3vw,1.85rem);margin-bottom:.4rem;letter-spacing:.04em}
+.lsub{font-size:.78rem;color:var(--t2);margin-bottom:2rem}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;margin-bottom:1.6rem}
+.ucard{background:var(--d3);border:1px solid var(--brd);border-radius:10px;
+  padding:1rem .7rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;
+  gap:8px;transition:all .2s}
+.ucard:hover{border-color:var(--gold);transform:translateY(-2px);background:rgba(201,168,76,.05)}
+.ucard.sel{border-color:var(--gold);background:rgba(201,168,76,.08)}
+.uav{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Marcellus',serif;font-size:.95rem;border:1.5px solid;transition:all .2s}
+.un{font-family:'Marcellus',serif;font-size:.7rem;letter-spacing:.04em;color:var(--text);text-align:center;line-height:1.3}
+.ur{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);text-align:center}
 
-/* ── PORTAL ── */
+.pin-blk{display:none;flex-direction:column;align-items:center;gap:10px}
+.pin-lbl{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--t2)}
+.pin-row{display:flex;gap:7px}
+.pin-in{background:var(--d3);border:1px solid var(--brds);border-radius:6px;
+  padding:9px 13px;color:var(--text);font-size:1rem;text-align:center;letter-spacing:.3em;
+  outline:none;width:150px;font-family:'Lora',serif;transition:border-color .2s}
+.pin-in:focus{border-color:var(--gold)}
+.btn-go{background:var(--gold);border:none;border-radius:6px;color:var(--dark);
+  padding:9px 20px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;font-family:'Marcellus',serif;transition:opacity .2s;white-space:nowrap}
+.btn-go:hover{opacity:.85}
+.perr{font-size:.67rem;color:#d9534f;min-height:.9rem}
+.lnk{font-size:.65rem;color:var(--t3);cursor:pointer;text-decoration:underline;margin-top:2px}
+.lnk:hover{color:var(--t2)}
+
+/* ══════════════ PORTAL ══════════════ */
 #s-portal{flex-direction:column}
+
+/* portal header */
 .ph{background:var(--d2);border-bottom:1px solid var(--brd);
   padding:.55rem clamp(1rem,4vw,3rem);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .puser{display:flex;align-items:center;gap:9px;flex:1}
 .pav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:.68rem;font-family:'Marcellus',serif;border:1.5px solid var(--gold);
-  color:var(--gold);flex-shrink:0;background:rgba(201,168,76,.08)}
-.pemail{font-size:.76rem;color:var(--text);letter-spacing:.02em}
+  font-size:.62rem;font-family:'Marcellus',serif;border:1.5px solid;flex-shrink:0}
+.pname{font-family:'Marcellus',serif;font-size:.8rem;color:var(--text);letter-spacing:.04em}
+.prole{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
 .psep{width:1px;height:26px;background:var(--brd);margin:0 3px}
 .ibtn{background:none;border:none;color:var(--t3);font-size:.62rem;letter-spacing:.07em;
-  text-transform:uppercase;cursor:pointer;font-family:'Lora',serif;
-  padding:4px 7px;border-radius:4px;transition:color .2s}
+  text-transform:uppercase;cursor:pointer;font-family:'Lora',serif;padding:4px 7px;
+  border-radius:4px;transition:color .2s}
 .ibtn:hover{color:var(--t2)}
+.ibtn.outlined{border:1px solid var(--brd)}
+.ibtn.outlined:hover{border-color:var(--t2)}
 
+/* stats bar */
 .stats{background:var(--d3);border-bottom:1px solid var(--brd);
   padding:.6rem clamp(1rem,4vw,3rem);display:flex;gap:2rem;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column}
 .stat-n{font-family:'Marcellus',serif;font-size:1.4rem;color:var(--gold);line-height:1}
 .stat-l{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--t2);margin-top:3px}
 
+/* tabs */
 .tabs{background:var(--d2);border-bottom:1px solid var(--brd);
-  display:flex;padding:0 clamp(1rem,4vw,3rem);overflow-x:auto}
+  display:flex;padding:0 clamp(1rem,4vw,3rem);gap:0;overflow-x:auto}
 .tbtn{padding:9px 16px;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
   color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;
   background:none;border-top:none;border-left:none;border-right:none;
@@ -97,14 +100,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .tpane{display:none;flex:1;flex-direction:column;overflow:hidden}
 .tpane.on{display:flex}
 
-/* ── LEADS ── */
+/* ── LEADS TAB ── */
 .leads-wrap{display:flex;flex-direction:column;flex:1;overflow:hidden}
 .leads-top{padding:10px clamp(1rem,4vw,3rem);border-bottom:1px solid var(--brd);
   display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .leads-top-r{display:flex;gap:7px;margin-left:auto}
 .filter-sel{background:var(--d3);border:1px solid var(--brd);border-radius:6px;
   padding:5px 10px;color:var(--t2);font-size:.66rem;font-family:'Lora',serif;
-  outline:none;cursor:pointer}
+  outline:none;cursor:pointer;transition:border-color .2s}
+.filter-sel:focus{border-color:var(--gold)}
 .filter-sel option{background:var(--d3)}
 .btn-sm{background:var(--gold);border:none;border-radius:6px;color:var(--dark);
   padding:6px 12px;font-size:.66rem;letter-spacing:.08em;font-family:'Marcellus',serif;
@@ -113,13 +117,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .btn-sm.ghost{background:none;color:var(--t2);border:1px solid var(--brd)}
 .btn-sm.ghost:hover{border-color:var(--gold);color:var(--gold);opacity:1}
 
+/* lead table */
 .leads-list{flex:1;overflow-y:auto;padding:10px clamp(1rem,4vw,3rem);
   display:flex;flex-direction:column;gap:7px}
 .leads-list::-webkit-scrollbar{width:3px}
 .leads-list::-webkit-scrollbar-thumb{background:var(--brd);border-radius:2px}
 .lcard{background:var(--d3);border:1px solid var(--brd);border-radius:9px;
   padding:11px 14px;display:flex;align-items:center;gap:12px}
-.lcard:hover{border-color:var(--brds)}
+.lcard:hover{border-color:rgba(201,168,76,.35)}
 .lcard-step{width:22px;height:22px;border-radius:50%;background:var(--d4);
   border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;
   font-size:.6rem;color:var(--gold);font-family:'Marcellus',serif;flex-shrink:0}
@@ -128,7 +133,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lcard-meta{font-size:.65rem;color:var(--t2);margin-top:2px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lcard-r{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap}
+.lcard-r{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .badge{font-size:.58rem;padding:2px 8px;border-radius:8px;letter-spacing:.06em;
   text-transform:uppercase;font-weight:500;white-space:nowrap}
 .b-1{background:#0e1a0e;color:#5db85d;border:1px solid #1a341a}
@@ -141,11 +146,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .lbtn:hover{border-color:var(--gold);color:var(--gold)}
 .empty{text-align:center;color:var(--t3);font-size:.78rem;padding:2.5rem 2rem;line-height:1.9}
 
-/* ── SCRIPTS ── */
+/* import csv area */
+.csv-area{border:1px solid var(--brd);border-radius:8px;padding:12px;
+  font-size:.75rem;color:var(--t2);background:var(--d4);
+  resize:none;width:100%;outline:none;font-family:'Lora',serif;line-height:1.5;
+  transition:border-color .2s}
+.csv-area:focus{border-color:var(--gold)}
+
+/* ── SCRIPTS TAB ── */
 .scripts-wrap{display:flex;flex-direction:column;flex:1;overflow-y:auto;
   padding:14px clamp(1rem,4vw,3rem);gap:14px}
 .scripts-wrap::-webkit-scrollbar{width:3px}
 .scripts-wrap::-webkit-scrollbar-thumb{background:var(--brd);border-radius:2px}
+.scfilt{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.scfilt label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
 .script-cfg{background:var(--d3);border:1px solid var(--brd);border-radius:10px;padding:14px}
 .script-cfg-title{font-family:'Marcellus',serif;font-size:.85rem;color:var(--gold);margin-bottom:10px}
 .cfg-row{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:9px}
@@ -159,16 +173,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .script-out{background:var(--d4);border:1px solid var(--brd);border-radius:8px;
   padding:12px;min-height:80px;font-size:.78rem;color:var(--text);line-height:1.7;
   white-space:pre-wrap;position:relative}
-.copy-btn{position:absolute;top:8px;right:8px;background:var(--d3);
+.script-out .copy-btn{position:absolute;top:8px;right:8px;background:var(--d3);
   border:1px solid var(--brd);border-radius:5px;padding:3px 9px;font-size:.6rem;
   color:var(--t2);cursor:pointer;font-family:'Lora',serif;transition:all .18s}
-.copy-btn:hover{border-color:var(--gold);color:var(--gold)}
+.script-out .copy-btn:hover{border-color:var(--gold);color:var(--gold)}
 .script-placeholder{color:var(--t3);font-style:italic}
-.typing-inline{display:inline-flex;gap:3px;align-items:center}
+.gen-btn{align-self:flex-start}
+.typing-inline{display:inline-flex;gap:3px;align-items:center;vertical-align:middle}
 .typing-inline span{width:4px;height:4px;border-radius:50%;background:var(--t2);animation:pulse 1.1s infinite}
 .typing-inline span:nth-child(2){animation-delay:.2s}
 .typing-inline span:nth-child(3){animation-delay:.4s}
 @keyframes pulse{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+/* steps guide */
 .steps-guide{background:var(--d3);border:1px solid var(--brd);border-radius:10px;padding:14px}
 .steps-guide-title{font-family:'Marcellus',serif;font-size:.82rem;color:var(--text);margin-bottom:10px}
 .step-row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--brd)}
@@ -176,37 +193,37 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .step-num{width:22px;height:22px;border-radius:50%;background:var(--d4);
   border:1px solid var(--brds);display:flex;align-items:center;justify-content:center;
   font-size:.6rem;color:var(--gold);font-family:'Marcellus',serif;flex-shrink:0;margin-top:1px}
-.step-name{font-size:.76rem;color:var(--text);margin-bottom:2px}
-.step-desc{font-size:.67rem;color:var(--t2);line-height:1.5}
+.step-info .step-name{font-size:.76rem;color:var(--text);margin-bottom:2px}
+.step-info .step-desc{font-size:.67rem;color:var(--t2);line-height:1.5}
 
-/* ── FUNIL ── */
+/* ── FUNIL TAB ── */
 .funil-wrap{display:flex;flex-direction:column;flex:1;overflow-y:auto;
   padding:14px clamp(1rem,4vw,3rem);gap:12px}
 .funil-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
-.funil-col{background:var(--d3);border:1px solid var(--brd);border-radius:10px;padding:10px;min-height:120px}
-.funil-col-hd{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+.funil-col{background:var(--d3);border:1px solid var(--brd);border-radius:10px;padding:10px;min-height:140px}
+.funil-col-hd{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
   color:var(--t2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
-.funil-col-hd span{font-family:'Marcellus',serif;font-size:.8rem;color:var(--gold)}
+.funil-col-hd span{font-family:'Marcellus',serif;font-size:.78rem;color:var(--gold)}
 .funil-card{background:var(--d4);border:1px solid var(--brd);border-radius:7px;
   padding:8px 9px;margin-bottom:6px;cursor:pointer;transition:border-color .18s}
-.funil-card:hover{border-color:var(--brds)}
+.funil-card:hover{border-color:rgba(201,168,76,.4)}
 .funil-card-name{font-size:.74rem;color:var(--text);margin-bottom:2px}
 .funil-card-area{font-size:.62rem;color:var(--t2)}
 .ativ-wrap{background:var(--d3);border:1px solid var(--brd);border-radius:10px;padding:12px}
 .ativ-title{font-family:'Marcellus',serif;font-size:.82rem;color:var(--text);margin-bottom:8px}
-.ativ-item{display:flex;gap:9px;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--brd)}
-.ativ-item:last-child{border-bottom:none}
-.ativ-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:5px;flex-shrink:0}
+.ativ-list{display:flex;flex-direction:column;gap:7px}
+.ativ-item{display:flex;gap:9px;align-items:flex-start}
+.ativ-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);margin-top:4px;flex-shrink:0}
 .ativ-text{font-size:.72rem;color:var(--t2);line-height:1.5}
 .ativ-text strong{color:var(--text)}
 .ativ-ts{font-size:.6rem;color:var(--t3);margin-top:1px}
 
-/* ── PERFIL ── */
+/* ── PERFIL TAB ── */
 .perfil-wrap{display:flex;flex-direction:column;flex:1;overflow-y:auto;
   padding:14px clamp(1rem,4vw,3rem);gap:12px}
 .perfil-select-area{background:var(--d3);border:1px solid var(--brd);border-radius:10px;padding:14px}
 .perfil-title{font-family:'Marcellus',serif;font-size:.85rem;color:var(--gold);margin-bottom:10px}
-.perfil-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.perfil-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
 .pf-card{background:var(--d4);border:1px solid var(--brd);border-radius:8px;padding:10px 12px;
   cursor:pointer;transition:border-color .18s,background .18s}
 .pf-card:hover,.pf-card.sel{border-color:var(--gold);background:rgba(201,168,76,.06)}
@@ -234,16 +251,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   align-items:center;justify-content:center;z-index:300;padding:1rem}
 .modal{background:var(--d2);border:1px solid var(--brds);border-radius:12px;
   padding:1.4rem;width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px}
-.modal.wide{max-width:480px}
 .modal-title{font-family:'Marcellus',serif;font-size:.95rem;color:var(--gold);letter-spacing:.07em}
 .modal-sub{font-size:.72rem;color:var(--t2);line-height:1.6}
-.fld-m{display:flex;flex-direction:column;gap:3px}
-.fld-m label{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
-.fld-m input,.fld-m select,.fld-m textarea{background:var(--d3);border:1px solid var(--brd);border-radius:6px;
+.fld{display:flex;flex-direction:column;gap:3px}
+.fld label{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
+.fld input,.fld select,.fld textarea{background:var(--d3);border:1px solid var(--brd);border-radius:6px;
   padding:8px 11px;color:var(--text);font-size:.76rem;font-family:'Lora',serif;
   outline:none;width:100%;transition:border-color .2s;resize:none}
-.fld-m input:focus,.fld-m select:focus,.fld-m textarea:focus{border-color:var(--gold)}
-.fld-m select option,.fld-m textarea{background:var(--d3)}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--gold)}
+.fld select option,.fld textarea{background:var(--d3)}
 .mbtns{display:flex;gap:8px;justify-content:flex-end}
 .btn-cancel{background:none;border:1px solid var(--brd);border-radius:6px;padding:7px 14px;
   color:var(--t2);font-size:.68rem;cursor:pointer;font-family:'Lora',serif;transition:all .18s}
@@ -252,12 +268,140 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   color:var(--dark);font-size:.68rem;cursor:pointer;font-family:'Marcellus',serif;
   letter-spacing:.08em;transition:opacity .18s}
 .btn-save:hover{opacity:.85}
-.btn-save:disabled{opacity:.4;cursor:not-allowed}
 .merr{font-size:.65rem;color:#d9534f;min-height:.85rem}
-.csv-area{border:1px solid var(--brd);border-radius:8px;padding:12px;
-  font-size:.75rem;color:var(--t2);background:var(--d4);resize:none;width:100%;
-  outline:none;font-family:'Lora',serif;line-height:1.5;transition:border-color .2s}
-.csv-area:focus{border-color:var(--gold)}
+.modal.wide{max-width:480px}
+
+/* ══════════════ TUTORIAL MODAL ══════════════ */
+.tut-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:400;
+  display:none;align-items:center;justify-content:center;padding:1rem}
+.tut-overlay.on{display:flex}
+.tut-box{background:var(--d2);border:1px solid var(--brds);border-radius:14px;
+  width:100%;max-width:600px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.tut-hd{background:var(--d3);border-bottom:1px solid var(--brd);padding:.8rem 1.2rem;
+  display:flex;align-items:center;gap:10px}
+.tut-hd-title{font-family:'Marcellus',serif;font-size:.95rem;color:var(--text);flex:1}
+.tut-hd-badge{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(201,168,76,.12);color:var(--gold);border:1px solid var(--brds);
+  padding:2px 9px;border-radius:8px}
+.tut-close{background:none;border:none;color:var(--t3);font-size:1.1rem;cursor:pointer;
+  padding:2px 6px;transition:color .18s;line-height:1}
+.tut-close:hover{color:var(--text)}
+
+.tut-snav{display:flex;background:var(--d3);border-bottom:1px solid var(--brd);overflow-x:auto}
+.tut-snav::-webkit-scrollbar{height:2px}
+.tut-snav::-webkit-scrollbar-thumb{background:var(--brd)}
+.tsnav-btn{flex:1;min-width:80px;display:flex;flex-direction:column;align-items:center;
+  gap:3px;padding:8px 4px;cursor:pointer;border:none;background:none;position:relative}
+.tsnav-btn:not(:last-child)::after{content:'';position:absolute;right:0;top:50%;
+  transform:translateY(-50%);width:1px;height:16px;background:var(--brd)}
+.tsnav-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--brd);
+  display:flex;align-items:center;justify-content:center;font-family:'Marcellus',serif;
+  font-size:.65rem;color:var(--t3);transition:all .2s}
+.tsnav-lbl{font-size:.54rem;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);
+  text-align:center;line-height:1.3;max-width:72px;transition:color .2s}
+.tsnav-btn.tdone .tsnav-num{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold)}
+.tsnav-btn.tdone .tsnav-lbl{color:var(--t2)}
+.tsnav-btn.tactive .tsnav-num{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+.tsnav-btn.tactive .tsnav-lbl{color:var(--gold)}
+
+.tut-body{flex:1;overflow-y:auto;padding:1.1rem 1.2rem}
+.tut-body::-webkit-scrollbar{width:3px}
+.tut-body::-webkit-scrollbar-thumb{background:var(--brd);border-radius:2px}
+.tpanel{display:none}.tpanel.ton{display:block}
+
+.tut-step-h{font-family:'Marcellus',serif;font-size:.95rem;color:var(--text);margin-bottom:.35rem}
+.tut-intro{font-size:.76rem;color:var(--t2);line-height:1.7;margin-bottom:.9rem}
+
+.tut-mockup{background:var(--d3);border:1px solid var(--brd);border-radius:8px;
+  overflow:hidden;margin:.8rem 0}
+.tmock-bar{background:var(--d2);border-bottom:1px solid var(--brd);padding:.4rem .8rem;
+  display:flex;align-items:center;gap:5px}
+.tmock-dot{width:7px;height:7px;border-radius:50%}
+.tmock-lbl{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-left:3px}
+.tmock-body{padding:.8rem}
+
+.tbtn-gold{background:var(--gold);border:none;border-radius:5px;color:var(--dark);
+  padding:4px 11px;font-size:.62rem;letter-spacing:.07em;font-family:'Marcellus',serif;cursor:default}
+.tbtn-ghost{background:none;border:1px solid var(--brd);border-radius:5px;color:var(--t2);
+  padding:4px 11px;font-size:.62rem;font-family:'Lora',serif;cursor:default}
+.tfilter{background:var(--d4);border:1px solid var(--brd);border-radius:5px;
+  padding:4px 9px;font-size:.62rem;color:var(--t2);font-family:'Lora',serif}
+
+.tlcard{background:var(--d4);border:1px solid var(--brd);border-radius:6px;
+  padding:8px 11px;display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.tlcard:last-child{margin-bottom:0}
+.tlc-step{width:19px;height:19px;border-radius:50%;background:var(--d3);border:1px solid var(--brds);
+  display:flex;align-items:center;justify-content:center;font-size:.57rem;color:var(--gold);
+  font-family:'Marcellus',serif;flex-shrink:0}
+.tlc-info{flex:1;min-width:0}
+.tlc-name{font-family:'Marcellus',serif;font-size:.75rem;color:var(--text)}
+.tlc-meta{font-size:.6rem;color:var(--t2);margin-top:1px}
+.tlc-r{display:flex;gap:4px;align-items:center;flex-shrink:0}
+.tbadge{font-size:.53rem;padding:2px 7px;border-radius:8px;letter-spacing:.05em;text-transform:uppercase}
+.tb-verde{background:#0e1a0e;color:#5db85d;border:1px solid #1a341a}
+.tb-azul{background:#0e0e1e;color:#7878d4;border:1px solid #1a1a34}
+.tb-ouro{background:#1e140a;color:var(--gold);border:1px solid #342a14}
+.tlbtn{background:none;border:1px solid var(--brd);border-radius:3px;padding:2px 6px;
+  font-size:.56rem;color:var(--t2);font-family:'Lora',serif}
+
+.tmod{background:var(--d2);border:1px solid var(--brds);border-radius:9px;padding:.85rem;max-width:260px}
+.tmod-title{font-family:'Marcellus',serif;font-size:.82rem;color:var(--gold);margin-bottom:.6rem}
+.tfld{display:flex;flex-direction:column;gap:2px;margin-bottom:.5rem}
+.tfld label{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t2)}
+.tfinput{background:var(--d3);border:1px solid var(--brd);border-radius:4px;
+  padding:5px 8px;color:var(--text);font-size:.7rem;font-family:'Lora',serif}
+.tfinput.tgold{border-color:var(--gold)}
+
+.tinfo-list{display:flex;flex-direction:column;gap:5px;margin:.7rem 0}
+.tinfo-item{display:flex;gap:8px;align-items:flex-start}
+.tinfo-num{width:18px;height:18px;border-radius:50%;border:1px solid var(--brds);
+  display:flex;align-items:center;justify-content:center;font-size:.57rem;color:var(--gold);
+  font-family:'Marcellus',serif;flex-shrink:0;margin-top:1px}
+.tinfo-text{font-size:.73rem;color:var(--text);line-height:1.5}
+.tinfo-text em{color:var(--t2);font-style:normal}
+
+.ttip{background:rgba(201,168,76,.07);border:1px solid var(--brds);border-radius:7px;
+  padding:.65rem .9rem;margin:.8rem 0;display:flex;gap:8px;align-items:flex-start}
+.ttip-icon{color:var(--gold);font-size:.9rem;flex-shrink:0;line-height:1.5}
+.ttip-text{font-size:.72rem;color:var(--t2);line-height:1.6}
+.ttip-text strong{color:var(--text)}
+
+.tcsv{background:var(--d4);border:1px solid var(--brd);border-radius:5px;
+  padding:.6rem .9rem;font-size:.7rem;color:var(--t2);font-family:'Lora',serif;line-height:1.9;margin:.5rem 0}
+.tcsv .thl{color:var(--gold)}
+
+.tetapa-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:.7rem 0}
+.tetapa-box{background:var(--d4);border:1px solid var(--brd);border-radius:6px;padding:6px 4px;text-align:center}
+.tetapa-box.tativo{border-color:var(--gold);background:rgba(201,168,76,.08)}
+.tetapa-n{font-family:'Marcellus',serif;font-size:.68rem;color:var(--gold)}
+.tetapa-l{font-size:.52rem;color:var(--t2);line-height:1.3;margin-top:2px}
+
+.tfunil{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:.5rem 0}
+.tfc{background:var(--d3);border:1px solid var(--brd);border-radius:6px;padding:6px 5px}
+.tfc-hd{font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;color:var(--t2);
+  margin-bottom:3px;display:flex;justify-content:space-between}
+.tfc-hd span{font-family:'Marcellus',serif;font-size:.7rem;color:var(--gold)}
+.tfc-card{background:var(--d4);border:1px solid var(--brd);border-radius:4px;
+  padding:4px 5px;margin-bottom:3px;font-size:.58rem;color:var(--text)}
+.tfc-area{font-size:.52rem;color:var(--t2)}
+
+.tscript{background:var(--d4);border:1px solid var(--brd);border-radius:6px;
+  padding:.7rem;font-size:.7rem;color:var(--text);line-height:1.7;margin:.5rem 0;position:relative}
+.tscript .tcopy{position:absolute;top:5px;right:7px;background:var(--d3);border:1px solid var(--brd);
+  border-radius:4px;padding:2px 7px;font-size:.54rem;color:var(--t2)}
+.tai{background:rgba(201,168,76,.05);border:1px solid var(--brds);border-radius:6px;
+  padding:.7rem;font-size:.7rem;color:var(--text);line-height:1.7;margin:.5rem 0}
+
+.tut-footer{border-top:1px solid var(--brd);padding:.7rem 1.2rem;
+  display:flex;align-items:center;justify-content:space-between;background:var(--d2)}
+.tnav-btn{background:none;border:1px solid var(--brd);border-radius:5px;padding:6px 14px;
+  font-size:.63rem;letter-spacing:.07em;font-family:'Marcellus',serif;color:var(--t2);
+  cursor:pointer;transition:all .18s}
+.tnav-btn:hover{border-color:var(--t2);color:var(--text)}
+.tnav-btn.tprimary{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+.tnav-btn.tprimary:hover{opacity:.85}
+.tnav-btn:disabled{opacity:.3;cursor:default;pointer-events:none}
+.tut-step-count{font-size:.6rem;color:var(--t3);letter-spacing:.07em}
 </style>
 </head>
 <body>
@@ -267,68 +411,48 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   <a class="nback" href="index.html">← Voltar ao Site</a>
 </nav>
 
-<!-- LOADING -->
-<div id="s-loading" class="sc on">
-  <div class="spinner"></div>
-</div>
-
-<!-- AUTH -->
-<div id="s-auth" class="sc">
-  <div class="abox">
-    <div class="abrow">Área Restrita</div>
-    <h1 class="atitle">Portal do Colaborador</h1>
-    <p class="asub">Acesse com seu e-mail institucional</p>
-    <div class="auth-tabs">
-      <button class="auth-tab on" id="tabLogin" onclick="switchAuthTab('login')">Entrar</button>
-      <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Criar conta</button>
-    </div>
-
-    <!-- Login form -->
-    <div id="formLogin" class="auth-form">
-      <div class="fld"><label>E-mail</label>
-        <input type="email" id="liEmail" placeholder="seu@email.com" autocomplete="email"></div>
-      <div class="fld"><label>Senha</label>
-        <input type="password" id="liPw" placeholder="Sua senha" autocomplete="current-password"></div>
-      <div class="auth-err" id="liErr"></div>
-      <button class="btn-auth" id="btnLogin">Entrar</button>
-      <div class="auth-note"><span class="lnk-auth" onclick="openReset()">Esqueci minha senha</span></div>
-    </div>
-
-    <!-- Signup form -->
-    <div id="formSignup" class="auth-form" style="display:none">
-      <div class="fld"><label>Nome completo</label>
-        <input type="text" id="suNome" placeholder="Seu nome"></div>
-      <div class="fld"><label>E-mail</label>
-        <input type="email" id="suEmail" placeholder="seu@email.com" autocomplete="email"></div>
-      <div class="fld"><label>Senha</label>
-        <input type="password" id="suPw" placeholder="Mínimo 6 caracteres" autocomplete="new-password"></div>
-      <div class="fld"><label>Confirmar senha</label>
-        <input type="password" id="suPw2" placeholder="Repita a senha" autocomplete="new-password"></div>
-      <div class="auth-err" id="suErr"></div>
-      <div class="auth-ok" id="suOk"></div>
-      <button class="btn-auth" id="btnSignup">Criar conta</button>
-      <div class="auth-note">Após criar a conta, confirme seu e-mail para acessar.</div>
+<!-- ══ LOGIN ══ -->
+<div id="s-login" class="sc on">
+  <div class="lbox">
+    <div class="lbrow">Área Restrita</div>
+    <h1 class="ltitle">Portal do Colaborador</h1>
+    <p class="lsub">Selecione seu perfil e insira sua senha de acesso</p>
+    <div class="ugrid" id="ugrid"></div>
+    <div class="pin-blk" id="pinblk">
+      <div class="pin-lbl">Senha de acesso</div>
+      <div class="pin-row">
+        <input class="pin-in" type="password" id="pinIn" maxlength="20" placeholder="······">
+        <button class="btn-go" id="btnEnter">Entrar</button>
+      </div>
+      <div class="perr" id="perr"></div>
+      <span class="lnk" id="lnkFirst">Primeiro acesso / Esqueci minha senha</span>
     </div>
   </div>
 </div>
 
-<!-- PORTAL -->
+<!-- ══ PORTAL ══ -->
 <div id="s-portal" class="sc">
+
+  <!-- header do usuário -->
   <div class="ph">
     <div class="puser">
-      <div class="pav" id="pAv">?</div>
-      <div><div class="pemail" id="pEmail"></div></div>
+      <div class="pav" id="pav"></div>
+      <div><div class="pname" id="pnm"></div><div class="prole" id="prl"></div></div>
     </div>
     <div class="psep"></div>
+    <button class="ibtn outlined" id="btnTutorial">? Tutorial</button>
+    <button class="ibtn outlined" id="btnChPw">Alterar senha</button>
     <button class="ibtn" id="btnLogout">Sair</button>
   </div>
 
+  <!-- stats -->
   <div class="stats">
     <div class="stat"><div class="stat-n" id="stTotal">0</div><div class="stat-l">Leads</div></div>
     <div class="stat"><div class="stat-n" id="stAbord">0</div><div class="stat-l">Abordados</div></div>
     <div class="stat"><div class="stat-n" id="stAtend">0</div><div class="stat-l">Em Atend.</div></div>
   </div>
 
+  <!-- tabs -->
   <div class="tabs">
     <button class="tbtn on" data-tab="leads">Leads</button>
     <button class="tbtn" data-tab="scripts">Scripts</button>
@@ -336,7 +460,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <button class="tbtn" data-tab="perfil">Perfil do Lead</button>
   </div>
 
-  <!-- LEADS -->
+  <!-- ─ LEADS ─ -->
   <div class="tpane on leads-wrap" id="tab-leads">
     <div class="leads-top">
       <select class="filter-sel" id="filt">
@@ -353,59 +477,100 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <div class="leads-list" id="leadsList"></div>
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- ─ SCRIPTS ─ -->
   <div class="tpane" id="tab-scripts" style="display:none">
     <div class="scripts-wrap">
+      <!-- configurador -->
       <div class="script-cfg">
         <div class="script-cfg-title">Gerar script de abordagem</div>
         <div class="cfg-row">
-          <div class="cfg-field"><label>Matéria</label>
+          <div class="cfg-field">
+            <label>Matéria</label>
             <select class="cfg-sel" id="scArea">
-              <option>Isenção de IR</option>
-              <option>Auxílio-Acidente</option>
-              <option>ACP dos Tetos</option>
-            </select></div>
-          <div class="cfg-field"><label>Etapa</label>
+              <option value="Isenção de IR">Isenção de IR</option>
+              <option value="Auxílio-Acidente">Auxílio-Acidente</option>
+              <option value="ACP dos Tetos">ACP dos Tetos</option>
+            </select>
+          </div>
+          <div class="cfg-field">
+            <label>Etapa de abordagem</label>
             <select class="cfg-sel" id="scEtapa">
               <option value="1">1 · Folder + apresentação</option>
               <option value="2">2 · Mensagem de áudio</option>
               <option value="3">3 · Follow-up (48h)</option>
               <option value="4">4 · Conversa / qualificação</option>
               <option value="5">5 · Convite p/ telefone</option>
-            </select></div>
+            </select>
+          </div>
         </div>
         <div class="cfg-row">
-          <div class="cfg-field"><label>Nome do destinatário</label>
-            <input class="cfg-in" id="scNome" placeholder="Ex.: João" type="text"></div>
+          <div class="cfg-field">
+            <label>Nome do destinatário</label>
+            <input class="cfg-in" id="scNome" placeholder="Ex.: João" type="text">
+          </div>
         </div>
-        <button class="btn-sm" id="btnGenScript">Gerar script</button>
+        <button class="btn-sm gen-btn" id="btnGenScript">Gerar script</button>
       </div>
+
+      <!-- output -->
       <div class="script-out" id="scriptOut">
-        <span class="script-placeholder">Configure e clique em "Gerar script".</span>
+        <span class="script-placeholder">Configure a matéria, etapa e nome acima e clique em "Gerar script".</span>
       </div>
+
+      <!-- guia de etapas -->
       <div class="steps-guide">
         <div class="steps-guide-title">Roteiro de abordagem — 5 etapas</div>
-        <div class="step-row"><div class="step-num">1</div><div><div class="step-name">Folder + apresentação</div><div class="step-desc">Envie o folder da tese com mensagem curta. Objetivo: despertar curiosidade, não vender ainda.</div></div></div>
-        <div class="step-row"><div class="step-num">2</div><div><div class="step-name">Mensagem de áudio</div><div class="step-desc">Áudio de 30–60s humanizando a abordagem. Mencione o nome, contextualize o direito.</div></div></div>
-        <div class="step-row"><div class="step-num">3</div><div><div class="step-name">Follow-up (48h)</div><div class="step-desc">Se não houve resposta, um único lembrete leve após 48h.</div></div></div>
-        <div class="step-row"><div class="step-num">4</div><div><div class="step-name">Conversa / qualificação</div><div class="step-desc">Fazer perguntas para entender o perfil e verificar se tem direito.</div></div></div>
-        <div class="step-row"><div class="step-num">5</div><div><div class="step-name">Convite p/ telefone</div><div class="step-desc">Convidar para chamada para avaliação detalhada do caso.</div></div></div>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-info">
+            <div class="step-name">Folder + apresentação</div>
+            <div class="step-desc">Envie o folder da tese com uma mensagem curta e direta. Objetivo: despertar curiosidade, não vender ainda.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-info">
+            <div class="step-name">Mensagem de áudio</div>
+            <div class="step-desc">Grave um áudio de 30–60 segundos humanizando a abordagem. Mencione o nome do lead e contextualize o direito.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-info">
+            <div class="step-name">Follow-up (48h)</div>
+            <div class="step-desc">Se não houve resposta após 48h, envie uma mensagem simples. Não seja insistente — um único follow-up.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-info">
+            <div class="step-name">Conversa / qualificação</div>
+            <div class="step-desc">Hora de qualificar: fazer perguntas para entender o perfil do lead e identificar se ele tem direito.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">5</div>
+          <div class="step-info">
+            <div class="step-name">Convite p/ telefone</div>
+            <div class="step-desc">Convide para uma conversa por chamada ou videochamada para avaliação detalhada do caso.</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- FUNIL -->
+  <!-- ─ FUNIL ─ -->
   <div class="tpane" id="tab-funil" style="display:none">
     <div class="funil-wrap">
       <div class="funil-cols" id="funilCols"></div>
       <div class="ativ-wrap">
         <div class="ativ-title">Atividades recentes</div>
-        <div id="atividList"><div class="empty" style="padding:1rem 0">Nenhuma atividade ainda.</div></div>
+        <div class="ativ-list" id="atividList"></div>
       </div>
     </div>
   </div>
 
-  <!-- PERFIL -->
+  <!-- ─ PERFIL ─ -->
   <div class="tpane" id="tab-perfil" style="display:none">
     <div class="perfil-wrap">
       <div class="perfil-select-area">
@@ -414,76 +579,100 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       </div>
       <div class="perfil-detail" id="perfilDetail">
         <div class="pd-header">
-          <div><div class="pd-name" id="pdName"></div><div class="pd-meta" id="pdMeta"></div></div>
+          <div>
+            <div class="pd-name" id="pdName"></div>
+            <div class="pd-meta" id="pdMeta"></div>
+          </div>
           <div style="display:flex;gap:6px">
             <button class="btn-sm" id="btnGenPerfil">Analisar com IA</button>
             <button class="btn-sm ghost" onclick="closePerfilDetail()">Fechar</button>
           </div>
         </div>
-        <div class="pd-section"><div class="pd-section-label">Matéria</div><div class="pd-section-val" id="pdArea"></div></div>
-        <div class="pd-section"><div class="pd-section-label">Etapa atual</div><div class="pd-section-val" id="pdEtapa"></div></div>
         <div class="pd-section">
-          <div class="pd-section-label">Observações</div>
-          <textarea class="pd-notes" id="pdNotes" rows="3" placeholder="Notas sobre este lead..."></textarea>
+          <div class="pd-section-label">Matéria</div>
+          <div class="pd-section-val" id="pdArea"></div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">Etapa atual</div>
+          <div class="pd-section-val" id="pdEtapa"></div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">Observações do colaborador</div>
+          <textarea class="pd-notes" id="pdNotes" rows="3" placeholder="Adicione notas sobre este lead..."></textarea>
           <button class="btn-sm" style="margin-top:6px" onclick="saveNotes()">Salvar notas</button>
         </div>
         <div class="pd-section">
           <div class="pd-section-label">Análise da IA</div>
           <div class="script-out" id="pdAnalise" style="min-height:60px">
-            <span class="script-placeholder">Clique em "Analisar com IA" para obter uma análise deste lead.</span>
+            <span class="script-placeholder">Clique em "Analisar com IA" para obter uma análise do perfil deste lead.</span>
           </div>
         </div>
         <div class="pd-section">
-          <div class="pd-section-label">Histórico de scripts</div>
+          <div class="pd-section-label">Histórico de scripts gerados</div>
           <div class="pd-hist" id="pdHist"></div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- MODAL: RESET SENHA -->
-<div class="overlay" id="modReset" style="display:none">
+</div><!-- /portal -->
+
+<!-- ══ MODAL: SENHA ══ -->
+<div class="overlay" id="modPw" style="display:none">
   <div class="modal">
-    <div class="modal-title">Recuperar senha</div>
-    <div class="modal-sub">Informe seu e-mail e enviaremos um link para redefinir a senha.</div>
-    <div class="fld-m"><label>E-mail</label><input type="email" id="rstEmail" placeholder="seu@email.com"></div>
-    <div class="auth-err" id="rstErr"></div>
-    <div class="auth-ok" id="rstOk"></div>
+    <div class="modal-title" id="mpwT">Definir senha</div>
+    <div class="modal-sub" id="mpwS">Crie uma senha pessoal (mín. 4 caracteres).</div>
+    <div class="fld"><label>Nova senha</label><input type="password" id="mpwN" maxlength="20" placeholder="Mínimo 4 caracteres"></div>
+    <div class="fld"><label>Confirmar senha</label><input type="password" id="mpwC" maxlength="20" placeholder="Repita a senha"></div>
+    <div class="merr" id="mpwE"></div>
     <div class="mbtns">
-      <button class="btn-cancel" onclick="closeModal('modReset')">Cancelar</button>
-      <button class="btn-save" id="btnReset">Enviar link</button>
+      <button class="btn-cancel" id="btnPwCancel">Cancelar</button>
+      <button class="btn-save" id="btnPwSave">Salvar senha</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: ADD LEAD -->
+<!-- ══ MODAL: ADD LEAD ══ -->
 <div class="overlay" id="modLead" style="display:none">
   <div class="modal">
     <div class="modal-title">Adicionar lead</div>
-    <div class="fld-m"><label>Nome completo</label><input id="lNome" placeholder="Ex.: João da Silva" type="text"></div>
-    <div class="fld-m"><label>Telefone / WhatsApp</label><input id="lTel" placeholder="(00) 00000-0000" type="text"></div>
-    <div class="fld-m"><label>Matéria</label>
+    <div class="fld"><label>Nome completo</label><input id="lNome" placeholder="Ex.: João da Silva" type="text"></div>
+    <div class="fld"><label>Telefone / WhatsApp</label><input id="lTel" placeholder="(00) 00000-0000" type="text"></div>
+    <div class="fld"><label>Matéria</label>
       <select id="lArea">
         <option value="Isenção de IR">Isenção de IR — Saúde</option>
         <option value="Auxílio-Acidente">Auxílio-Acidente</option>
         <option value="ACP dos Tetos">ACP dos Tetos — Revisão de Benefício</option>
       </select></div>
-    <div class="fld-m"><label>Observação inicial</label>
+    <div class="fld"><label>Observação inicial</label>
       <textarea id="lObs" rows="2" placeholder="Contexto relevante..."></textarea></div>
     <div class="merr" id="lErr"></div>
     <div class="mbtns">
-      <button class="btn-cancel" onclick="closeModal('modLead')">Cancelar</button>
+      <button class="btn-cancel" id="btnLCancel">Cancelar</button>
       <button class="btn-save" id="btnLSave">Adicionar lead</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: EDIT LEAD -->
+<!-- ══ MODAL: IMPORT CSV ══ -->
+<div class="overlay" id="modCSV" style="display:none">
+  <div class="modal wide">
+    <div class="modal-title">Importar CSV</div>
+    <div class="modal-sub">Cole abaixo os dados no formato: <strong>Nome, Telefone, Matéria</strong><br>Ex: Maria Silva, (54) 99999-0000, IR</div>
+    <textarea class="csv-area" id="csvTxt" rows="6" placeholder="Maria Silva, (54) 99999-0000, IR&#10;João Pereira, (51) 98888-1111, Acidente&#10;Ana Souza, (54) 97777-2222, Tetos"></textarea>
+    <div class="merr" id="csvErr"></div>
+    <div class="mbtns">
+      <button class="btn-cancel" id="btnCSVCancel">Cancelar</button>
+      <button class="btn-save" id="btnCSVImport">Importar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: EDITAR LEAD ══ -->
 <div class="overlay" id="modEdit" style="display:none">
   <div class="modal">
     <div class="modal-title">Editar lead</div>
-    <div class="fld-m"><label>Etapa</label>
+    <div class="fld"><label>Etapa</label>
       <select id="eEtapa">
         <option value="1">1 · Folder + apresentação</option>
         <option value="2">2 · Mensagem de áudio</option>
@@ -491,7 +680,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
         <option value="4">4 · Conversa / qualificação</option>
         <option value="5">5 · Convite p/ telefone</option>
       </select></div>
-    <div class="fld-m"><label>Matéria</label>
+    <div class="fld"><label>Matéria</label>
       <select id="eArea">
         <option value="Isenção de IR">Isenção de IR</option>
         <option value="Auxílio-Acidente">Auxílio-Acidente</option>
@@ -499,242 +688,417 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       </select></div>
     <div class="merr" id="eErr"></div>
     <div class="mbtns">
-      <button class="btn-cancel" onclick="closeModal('modEdit')">Cancelar</button>
+      <button class="btn-cancel" id="btnECancel">Cancelar</button>
       <button class="btn-save" id="btnESave">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: IMPORT CSV -->
-<div class="overlay" id="modCSV" style="display:none">
-  <div class="modal wide">
-    <div class="modal-title">Importar CSV</div>
-    <div class="modal-sub">Cole os dados no formato: <strong>Nome, Telefone, Matéria</strong><br>Ex: Maria Silva, (54) 99999-0000, IR</div>
-    <textarea class="csv-area" id="csvTxt" rows="6" placeholder="Maria Silva, (54) 99999-0000, IR&#10;João Pereira, (51) 98888-1111, Acidente"></textarea>
-    <div class="merr" id="csvErr"></div>
-    <div class="mbtns">
-      <button class="btn-cancel" onclick="closeModal('modCSV')">Cancelar</button>
-      <button class="btn-save" id="btnCSVImport">Importar</button>
+<!-- ══ MODAL: TUTORIAL ══ -->
+<div class="tut-overlay" id="modTutorial">
+  <div class="tut-box">
+    <div class="tut-hd">
+      <div class="tut-hd-title">Tutorial · Gestão de Leads</div>
+      <div class="tut-hd-badge">5 passos</div>
+      <button class="tut-close" id="btnTutClose">✕</button>
+    </div>
+    <div class="tut-snav" id="tutSnav">
+      <button class="tsnav-btn tactive" data-ts="0" onclick="tutGoStep(0)">
+        <div class="tsnav-num">1</div><div class="tsnav-lbl">Adicionar lead</div>
+      </button>
+      <button class="tsnav-btn" data-ts="1" onclick="tutGoStep(1)">
+        <div class="tsnav-num">2</div><div class="tsnav-lbl">Importar CSV</div>
+      </button>
+      <button class="tsnav-btn" data-ts="2" onclick="tutGoStep(2)">
+        <div class="tsnav-num">3</div><div class="tsnav-lbl">Avançar etapa</div>
+      </button>
+      <button class="tsnav-btn" data-ts="3" onclick="tutGoStep(3)">
+        <div class="tsnav-num">4</div><div class="tsnav-lbl">Scripts & Funil</div>
+      </button>
+      <button class="tsnav-btn" data-ts="4" onclick="tutGoStep(4)">
+        <div class="tsnav-num">5</div><div class="tsnav-lbl">Perfil & IA</div>
+      </button>
+    </div>
+
+    <div class="tut-body">
+
+      <!-- PASSO 1: Adicionar lead -->
+      <div class="tpanel ton" id="tp0">
+        <div class="tut-step-h">Adicionando um lead manualmente</div>
+        <div class="tut-intro">Quando você tem o contato de alguém que pode ter direito a um benefício, cadastre como lead. Clique em <strong style="color:var(--gold)">Adicionar lead</strong> no canto superior direito da aba Leads.</div>
+        <div class="tut-mockup">
+          <div class="tmock-bar">
+            <div class="tmock-dot" style="background:#d47878"></div>
+            <div class="tmock-dot" style="background:#e8c96e"></div>
+            <div class="tmock-dot" style="background:#5db85d"></div>
+            <span class="tmock-lbl">Aba Leads</span>
+          </div>
+          <div class="tmock-body">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:.6rem;flex-wrap:wrap">
+              <div class="tfilter">Todas as matérias ▾</div>
+              <div style="margin-left:auto;display:flex;gap:5px">
+                <div class="tbtn-ghost">Importar CSV</div>
+                <div class="tbtn-gold" style="box-shadow:0 0 0 2px rgba(201,168,76,.4)">Adicionar lead</div>
+              </div>
+            </div>
+            <div style="height:1px;background:var(--brd);margin:.4rem 0"></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+              <div style="flex:1;min-width:160px">
+                <div class="tlcard">
+                  <div class="tlc-step">1</div>
+                  <div class="tlc-info">
+                    <div class="tlc-name">Maria Aparecida S.</div>
+                    <div class="tlc-meta">Isenção de IR · (54) 99999-0000</div>
+                  </div>
+                  <div class="tlc-r">
+                    <div class="tbadge tb-verde">Isenção IR</div>
+                    <div class="tlbtn">Editar</div>
+                  </div>
+                </div>
+              </div>
+              <div class="tmod">
+                <div class="tmod-title">Adicionar lead</div>
+                <div class="tfld"><label>Nome completo</label><div class="tfinput tgold">João da Silva</div></div>
+                <div class="tfld"><label>Telefone / WhatsApp</label><div class="tfinput">(54) 99888-0000</div></div>
+                <div class="tfld"><label>Matéria</label><div class="tfinput">Auxílio-Acidente ▾</div></div>
+                <div class="tfld"><label>Observação inicial</label><div class="tfinput" style="color:var(--t2)">Acidente em 2020...</div></div>
+                <div style="display:flex;gap:5px;justify-content:flex-end;margin-top:.4rem">
+                  <div class="tbtn-ghost" style="font-size:.58rem;padding:4px 9px">Cancelar</div>
+                  <div class="tbtn-gold" style="font-size:.58rem;padding:4px 9px">Adicionar lead</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tinfo-list">
+          <div class="tinfo-item"><div class="tinfo-num">1</div><div class="tinfo-text">Preencha o <strong>nome completo</strong> — aparece na lista e nos scripts gerados pela IA</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">2</div><div class="tinfo-text">Informe o <strong>telefone/WhatsApp</strong> para contato</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">3</div><div class="tinfo-text">Escolha a <strong>matéria</strong>: Isenção de IR, Auxílio-Acidente ou ACP dos Tetos</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">4</div><div class="tinfo-text">A <strong>observação inicial</strong> é opcional — use para registrar contexto relevante</div></div>
+        </div>
+        <div class="ttip"><div class="ttip-icon">★</div><div class="ttip-text">O lead começa automaticamente na <strong>Etapa 1 (Folder + apresentação)</strong>. Você avança conforme a abordagem evolui.</div></div>
+      </div>
+
+      <!-- PASSO 2: Importar CSV -->
+      <div class="tpanel" id="tp1">
+        <div class="tut-step-h">Importando vários leads por CSV</div>
+        <div class="tut-intro">Quando você tem uma lista de prospects (ex.: exportada do Promobank), use a importação em massa. Clique em <strong style="color:var(--gold)">Importar CSV</strong>.</div>
+        <div class="tut-mockup">
+          <div class="tmock-bar">
+            <div class="tmock-dot" style="background:#d47878"></div>
+            <div class="tmock-dot" style="background:#e8c96e"></div>
+            <div class="tmock-dot" style="background:#5db85d"></div>
+            <span class="tmock-lbl">Modal: Importar CSV</span>
+          </div>
+          <div class="tmock-body">
+            <div class="tmod" style="max-width:100%">
+              <div class="tmod-title">Importar CSV</div>
+              <div style="font-size:.65rem;color:var(--t2);margin-bottom:.5rem;line-height:1.6">Cole no formato: <strong style="color:var(--text)">Nome, Telefone, Matéria</strong></div>
+              <div class="tcsv">
+                <span class="thl">Maria Silva</span>, (54) 99999-0000, <span class="thl">IR</span><br>
+                <span class="thl">João Pereira</span>, (51) 98888-1111, <span class="thl">Acidente</span><br>
+                <span class="thl">Ana Souza</span>, (54) 97777-2222, <span class="thl">Tetos</span>
+              </div>
+              <div style="display:flex;gap:5px;justify-content:flex-end">
+                <div class="tbtn-ghost" style="font-size:.58rem;padding:4px 9px">Cancelar</div>
+                <div class="tbtn-gold" style="font-size:.58rem;padding:4px 9px">Importar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tinfo-list">
+          <div class="tinfo-item"><div class="tinfo-num">1</div><div class="tinfo-text">Cada linha = 1 lead, separado por vírgula: <em>Nome, Telefone, Matéria</em></div></div>
+          <div class="tinfo-item"><div class="tinfo-num">2</div><div class="tinfo-text">Use as abreviações: <strong>IR</strong>, <strong>Acidente</strong> ou <strong>Tetos</strong> para a matéria</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">3</div><div class="tinfo-text">Todos os leads importados entram na <strong>Etapa 1</strong> automaticamente</div></div>
+        </div>
+        <div class="ttip"><div class="ttip-icon">★</div><div class="ttip-text">Você pode <strong>copiar direto de uma planilha</strong> e colar no campo — desde que o formato seja Nome, Telefone, Matéria em cada linha.</div></div>
+      </div>
+
+      <!-- PASSO 3: Avançar etapa -->
+      <div class="tpanel" id="tp2">
+        <div class="tut-step-h">Avançando a etapa de um lead</div>
+        <div class="tut-intro">Conforme você aborda o lead pelo WhatsApp, registre o progresso avançando a etapa. Use o botão <strong style="color:var(--gold)">Avançar</strong> (avanço rápido) ou <strong style="color:var(--gold)">Editar</strong> (para escolher qualquer etapa).</div>
+        <div class="tut-mockup">
+          <div class="tmock-bar">
+            <div class="tmock-dot" style="background:#d47878"></div>
+            <div class="tmock-dot" style="background:#e8c96e"></div>
+            <div class="tmock-dot" style="background:#5db85d"></div>
+            <span class="tmock-lbl">Aba Leads — card do lead</span>
+          </div>
+          <div class="tmock-body">
+            <div class="tlcard" style="border-color:var(--brds)">
+              <div class="tlc-step" style="background:rgba(201,168,76,.15);border-color:var(--gold)">3</div>
+              <div class="tlc-info">
+                <div class="tlc-name">João Pereira</div>
+                <div class="tlc-meta">Auxílio-Acidente · Etapa 3 — Follow-up</div>
+              </div>
+              <div class="tlc-r">
+                <div class="tbadge tb-azul">Acidente</div>
+                <div class="tlbtn" style="border-color:var(--gold);color:var(--gold)">Avançar</div>
+                <div class="tlbtn">Editar</div>
+                <div class="tlbtn">Script</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin:.7rem 0 .3rem;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)">As 5 etapas de abordagem</div>
+        <div class="tetapa-grid">
+          <div class="tetapa-box"><div class="tetapa-n">1</div><div class="tetapa-l">Folder + apresentação</div></div>
+          <div class="tetapa-box"><div class="tetapa-n">2</div><div class="tetapa-l">Mensagem de áudio</div></div>
+          <div class="tetapa-box tativo"><div class="tetapa-n">3</div><div class="tetapa-l">Follow-up (48h)</div></div>
+          <div class="tetapa-box"><div class="tetapa-n">4</div><div class="tetapa-l">Conversa / qualificação</div></div>
+          <div class="tetapa-box"><div class="tetapa-n">5</div><div class="tetapa-l">Convite p/ telefone</div></div>
+        </div>
+        <div class="tinfo-list">
+          <div class="tinfo-item"><div class="tinfo-num">1</div><div class="tinfo-text"><strong>Avançar</strong> — sobe uma etapa de forma rápida, sem abrir modal</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">2</div><div class="tinfo-text"><strong>Editar</strong> — abre o modal para escolher qualquer etapa ou mudar a matéria</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">3</div><div class="tinfo-text"><strong>Script</strong> — gera automaticamente o script da etapa atual deste lead</div></div>
+        </div>
+        <div class="ttip"><div class="ttip-icon">★</div><div class="ttip-text">Avance a etapa <strong>depois de executar</strong> a ação, não antes. Isso mantém o funil fiel à realidade e os scripts corretos.</div></div>
+      </div>
+
+      <!-- PASSO 4: Scripts e Funil -->
+      <div class="tpanel" id="tp3">
+        <div class="tut-step-h">Gerando scripts e acompanhando o funil</div>
+        <div class="tut-intro">Na aba <strong style="color:var(--gold)">Scripts</strong>, gere mensagens de WhatsApp personalizadas por IA. Na aba <strong style="color:var(--gold)">Funil</strong>, veja todos os seus leads organizados por etapa.</div>
+        <div class="tut-mockup">
+          <div class="tmock-bar">
+            <div class="tmock-dot" style="background:#d47878"></div>
+            <div class="tmock-dot" style="background:#e8c96e"></div>
+            <div class="tmock-dot" style="background:#5db85d"></div>
+            <span class="tmock-lbl">Aba Scripts</span>
+          </div>
+          <div class="tmock-body">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.5rem">
+              <div class="tfilter">Auxílio-Acidente ▾</div>
+              <div class="tfilter">Etapa 1 ▾</div>
+              <div class="tfilter" style="flex:1">Nome: João</div>
+              <div class="tbtn-gold">Gerar script</div>
+            </div>
+            <div class="tscript">
+              <div class="tcopy">Copiar</div>
+              Olá, João! Tudo bem? 😊<br><br>
+              Meu nome é Rafael, da AÇÃOPREV Advocacia. Entrei em contato porque muitos trabalhadores acidentados desconhecem um direito importante que pode ser seu...
+            </div>
+          </div>
+        </div>
+        <div style="margin:.7rem 0 .3rem;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)">Visão do funil</div>
+        <div class="tfunil">
+          <div class="tfc"><div class="tfc-hd">Etapa 1 <span>3</span></div><div class="tfc-card">Maria S.<div class="tfc-area">Isenção IR</div></div></div>
+          <div class="tfc"><div class="tfc-hd">Etapa 2 <span>1</span></div><div class="tfc-card">Carlos<div class="tfc-area">Acidente</div></div></div>
+          <div class="tfc"><div class="tfc-hd">Etapa 3 <span>1</span></div><div class="tfc-card">João P.<div class="tfc-area">Acidente</div></div></div>
+          <div class="tfc"><div class="tfc-hd">Etapa 4 <span>0</span></div></div>
+          <div class="tfc"><div class="tfc-hd">Etapa 5 <span>0</span></div></div>
+        </div>
+        <div class="tinfo-list">
+          <div class="tinfo-item"><div class="tinfo-num">1</div><div class="tinfo-text">Selecione matéria, etapa e nome do lead; clique <strong>Gerar script</strong></div></div>
+          <div class="tinfo-item"><div class="tinfo-num">2</div><div class="tinfo-text">Clique em <strong>Copiar</strong> e cole direto no WhatsApp</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">3</div><div class="tinfo-text">No funil, identifique gargalos: muitos leads parados em uma etapa = hora de agir</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">4</div><div class="tinfo-text">No card do lead, o botão <strong>Script</strong> abre a aba Scripts já configurado para aquele lead</div></div>
+        </div>
+      </div>
+
+      <!-- PASSO 5: Perfil e IA -->
+      <div class="tpanel" id="tp4">
+        <div class="tut-step-h">Perfil do lead e análise por IA</div>
+        <div class="tut-intro">Na aba <strong style="color:var(--gold)">Perfil do Lead</strong>, acesse o histórico completo, adicione notas e solicite uma análise inteligente por IA para orientar sua abordagem.</div>
+        <div class="tut-mockup">
+          <div class="tmock-bar">
+            <div class="tmock-dot" style="background:#d47878"></div>
+            <div class="tmock-dot" style="background:#e8c96e"></div>
+            <div class="tmock-dot" style="background:#5db85d"></div>
+            <span class="tmock-lbl">Aba Perfil do Lead</span>
+          </div>
+          <div class="tmock-body">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;margin-bottom:.7rem">
+              <div>
+                <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text)">João Pereira</div>
+                <div style="font-size:.62rem;color:var(--t2);margin-top:1px">Auxílio-Acidente · (51) 98888-1111</div>
+              </div>
+              <div style="display:flex;gap:5px">
+                <div class="tbtn-gold">Analisar com IA</div>
+                <div class="tbtn-ghost">Fechar</div>
+              </div>
+            </div>
+            <div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Observações</div>
+            <div class="tfinput" style="color:var(--t2);margin-bottom:.5rem">Acidentou em 2020 na fábrica. Receptivo ao contato.</div>
+            <div style="font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Análise da IA</div>
+            <div class="tai"><strong style="color:var(--gold)">Perfil favorável.</strong> Histórico de acidente com concessão de auxílio. Priorize a qualificação perguntando sobre a data de alta e redução de capacidade laboral.</div>
+          </div>
+        </div>
+        <div class="tinfo-list">
+          <div class="tinfo-item"><div class="tinfo-num">1</div><div class="tinfo-text">Selecione o lead na grade de cartões para abrir o perfil completo</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">2</div><div class="tinfo-text">Use <strong>Observações</strong> para registrar informações coletadas nas conversas — alimentam a análise da IA</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">3</div><div class="tinfo-text">Clique em <strong>Analisar com IA</strong> para receber avaliação do perfil e sugestão de próxima ação</div></div>
+          <div class="tinfo-item"><div class="tinfo-num">4</div><div class="tinfo-text">O <strong>histórico de scripts</strong> gerados fica registrado no perfil para referência</div></div>
+        </div>
+        <div class="ttip"><div class="ttip-icon">★</div><div class="ttip-text">Quanto mais detalhadas as observações, <strong>melhor a análise da IA</strong>. Registre: tipo de doença, data do acidente, se já recebe benefício, receptividade etc.</div></div>
+      </div>
+
+    </div><!-- /tut-body -->
+
+    <div class="tut-footer">
+      <button class="tnav-btn" id="tutPrev" onclick="tutPrev()" disabled>← Anterior</button>
+      <div class="tut-step-count" id="tutCount">Passo 1 de 5</div>
+      <button class="tnav-btn tprimary" id="tutNext" onclick="tutNext()">Próximo →</button>
     </div>
   </div>
 </div>
 
 <script>
 // ═══════════════════════════════════════════════════════════
-// SUPABASE
+// CONFIG
 // ═══════════════════════════════════════════════════════════
-const { createClient } = supabase;
-const sb = createClient(
-  'https://vzbqclzgfpcivmzzmiqc.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6YnFjbHpnZnBjaXZtenptaXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMTM5NDIsImV4cCI6MjA5Nzg4OTk0Mn0.nN-BdluxFGDnf324cQon1TBOYVcymAwiWWgZL3sm41U'
-);
-
-// ═══════════════════════════════════════════════════════════
-// ESTADO
-// ═══════════════════════════════════════════════════════════
-let currentUser = null;
-let leadsCache = [];
-let editId = null;
-let perfilId = null;
-
+const DEFAULT_PIN = '1234';
+const USERS = [
+  {id:'rafael',   name:'Rafael Bered',    initials:'RB', role:'Advogado Principal',  color:'#C9A84C'},
+  {id:'pedro',    name:'Pedro Outeiral',  initials:'PO', role:'Advogado Sênior',     color:'#7878d4'},
+  {id:'felipe',   name:'Felipe Outeiral', initials:'FO', role:'Advogado Associado',  color:'#5db8b8'},
+  {id:'tulio',    name:'Túlio Lampert',   initials:'TL', role:'Advogado Associado',  color:'#d47878'},
+  {id:'vinicius', name:'Vinícius Rost',   initials:'VR', role:'Gerente Financeiro',  color:'#5db85d'},
+];
 const ETAPA_LABEL = {
   '1':'Folder + apresentação','2':'Mensagem de áudio',
   '3':'Follow-up (48h)','4':'Conversa / qualificação','5':'Convite p/ telefone'
 };
 
 // ═══════════════════════════════════════════════════════════
-// INIT — verifica sessão ao carregar
+// ESTADO
 // ═══════════════════════════════════════════════════════════
-(async () => {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    await enterPortal();
-  } else {
-    showScreen('s-auth');
-  }
-
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      currentUser = session.user;
-      await enterPortal();
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
-      showScreen('s-auth');
-    }
-  });
-})();
+let cu = null, selU = null;
+let editIdx = -1, perfilIdx = -1;
+let genAbort = null;
+let pwCtx = null;
 
 // ═══════════════════════════════════════════════════════════
-// UTILS
+// STORAGE (localStorage)
 // ═══════════════════════════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.sc').forEach(s => s.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
+const lk  = t => `acp_${cu.id}_${t}`;
+const pk  = id => `acp_${id}_pw`;
+const lsG = k => { try{ const v=localStorage.getItem(k); return v?JSON.parse(v):null }catch{return null} };
+const lsS = (k,v) => { try{ localStorage.setItem(k,JSON.stringify(v)) }catch{} };
+const getLeads = () => lsG(lk('leads')) || [];
+const setLeads = v => { lsS(lk('leads'),v); updateStats(); renderLeads(); renderFunil(); renderPerfilCards(); };
+const getAtiv  = () => lsG(lk('ativ'))  || [];
+const addAtiv  = (txt) => { const a=getAtiv(); a.unshift({txt,ts:Date.now()}); if(a.length>40)a.pop(); lsS(lk('ativ'),a); renderAtiv(); };
+const getUserPw = id => lsG(pk(id)) || DEFAULT_PIN;
+const setUserPw = (id,pw) => lsS(pk(id), pw);
+
+// ═══════════════════════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════════════════════
+function renderLoginGrid(){
+  document.getElementById('ugrid').innerHTML = USERS.map(u=>`
+    <div class="ucard" data-id="${u.id}" onclick="selUser('${u.id}')">
+      <div class="uav" style="color:${u.color};border-color:${u.color}">${u.initials}</div>
+      <div class="un">${u.name}</div><div class="ur">${u.role}</div>
+    </div>`).join('');
 }
-const escH = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-function setLoading(btnId, loading, txt = '') {
-  const b = document.getElementById(btnId);
-  b.disabled = loading;
-  if (txt) b.textContent = loading ? '...' : txt;
+function selUser(id){
+  selU = USERS.find(u=>u.id===id);
+  document.querySelectorAll('.ucard').forEach(c=>c.classList.toggle('sel',c.dataset.id===id));
+  const pb=document.getElementById('pinblk');
+  pb.style.display='flex';
+  document.getElementById('pinIn').value='';
+  document.getElementById('perr').textContent='';
+  document.getElementById('pinIn').focus();
 }
-
-// ═══════════════════════════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════════════════════════
-function switchAuthTab(tab) {
-  document.getElementById('tabLogin').classList.toggle('on', tab === 'login');
-  document.getElementById('tabSignup').classList.toggle('on', tab === 'signup');
-  document.getElementById('formLogin').style.display = tab === 'login' ? 'flex' : 'none';
-  document.getElementById('formSignup').style.display = tab === 'signup' ? 'flex' : 'none';
+function doLogin(){
+  const pin=document.getElementById('pinIn').value.trim();
+  if(!pin){ document.getElementById('perr').textContent='Digite sua senha.'; return; }
+  if(pin===getUserPw(selU.id)){ cu=selU; enterPortal(); }
+  else document.getElementById('perr').textContent='Senha incorreta. Tente novamente.';
 }
-
-document.getElementById('btnLogin').onclick = async () => {
-  const email = document.getElementById('liEmail').value.trim();
-  const pw    = document.getElementById('liPw').value;
-  const err   = document.getElementById('liErr');
-  err.textContent = '';
-  if (!email || !pw) { err.textContent = 'Preencha e-mail e senha.'; return; }
-  setLoading('btnLogin', true, 'Entrar');
-  const { error } = await sb.auth.signInWithPassword({ email, password: pw });
-  setLoading('btnLogin', false, 'Entrar');
-  if (error) err.textContent = error.message === 'Invalid login credentials'
-    ? 'E-mail ou senha incorretos.' : error.message;
-};
-
-document.getElementById('btnSignup').onclick = async () => {
-  const nome  = document.getElementById('suNome').value.trim();
-  const email = document.getElementById('suEmail').value.trim();
-  const pw    = document.getElementById('suPw').value;
-  const pw2   = document.getElementById('suPw2').value;
-  const err   = document.getElementById('suErr');
-  const ok    = document.getElementById('suOk');
-  err.textContent = ''; ok.textContent = '';
-  if (!nome || !email || !pw) { err.textContent = 'Preencha todos os campos.'; return; }
-  if (pw.length < 6) { err.textContent = 'A senha deve ter pelo menos 6 caracteres.'; return; }
-  if (pw !== pw2) { err.textContent = 'As senhas não coincidem.'; return; }
-  setLoading('btnSignup', true, 'Criar conta');
-  const { error } = await sb.auth.signUp({ email, password: pw, options: { data: { nome } } });
-  setLoading('btnSignup', false, 'Criar conta');
-  if (error) { err.textContent = error.message; return; }
-  ok.textContent = 'Conta criada! Verifique seu e-mail para confirmar e depois entre.';
-};
-
-document.getElementById('liPw').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('btnLogin').click(); });
-
-function openReset() { document.getElementById('rstErr').textContent=''; document.getElementById('rstOk').textContent=''; document.getElementById('rstEmail').value=''; document.getElementById('modReset').style.display='flex'; }
-document.getElementById('btnReset').onclick = async () => {
-  const email = document.getElementById('rstEmail').value.trim();
-  if (!email) { document.getElementById('rstErr').textContent = 'Informe o e-mail.'; return; }
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
-  if (error) document.getElementById('rstErr').textContent = error.message;
-  else document.getElementById('rstOk').textContent = 'Link enviado! Verifique seu e-mail.';
-};
-
-document.getElementById('btnLogout').onclick = () => sb.auth.signOut();
 
 // ═══════════════════════════════════════════════════════════
 // PORTAL
 // ═══════════════════════════════════════════════════════════
-async function enterPortal() {
-  const initials = (currentUser.user_metadata?.nome || currentUser.email)
-    .split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('pAv').textContent = initials;
-  document.getElementById('pEmail').textContent = currentUser.user_metadata?.nome || currentUser.email;
-  showScreen('s-portal');
-  await loadLeads();
+function enterPortal(){
+  document.getElementById('s-login').classList.remove('on');
+  document.getElementById('s-portal').classList.add('on');
+  const av=document.getElementById('pav');
+  av.textContent=cu.initials; av.style.color=cu.color; av.style.borderColor=cu.color;
+  document.getElementById('pnm').textContent=cu.name;
+  document.getElementById('prl').textContent=cu.role;
+  updateStats(); renderLeads(); renderFunil(); renderAtiv(); renderPerfilCards();
   activateTab('leads');
 }
-
-// ═══════════════════════════════════════════════════════════
-// LEADS — Supabase
-// ═══════════════════════════════════════════════════════════
-async function loadLeads() {
-  const { data, error } = await sb.from('leads')
-    .select('*').order('created_at', { ascending: false });
-  leadsCache = data || [];
-  updateStats();
-  renderLeads();
-  renderFunil();
-  renderPerfilCards();
-}
-
-async function insertLead(lead) {
-  const { data, error } = await sb.from('leads').insert({ ...lead, user_id: currentUser.id }).select().single();
-  if (!error && data) { leadsCache.unshift(data); updateStats(); renderLeads(); renderFunil(); renderPerfilCards(); addAtiv(`Lead <strong>${lead.nome}</strong> adicionado — ${lead.area}`); }
-  return error;
-}
-
-async function updateLead(id, changes) {
-  const { error } = await sb.from('leads').update(changes).eq('id', id);
-  if (!error) {
-    const i = leadsCache.findIndex(l => l.id === id);
-    if (i >= 0) Object.assign(leadsCache[i], changes);
-    updateStats(); renderLeads(); renderFunil(); renderPerfilCards();
-    if (perfilId === id) refreshPerfilDetail();
-  }
-  return error;
-}
-
-async function deleteLead(id) {
-  const { error } = await sb.from('leads').delete().eq('id', id);
-  if (!error) { leadsCache = leadsCache.filter(l => l.id !== id); updateStats(); renderLeads(); renderFunil(); renderPerfilCards(); }
-}
-
-async function addAtiv(txt) {
-  await sb.from('atividades').insert({ user_id: currentUser.id, txt });
-  renderAtiv();
-}
-
-async function renderAtiv() {
-  const { data } = await sb.from('atividades').select('*').order('created_at', { ascending: false }).limit(15);
-  const c = document.getElementById('atividList');
-  if (!data || !data.length) { c.innerHTML = '<div class="empty" style="padding:1rem 0">Nenhuma atividade ainda.</div>'; return; }
-  c.innerHTML = data.map(a => `
-    <div class="ativ-item">
-      <div class="ativ-dot"></div>
-      <div>
-        <div class="ativ-text">${a.txt}</div>
-        <div class="ativ-ts">${new Date(a.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div>
-      </div>
-    </div>`).join('');
+function logout(){
+  cu=null; selU=null;
+  document.getElementById('s-portal').classList.remove('on');
+  document.getElementById('s-login').classList.add('on');
+  document.getElementById('pinblk').style.display='none';
+  document.querySelectorAll('.ucard').forEach(c=>c.classList.remove('sel'));
 }
 
 // ═══════════════════════════════════════════════════════════
-// STATS
+// SENHA MODAL
 // ═══════════════════════════════════════════════════════════
-function updateStats() {
-  document.getElementById('stTotal').textContent = leadsCache.length;
-  document.getElementById('stAbord').textContent = leadsCache.filter(l => parseInt(l.etapa||1) > 1).length;
-  document.getElementById('stAtend').textContent = leadsCache.filter(l => parseInt(l.etapa||1) >= 4).length;
+function openPwModal(ctx){
+  pwCtx=ctx;
+  const first=ctx==='first';
+  document.getElementById('mpwT').textContent = first ? 'Primeiro acesso — Crie sua senha' : 'Alterar senha';
+  document.getElementById('mpwS').textContent = first
+    ? `Olá, ${selU.name.split(' ')[0]}! A senha padrão "${DEFAULT_PIN}" será substituída pela sua senha pessoal.`
+    : 'Defina uma nova senha pessoal para o portal.';
+  document.getElementById('mpwN').value='';
+  document.getElementById('mpwC').value='';
+  document.getElementById('mpwE').textContent='';
+  document.getElementById('modPw').style.display='flex';
+  document.getElementById('mpwN').focus();
+}
+function closePwModal(){ document.getElementById('modPw').style.display='none'; }
+function savePw(){
+  const nw=document.getElementById('mpwN').value.trim();
+  const cf=document.getElementById('mpwC').value.trim();
+  const e=document.getElementById('mpwE');
+  if(nw.length<4){ e.textContent='Mínimo 4 caracteres.'; return; }
+  if(nw!==cf){ e.textContent='As senhas não coincidem.'; return; }
+  const target = pwCtx==='first' ? selU : cu;
+  setUserPw(target.id, nw);
+  closePwModal();
+  if(pwCtx==='first'){ cu=selU; enterPortal(); }
+  else alert('Senha alterada com sucesso!');
 }
 
 // ═══════════════════════════════════════════════════════════
 // TABS
 // ═══════════════════════════════════════════════════════════
-function activateTab(name) {
-  document.querySelectorAll('.tbtn').forEach(b => b.classList.toggle('on', b.dataset.tab === name));
-  ['leads','scripts','funil','perfil'].forEach(t => {
-    const el = document.getElementById('tab-'+t);
-    if (!el) return;
-    el.classList.toggle('on', t === name);
-    el.style.display = t === name ? 'flex' : 'none';
+function activateTab(name){
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
+  ['leads','scripts','funil','perfil'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(!el) return;
+    const on=t===name;
+    el.classList.toggle('on',on);
+    el.style.display=on?'flex':'none';
   });
-  if (name === 'funil')  { renderFunil(); renderAtiv(); }
-  if (name === 'perfil') renderPerfilCards();
+  if(name==='funil')  renderFunil();
+  if(name==='perfil') renderPerfilCards();
 }
 
 // ═══════════════════════════════════════════════════════════
-// RENDER LEADS
+// STATS
 // ═══════════════════════════════════════════════════════════
-function renderLeads() {
-  const filt = document.getElementById('filt').value;
-  const list = filt ? leadsCache.filter(l => l.area === filt) : leadsCache;
-  const c = document.getElementById('leadsList');
-  if (!list.length) { c.innerHTML = '<div class="empty">Nenhum lead cadastrado ainda.</div>'; return; }
-  c.innerHTML = list.map(l => `
-    <div class="lcard">
+function updateStats(){
+  const leads=getLeads();
+  document.getElementById('stTotal').textContent=leads.length;
+  document.getElementById('stAbord').textContent=leads.filter(l=>parseInt(l.etapa||1)>1).length;
+  document.getElementById('stAtend').textContent=leads.filter(l=>parseInt(l.etapa||1)>=4).length;
+}
+
+// ═══════════════════════════════════════════════════════════
+// LEADS TAB
+// ═══════════════════════════════════════════════════════════
+function renderLeads(){
+  const filt=document.getElementById('filt').value;
+  let leads=getLeads();
+  if(filt) leads=leads.filter(l=>l.area===filt);
+  const c=document.getElementById('leadsList');
+  if(!leads.length){ c.innerHTML='<div class="empty">Nenhum lead cadastrado ainda.</div>'; return; }
+  c.innerHTML=leads.map((l,i)=>{
+    const ri=getLeads().indexOf(l); // real index
+    return `<div class="lcard">
       <div class="lcard-step">${l.etapa||1}</div>
       <div class="lcard-info">
         <div class="lcard-name">${l.nome}</div>
@@ -742,274 +1106,351 @@ function renderLeads() {
       </div>
       <div class="lcard-r">
         <span class="badge b-${l.etapa||1}">${ETAPA_LABEL[l.etapa||1]}</span>
-        <button class="lbtn" onclick="advLead('${l.id}')">Avançar</button>
-        <button class="lbtn" onclick="openEdit('${l.id}')">Editar</button>
-        <button class="lbtn" onclick="genScriptFor('${l.id}')">Script</button>
-        <button class="lbtn" onclick="delLeadConfirm('${l.id}','${l.nome.replace(/'/g,"\\'")}')">✕</button>
+        <button class="lbtn" onclick="advLead(${ri})">Avançar</button>
+        <button class="lbtn" onclick="openEdit(${ri})">Editar</button>
+        <button class="lbtn" onclick="genScriptFor(${ri})">Script</button>
+        <button class="lbtn" onclick="delLead(${ri})">✕</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
-async function advLead(id) {
-  const l = leadsCache.find(x => x.id === id);
-  const cur = parseInt(l.etapa||1);
-  if (cur < 5) {
-    const newEtapa = String(cur+1);
-    await updateLead(id, { etapa: newEtapa });
-    addAtiv(`<strong>${l.nome}</strong> avançou para etapa ${newEtapa}: ${ETAPA_LABEL[newEtapa]}`);
+function advLead(i){
+  const leads=getLeads();
+  const cur=parseInt(leads[i].etapa||1);
+  if(cur<5){
+    leads[i].etapa=String(cur+1);
+    addAtiv(`<strong>${leads[i].nome}</strong> avançou para etapa ${leads[i].etapa}: ${ETAPA_LABEL[leads[i].etapa]}`);
+    setLeads(leads);
   }
 }
-async function delLeadConfirm(id, nome) {
-  if (!confirm(`Remover o lead "${nome}"?`)) return;
-  addAtiv(`Lead <strong>${nome}</strong> removido`);
-  await deleteLead(id);
+function delLead(i){
+  if(!confirm('Remover este lead?')) return;
+  const leads=getLeads();
+  addAtiv(`Lead <strong>${leads[i].nome}</strong> removido`);
+  leads.splice(i,1); setLeads(leads);
 }
-function genScriptFor(id) {
-  const l = leadsCache.find(x => x.id === id);
-  document.getElementById('scArea').value = l.area;
-  document.getElementById('scNome').value = l.nome.split(' ')[0];
-  document.getElementById('scEtapa').value = l.etapa||'1';
+function genScriptFor(i){
+  const l=getLeads()[i];
+  document.getElementById('scArea').value=l.area;
+  document.getElementById('scNome').value=l.nome.split(' ')[0];
+  document.getElementById('scEtapa').value=l.etapa||1;
   activateTab('scripts');
   genScript();
 }
 
-// ADD LEAD
-function openAddLead() {
-  ['lNome','lTel','lObs'].forEach(id => document.getElementById(id).value='');
+// add lead modal
+function openAddLead(){
+  ['lNome','lTel','lObs'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('lArea').value='Isenção de IR';
   document.getElementById('lErr').textContent='';
   document.getElementById('modLead').style.display='flex';
   document.getElementById('lNome').focus();
 }
-document.getElementById('btnLSave').onclick = async () => {
-  const nome = document.getElementById('lNome').value.trim();
-  if (!nome) { document.getElementById('lErr').textContent='Informe o nome.'; return; }
-  setLoading('btnLSave', true, 'Adicionar lead');
-  const err = await insertLead({
-    nome, tel: document.getElementById('lTel').value.trim(),
-    area: document.getElementById('lArea').value,
-    obs: document.getElementById('lObs').value.trim(),
-    etapa: '1', notes: '', script_hist: []
-  });
-  setLoading('btnLSave', false, 'Adicionar lead');
-  if (!err) closeModal('modLead');
-  else document.getElementById('lErr').textContent = err.message;
-};
+function closeAddLead(){ document.getElementById('modLead').style.display='none'; }
+function saveLead(){
+  const nome=document.getElementById('lNome').value.trim();
+  if(!nome){ document.getElementById('lErr').textContent='Informe o nome.'; return; }
+  const leads=getLeads();
+  const novo={nome, tel:document.getElementById('lTel').value.trim(),
+    area:document.getElementById('lArea').value, obs:document.getElementById('lObs').value.trim(),
+    etapa:'1', ts:Date.now(), scriptHist:[]};
+  leads.push(novo);
+  addAtiv(`Lead <strong>${nome}</strong> adicionado — ${novo.area}`);
+  setLeads(leads);
+  closeAddLead();
+}
 
-// EDIT LEAD
-function openEdit(id) {
-  editId = id;
-  const l = leadsCache.find(x => x.id === id);
-  document.getElementById('eEtapa').value = l.etapa||'1';
-  document.getElementById('eArea').value = l.area;
+// edit modal
+function openEdit(i){
+  editIdx=i;
+  const l=getLeads()[i];
+  document.getElementById('eEtapa').value=l.etapa||1;
+  document.getElementById('eArea').value=l.area;
   document.getElementById('eErr').textContent='';
   document.getElementById('modEdit').style.display='flex';
 }
-document.getElementById('btnESave').onclick = async () => {
-  setLoading('btnESave', true, 'Salvar');
-  const err = await updateLead(editId, {
-    etapa: document.getElementById('eEtapa').value,
-    area: document.getElementById('eArea').value
-  });
-  setLoading('btnESave', false, 'Salvar');
-  if (!err) closeModal('modEdit');
-  else document.getElementById('eErr').textContent = err.message;
-};
+function closeEdit(){ document.getElementById('modEdit').style.display='none'; }
+function saveEdit(){
+  const leads=getLeads();
+  const oldEtapa=leads[editIdx].etapa;
+  leads[editIdx].etapa=document.getElementById('eEtapa').value;
+  leads[editIdx].area=document.getElementById('eArea').value;
+  if(leads[editIdx].etapa!==oldEtapa)
+    addAtiv(`<strong>${leads[editIdx].nome}</strong> editado — etapa ${leads[editIdx].etapa}`);
+  setLeads(leads); closeEdit();
+}
 
-// IMPORT CSV
-document.getElementById('btnImport').onclick = () => {
+// import CSV
+function openImport(){
   document.getElementById('csvTxt').value='';
   document.getElementById('csvErr').textContent='';
   document.getElementById('modCSV').style.display='flex';
-};
-document.getElementById('btnCSVImport').onclick = async () => {
-  const lines = document.getElementById('csvTxt').value.trim().split('\n').filter(l=>l.trim());
-  if (!lines.length) { document.getElementById('csvErr').textContent='Cole ao menos uma linha.'; return; }
-  setLoading('btnCSVImport', true, 'Importar');
-  let added=0;
-  for (const line of lines) {
-    const parts = line.split(',').map(s=>s.trim());
-    if (!parts[0]) continue;
-    const raw = (parts[2]||'').toLowerCase();
+}
+function closeImport(){ document.getElementById('modCSV').style.display='none'; }
+function doImport(){
+  const lines=document.getElementById('csvTxt').value.trim().split('\n').filter(l=>l.trim());
+  if(!lines.length){ document.getElementById('csvErr').textContent='Cole ao menos uma linha.'; return; }
+  const areaMap={ir:'Isenção de IR',acidente:'Auxílio-Acidente',tetos:'ACP dos Tetos'};
+  const leads=getLeads(); let added=0;
+  lines.forEach(line=>{
+    const parts=line.split(',').map(s=>s.trim());
+    if(!parts[0]) return;
+    const areaRaw=(parts[2]||'').toLowerCase();
     let area='Isenção de IR';
-    if (raw.includes('acid')) area='Auxílio-Acidente';
-    else if (raw.includes('teto')||raw.includes('acp')) area='ACP dos Tetos';
-    await insertLead({ nome:parts[0], tel:parts[1]||'', area, obs:'', etapa:'1', notes:'', script_hist:[] });
+    if(areaRaw.includes('acid')) area='Auxílio-Acidente';
+    else if(areaRaw.includes('teto')||areaRaw.includes('acp')) area='ACP dos Tetos';
+    leads.push({nome:parts[0],tel:parts[1]||'',area,obs:'',etapa:'1',ts:Date.now(),scriptHist:[]});
     added++;
-  }
-  setLoading('btnCSVImport', false, 'Importar');
+  });
+  setLeads(leads);
   addAtiv(`${added} lead(s) importado(s) via CSV`);
-  closeModal('modCSV');
-};
+  closeImport();
+}
 
 // ═══════════════════════════════════════════════════════════
-// SCRIPTS
+// SCRIPTS TAB
 // ═══════════════════════════════════════════════════════════
-async function genScript() {
-  const area  = document.getElementById('scArea').value;
-  const etapa = document.getElementById('scEtapa').value;
-  const nome  = document.getElementById('scNome').value.trim() || 'cliente';
-  const out   = document.getElementById('scriptOut');
-  out.innerHTML = '<span class="typing-inline"><span></span><span></span><span></span></span> Gerando script...';
-  document.getElementById('btnGenScript').disabled = true;
+async function genScript(){
+  const area=document.getElementById('scArea').value;
+  const etapa=document.getElementById('scEtapa').value;
+  const nome=document.getElementById('scNome').value.trim()||'cliente';
+  const out=document.getElementById('scriptOut');
+  out.innerHTML='<span class="typing-inline"><span></span><span></span><span></span></span> Gerando script...';
 
-  const prompt = `Você é especialista em vendas de serviços jurídicos previdenciários para a AÇÃOPREV Advocacia.
+  const prompt=`Você é especialista em vendas de serviços jurídicos previdenciários para a AÇÃOPREV Advocacia.
 Crie uma mensagem de WhatsApp para a etapa ${etapa} (${ETAPA_LABEL[etapa]}) da abordagem de um lead chamado ${nome} para a matéria "${area}".
 
 Diretrizes:
 - Tom próximo, humano e sem juridiquês
 - Máximo 5 parágrafos curtos
-- Etapa 1: enviar folder + se apresentar brevemente. Análise gratuita e sem compromisso.
-- Etapa 2: áudio humanizando, citar o nome, despertar curiosidade
+- Etapa 1: enviar folder + se apresentar brevemente. Mencione que a análise é gratuita.
+- Etapa 2: áudio curto humanizando, citar o nome, despertar curiosidade
 - Etapa 3: follow-up leve sem pressão, apenas um lembrete
-- Etapa 4: 1-2 perguntas para qualificar (data de nascimento, tipo de benefício, etc.)
-- Etapa 5: convidar para ligação/vídeo para avaliação gratuita
+- Etapa 4: fazer 1-2 perguntas para qualificar (ex: data de nascimento, tipo de benefício, etc.)
+- Etapa 5: convidar para ligação/vídeo para avaliação gratuita do caso
 
-Retorne APENAS o texto da mensagem, sem explicações, aspas ou cabeçalho.`;
+Retorne APENAS o texto da mensagem, sem explicações, sem aspas, sem cabeçalho.`;
 
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:600,
-        messages:[{role:'user',content:prompt}] })
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,
+        messages:[{role:'user',content:prompt}]})
     });
-    const d = await r.json();
-    const txt = d.content?.[0]?.text || 'Erro ao gerar. Tente novamente.';
-    out.innerHTML = `<button class="copy-btn" onclick="copyText(this)">Copiar</button>${escH(txt)}`;
+    const d=await r.json();
+    const txt=d.content?.[0]?.text||'Erro ao gerar. Tente novamente.';
+    out.innerHTML=`<button class="copy-btn" onclick="copyScript(this)">Copiar</button>${escH(txt)}`;
 
-    // salva histórico no lead correspondente
-    const lead = leadsCache.find(l => l.nome.split(' ')[0].toLowerCase() === nome.toLowerCase());
-    if (lead) {
-      const hist = lead.script_hist || [];
-      hist.unshift({ etapa, area, txt, ts: new Date().toISOString() });
-      if (hist.length > 10) hist.pop();
-      await updateLead(lead.id, { script_hist: hist });
+    // salva no histório do lead se o nome bater
+    const leads=getLeads();
+    const idx=leads.findIndex(l=>l.nome.split(' ')[0].toLowerCase()===nome.toLowerCase());
+    if(idx>=0){
+      if(!leads[idx].scriptHist) leads[idx].scriptHist=[];
+      leads[idx].scriptHist.unshift({etapa,area,txt,ts:Date.now()});
+      if(leads[idx].scriptHist.length>10) leads[idx].scriptHist.pop();
+      setLeads(leads);
     }
     addAtiv(`Script etapa ${etapa} gerado para <strong>${nome}</strong> — ${area}`);
-  } catch {
-    out.innerHTML = '<span class="script-placeholder">Erro de conexão. Tente novamente.</span>';
+  }catch(e){
+    out.innerHTML='<span class="script-placeholder">Erro de conexão. Verifique e tente novamente.</span>';
   }
-  document.getElementById('btnGenScript').disabled = false;
 }
 
-function copyText(btn) {
-  const txt = btn.parentElement.textContent.replace('Copiar','').trim();
-  navigator.clipboard.writeText(txt).then(() => { btn.textContent='Copiado!'; setTimeout(()=>btn.textContent='Copiar',2000); });
+function copyScript(btn){
+  const txt=btn.parentElement.textContent.replace('Copiar','').trim();
+  navigator.clipboard.writeText(txt).then(()=>{ btn.textContent='Copiado!'; setTimeout(()=>btn.textContent='Copiar',2000); });
 }
 
 // ═══════════════════════════════════════════════════════════
-// FUNIL
+// FUNIL TAB
 // ═══════════════════════════════════════════════════════════
-function renderFunil() {
-  document.getElementById('funilCols').innerHTML = [1,2,3,4,5].map(e => {
-    const items = leadsCache.filter(l => parseInt(l.etapa||1) === e);
+function renderFunil(){
+  const leads=getLeads();
+  const cols=document.getElementById('funilCols');
+  cols.innerHTML=[1,2,3,4,5].map(e=>{
+    const items=leads.filter(l=>parseInt(l.etapa||1)===e);
     return `<div class="funil-col">
-      <div class="funil-col-hd">${ETAPA_LABEL[String(e)]} <span>${items.length}</span></div>
-      ${items.map(l=>`
-        <div class="funil-card" onclick="goToPerfil('${l.id}')">
+      <div class="funil-col-hd">${ETAPA_LABEL[e]} <span>${items.length}</span></div>
+      ${items.map((l,i)=>`
+        <div class="funil-card" onclick="openPerfilByName('${l.nome}')">
           <div class="funil-card-name">${l.nome}</div>
           <div class="funil-card-area">${l.area}</div>
         </div>`).join('')}
     </div>`;
   }).join('');
+  renderAtiv();
 }
 
-// ═══════════════════════════════════════════════════════════
-// PERFIL
-// ═══════════════════════════════════════════════════════════
-function renderPerfilCards() {
-  const c = document.getElementById('perfilCards');
-  if (!leadsCache.length) { c.innerHTML='<div class="empty" style="padding:1rem 0">Nenhum lead cadastrado.</div>'; return; }
-  c.innerHTML = leadsCache.map(l=>`
-    <div class="pf-card ${perfilId===l.id?'sel':''}" onclick="openPerfil('${l.id}')">
-      <div class="pf-name">${l.nome}</div>
-      <div class="pf-area">${l.area}</div>
-      <div class="pf-step">Etapa ${l.etapa||1}: ${ETAPA_LABEL[l.etapa||'1']}</div>
+function renderAtiv(){
+  const ativ=getAtiv();
+  const c=document.getElementById('atividList');
+  if(!ativ.length){ c.innerHTML='<div class="empty" style="padding:1rem 0">Nenhuma atividade ainda.</div>'; return; }
+  c.innerHTML=ativ.slice(0,12).map(a=>`
+    <div class="ativ-item">
+      <div class="ativ-dot"></div>
+      <div>
+        <div class="ativ-text">${a.txt}</div>
+        <div class="ativ-ts">${new Date(a.ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
     </div>`).join('');
 }
 
-function openPerfil(id) {
-  perfilId = id;
+// ═══════════════════════════════════════════════════════════
+// PERFIL TAB
+// ═══════════════════════════════════════════════════════════
+function renderPerfilCards(){
+  const leads=getLeads();
+  const c=document.getElementById('perfilCards');
+  if(!leads.length){ c.innerHTML='<div class="empty" style="padding:1rem 0">Nenhum lead cadastrado.</div>'; return; }
+  c.innerHTML=leads.map((l,i)=>`
+    <div class="pf-card ${perfilIdx===i?'sel':''}" onclick="openPerfil(${i})">
+      <div class="pf-name">${l.nome}</div>
+      <div class="pf-area">${l.area}</div>
+      <div class="pf-step">Etapa ${l.etapa||1}: ${ETAPA_LABEL[l.etapa||1]}</div>
+    </div>`).join('');
+}
+
+function openPerfil(i){
+  perfilIdx=i;
   renderPerfilCards();
-  refreshPerfilDetail();
+  const l=getLeads()[i];
+  document.getElementById('pdName').textContent=l.nome;
+  document.getElementById('pdMeta').textContent=`${l.tel||'Telefone não informado'}`;
+  document.getElementById('pdArea').textContent=l.area;
+  document.getElementById('pdEtapa').textContent=`Etapa ${l.etapa||1}: ${ETAPA_LABEL[l.etapa||1]}`;
+  document.getElementById('pdNotes').value=l.notes||'';
+  document.getElementById('pdAnalise').innerHTML='<span class="script-placeholder">Clique em "Analisar com IA" para obter uma análise do perfil deste lead.</span>';
+  // histórico de scripts
+  const hist=l.scriptHist||[];
+  const hc=document.getElementById('pdHist');
+  hc.innerHTML=hist.length
+    ? hist.map(h=>`<div class="pd-hist-item">Etapa ${h.etapa} · ${h.area} · ${new Date(h.ts).toLocaleDateString('pt-BR')}</div>`).join('')
+    : '<div style="font-size:.7rem;color:var(--t3)">Nenhum script gerado ainda para este lead.</div>';
   document.getElementById('perfilDetail').classList.add('on');
 }
 
-function refreshPerfilDetail() {
-  const l = leadsCache.find(x => x.id === perfilId);
-  if (!l) return;
-  document.getElementById('pdName').textContent = l.nome;
-  document.getElementById('pdMeta').textContent = l.tel || 'Telefone não informado';
-  document.getElementById('pdArea').textContent = l.area;
-  document.getElementById('pdEtapa').textContent = `Etapa ${l.etapa||1}: ${ETAPA_LABEL[l.etapa||'1']}`;
-  document.getElementById('pdNotes').value = l.notes||'';
-  const hist = l.script_hist || [];
-  document.getElementById('pdHist').innerHTML = hist.length
-    ? hist.map(h=>`<div class="pd-hist-item">Etapa ${h.etapa} · ${h.area} · ${new Date(h.ts).toLocaleDateString('pt-BR')}</div>`).join('')
-    : '<div style="font-size:.7rem;color:var(--t3)">Nenhum script gerado para este lead.</div>';
+function openPerfilByName(nome){
+  const leads=getLeads();
+  const i=leads.findIndex(l=>l.nome===nome);
+  if(i>=0){ activateTab('perfil'); openPerfil(i); }
 }
 
-function closePerfilDetail() {
-  perfilId = null;
+function closePerfilDetail(){
+  perfilIdx=-1;
   document.getElementById('perfilDetail').classList.remove('on');
   renderPerfilCards();
 }
 
-function goToPerfil(id) { activateTab('perfil'); openPerfil(id); }
-
-async function saveNotes() {
-  if (!perfilId) return;
-  const notes = document.getElementById('pdNotes').value;
-  await updateLead(perfilId, { notes });
+function saveNotes(){
+  if(perfilIdx<0) return;
+  const leads=getLeads();
+  leads[perfilIdx].notes=document.getElementById('pdNotes').value;
+  setLeads(leads);
   alert('Notas salvas!');
 }
 
-async function genAnalise() {
-  const l = leadsCache.find(x => x.id === perfilId);
-  if (!l) return;
-  const out = document.getElementById('pdAnalise');
-  out.innerHTML = '<span class="typing-inline"><span></span><span></span><span></span></span> Analisando...';
-  document.getElementById('btnGenPerfil').disabled = true;
+async function genAnalise(){
+  if(perfilIdx<0) return;
+  const leads=getLeads();
+  const l=leads[perfilIdx];
+  const out=document.getElementById('pdAnalise');
+  out.innerHTML='<span class="typing-inline"><span></span><span></span><span></span></span> Analisando perfil...';
 
-  const prompt = `Analise o perfil do lead abaixo e forneça orientações práticas ao colaborador da AÇÃOPREV.
+  const prompt=`Você é especialista em direito previdenciário da AÇÃOPREV Advocacia.
+Analise o perfil do seguinte lead e forneça orientações práticas para o colaborador:
 
-Lead: ${l.nome}
-Matéria: ${l.area}
-Etapa: ${l.etapa||1} — ${ETAPA_LABEL[l.etapa||'1']}
-Observações: ${l.obs||'(sem observações)'}
+Nome: ${l.nome}
+Matéria de interesse: ${l.area}
+Etapa atual: ${l.etapa||1} — ${ETAPA_LABEL[l.etapa||1]}
+Observações do colaborador: ${l.obs||'(sem observações)'}
 Notas: ${l.notes||'(sem notas)'}
 
 Forneça:
 1. Probabilidade de conversão (alta/média/baixa) com justificativa em 1 linha
-2. Perguntas-chave para qualificar este lead para "${l.area}"
+2. Perguntas-chave para qualificar este lead na matéria "${l.area}"
 3. Principal objeção esperada e como contorná-la
 4. Próxima ação recomendada
 
-Seja direto. Máximo 200 palavras.`;
+Seja direto e prático. Máximo 200 palavras.`;
 
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages',{
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,messages:[{role:'user',content:prompt}]})
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,
+        messages:[{role:'user',content:prompt}]})
     });
-    const d = await r.json();
-    const txt = d.content?.[0]?.text||'Erro ao gerar análise.';
-    out.innerHTML = `<button class="copy-btn" onclick="copyText(this)">Copiar</button>${escH(txt)}`;
+    const d=await r.json();
+    const txt=d.content?.[0]?.text||'Erro ao gerar análise.';
+    out.innerHTML=`<button class="copy-btn" onclick="copyScript(this)">Copiar</button>${escH(txt)}`;
     addAtiv(`Análise de perfil gerada para <strong>${l.nome}</strong>`);
-  } catch {
-    out.innerHTML = '<span class="script-placeholder">Erro de conexão.</span>';
+  }catch{
+    out.innerHTML='<span class="script-placeholder">Erro de conexão.</span>';
   }
-  document.getElementById('btnGenPerfil').disabled = false;
 }
+
+// ═══════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════
+const escH = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 
 // ═══════════════════════════════════════════════════════════
 // EVENTOS
 // ═══════════════════════════════════════════════════════════
-document.querySelectorAll('.tbtn').forEach(b => b.addEventListener('click',()=>activateTab(b.dataset.tab)));
+document.getElementById('btnEnter').onclick = doLogin;
+document.getElementById('pinIn').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+document.getElementById('lnkFirst').onclick = () => { if(!selU){ alert('Selecione seu perfil primeiro.'); return; } openPwModal('first'); };
+document.getElementById('btnChPw').onclick = () => openPwModal('change');
+document.getElementById('btnPwCancel').onclick = closePwModal;
+document.getElementById('btnPwSave').onclick = savePw;
+document.getElementById('mpwN').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('mpwC').focus(); });
+document.getElementById('mpwC').addEventListener('keydown',e=>{ if(e.key==='Enter') savePw(); });
+document.getElementById('btnLogout').onclick = logout;
+document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>activateTab(b.dataset.tab)));
 document.getElementById('filt').addEventListener('change', renderLeads);
 document.getElementById('btnAdd').onclick = openAddLead;
+document.getElementById('btnLCancel').onclick = closeAddLead;
+document.getElementById('btnLSave').onclick = saveLead;
+document.getElementById('btnImport').onclick = openImport;
+document.getElementById('btnCSVCancel').onclick = closeImport;
+document.getElementById('btnCSVImport').onclick = doImport;
+document.getElementById('btnECancel').onclick = closeEdit;
+document.getElementById('btnESave').onclick = saveEdit;
 document.getElementById('btnGenScript').onclick = genScript;
 document.getElementById('btnGenPerfil').onclick = genAnalise;
+
+// ═══════════════════════════════════════════════════════════
+// TUTORIAL
+// ═══════════════════════════════════════════════════════════
+let tutCur = 0;
+const TUT_TOTAL = 5;
+function openTutorial(){ tutGoStep(0); document.getElementById('modTutorial').classList.add('on'); }
+function closeTutorial(){ document.getElementById('modTutorial').classList.remove('on'); }
+function tutGoStep(n){
+  document.querySelectorAll('.tpanel').forEach((p,i)=>p.classList.toggle('ton',i===n));
+  document.querySelectorAll('.tsnav-btn').forEach((b,i)=>{
+    b.classList.remove('tactive','tdone');
+    if(i<n) b.classList.add('tdone');
+    if(i===n) b.classList.add('tactive');
+  });
+  tutCur=n;
+  document.getElementById('tutPrev').disabled=n===0;
+  const nxt=document.getElementById('tutNext');
+  if(n===TUT_TOTAL-1){ nxt.textContent='Fechar'; nxt.classList.add('tprimary'); }
+  else{ nxt.textContent='Próximo →'; nxt.classList.add('tprimary'); }
+  document.getElementById('tutCount').textContent=`Passo ${n+1} de ${TUT_TOTAL}`;
+  document.querySelector('.tut-body').scrollTop=0;
+}
+function tutNext(){ if(tutCur<TUT_TOTAL-1) tutGoStep(tutCur+1); else closeTutorial(); }
+function tutPrev(){ if(tutCur>0) tutGoStep(tutCur-1); }
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+document.getElementById('btnTutorial').onclick = openTutorial;
+document.getElementById('btnTutClose').onclick = closeTutorial;
+document.getElementById('modTutorial').addEventListener('click', e=>{ if(e.target===document.getElementById('modTutorial')) closeTutorial(); });
+renderLoginGrid();
 </script>
 </body>
 </html>
