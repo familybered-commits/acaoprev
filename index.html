@@ -980,18 +980,23 @@
         return;
       }
       btn.disabled = true; btn.textContent = 'Enviando...';
+      fb.className = ''; fb.textContent = '';
       try {
-        const resp = await fetch('/', { method: 'POST', body: new FormData(consultaForm) });
-        if (!resp.ok) throw new Error();
+        const formData = new FormData(consultaForm);
+        // Garantir que form-name está presente (essencial para Netlify Forms)
+        if (!formData.get('form-name')) formData.set('form-name', 'consulta-online');
+        const resp = await fetch('/', { method: 'POST', body: formData });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
         fb.className = 'form-feedback ok';
         fb.textContent = 'Documentos recebidos com sucesso! Nossa equipe fará a contagem do seu tempo de contribuição e retornará em até 2 dias úteis.';
         consultaForm.reset();
         consultaForm.querySelectorAll('.file-label').forEach((l, i) => {
           l.innerHTML = i === 0 ? 'Clique para anexar o <em>CNIS</em> — nenhum arquivo selecionado' : 'Clique para anexar a <em>CTPS</em> — opcional';
         });
-      } catch {
+      } catch (err) {
         fb.className = 'form-feedback err';
         fb.textContent = 'Não foi possível enviar agora. Tente novamente ou envie os documentos pelo nosso WhatsApp (54) 99688-1567.';
+        console.error('Erro consultaForm:', err);
       } finally {
         btn.disabled = false; btn.textContent = 'Enviar para avaliação gratuita';
       }
@@ -1006,19 +1011,25 @@
       const fb = document.getElementById('contatoFeedback');
       const btn = contatoForm.querySelector('.form-submit');
       btn.disabled = true; btn.textContent = 'Enviando...';
+      fb.className = ''; fb.textContent = '';
       try {
+        const formData = new FormData(contatoForm);
+        // Garantir que form-name está presente (essencial para Netlify Forms)
+        if (!formData.get('form-name')) formData.set('form-name', 'contato');
+        const body = new URLSearchParams(formData).toString();
         const resp = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(new FormData(contatoForm)).toString()
+          body: body
         });
-        if (!resp.ok) throw new Error();
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
         fb.className = 'form-feedback ok';
         fb.textContent = 'Mensagem enviada! Retornaremos o contato em breve.';
         contatoForm.reset();
-      } catch {
+      } catch (err) {
         fb.className = 'form-feedback err';
         fb.textContent = 'Não foi possível enviar agora. Tente pelo WhatsApp (54) 99688-1567 ou contato@acaoprev.com.';
+        console.error('Erro contatoForm:', err);
       } finally {
         btn.disabled = false; btn.textContent = 'Enviar mensagem';
       }
