@@ -1319,8 +1319,8 @@ function renderLeads(){
   if(filt) leads=leads.filter(l=>l.area===filt);
   const c=document.getElementById('leadsList');
   if(!leads.length){ c.innerHTML='<div class="empty">Nenhum lead cadastrado ainda.</div>'; return; }
-  c.innerHTML=leads.map((l,i)=>{
-    const ri=getLeads().indexOf(l); // real index
+  c.innerHTML=leads.map((l)=>{
+    const ts=l.ts;
     return `<div class="lcard">
       <div class="lcard-step">${l.etapa||1}</div>
       <div class="lcard-info">
@@ -1329,17 +1329,19 @@ function renderLeads(){
       </div>
       <div class="lcard-r">
         <span class="badge b-${l.etapa||1}">${ETAPA_LABEL[l.etapa||1]}</span>
-        <button class="lbtn" onclick="advLead(${ri})">Avançar</button>
-        <button class="lbtn" onclick="openEdit(${ri})">Editar</button>
-        <button class="lbtn" onclick="genScriptFor(${ri})">Script</button>
-        <button class="lbtn" onclick="delLead(${ri})">✕</button>
+        <button class="lbtn" onclick="advLead(${ts})">Avançar</button>
+        <button class="lbtn" onclick="openEdit(${ts})">Editar</button>
+        <button class="lbtn" onclick="genScriptFor(${ts})">Script</button>
+        <button class="lbtn" onclick="delLead(${ts})">✕</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function advLead(i){
+function advLead(ts){
   const leads=getLeads();
+  const i=leads.findIndex(l=>l.ts===ts);
+  if(i<0) return;
   const cur=parseInt(leads[i].etapa||1);
   if(cur<5){
     leads[i].etapa=String(cur+1);
@@ -1347,14 +1349,18 @@ function advLead(i){
     setLeads(leads);
   }
 }
-function delLead(i){
+function delLead(ts){
   if(!confirm('Remover este lead?')) return;
   const leads=getLeads();
+  const i=leads.findIndex(l=>l.ts===ts);
+  if(i<0) return;
   addAtiv(`Lead <strong>${leads[i].nome}</strong> removido`);
   leads.splice(i,1); setLeads(leads);
 }
-function genScriptFor(i){
-  const l=getLeads()[i];
+function genScriptFor(ts){
+  const leads=getLeads();
+  const l=leads.find(l=>l.ts===ts);
+  if(!l) return;
   document.getElementById('scArea').value=l.area;
   document.getElementById('scNome').value=l.nome.split(' ')[0];
   document.getElementById('scEtapa').value=l.etapa||1;
@@ -1385,9 +1391,11 @@ function saveLead(){
 }
 
 // edit modal
-function openEdit(i){
-  editIdx=i;
-  const l=getLeads()[i];
+function openEdit(ts){
+  const leads=getLeads();
+  editIdx=leads.findIndex(l=>l.ts===ts);
+  if(editIdx<0) return;
+  const l=leads[editIdx];
   document.getElementById('eEtapa').value=l.etapa||1;
   document.getElementById('eArea').value=l.area;
   document.getElementById('eErr').textContent='';
