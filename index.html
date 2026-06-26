@@ -389,6 +389,41 @@
 </head>
 <body>
 
+<!-- Netlify Forms: formulários estáticos ocultos para detecção no deploy -->
+<div hidden>
+  <form name="contato" netlify netlify-honeypot="bot-field">
+    <input type="text" name="nome">
+    <input type="tel" name="whatsapp">
+    <input type="email" name="email">
+    <select name="area"></select>
+    <textarea name="mensagem"></textarea>
+  </form>
+
+  <form name="consulta-online" netlify netlify-honeypot="bot-field" enctype="multipart/form-data">
+    <input type="text" name="nome">
+    <input type="date" name="nascimento">
+    <input type="tel" name="whatsapp">
+    <input type="email" name="email">
+    <input type="file" name="cnis">
+    <input type="file" name="ctps">
+    <textarea name="observacoes"></textarea>
+    <input type="checkbox" name="lgpd">
+  </form>
+
+  <form name="parceiros" netlify netlify-honeypot="bot-field">
+    <input type="text" name="nome">
+    <input type="text" name="oab">
+    <input type="text" name="cidade">
+    <input type="text" name="escritorio">
+    <input type="email" name="email">
+    <input type="tel" name="whatsapp">
+    <select name="area"></select>
+    <input type="text" name="disponibilidade">
+    <textarea name="mensagem"></textarea>
+    <input type="checkbox" name="lgpd">
+  </form>
+</div>
+
 <!-- NAV — apenas links centralizados -->
 <nav>
   <a href="#home" class="nav-brand">
