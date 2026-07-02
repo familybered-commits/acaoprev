@@ -141,6 +141,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .b-3{background:#1e140a;color:var(--gold);border:1px solid #342a14}
 .b-4{background:#1e0e16;color:#d47878;border:1px solid #341a26}
 .b-5{background:#0a1818;color:#5db8b8;border:1px solid #143030}
+.b-6{background:#1a0e1e;color:#c978d4;border:1px solid #341a3a}
 .lbtn{background:none;border:1px solid var(--brd);border-radius:4px;padding:3px 7px;
   font-size:.6rem;color:var(--t2);cursor:pointer;font-family:'Lora',serif;transition:all .18s}
 .lbtn:hover{border-color:var(--gold);color:var(--gold)}
@@ -370,13 +371,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   padding:.6rem .9rem;font-size:.7rem;color:var(--t2);font-family:'Lora',serif;line-height:1.9;margin:.5rem 0}
 .tcsv .thl{color:var(--gold)}
 
-.tetapa-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:.7rem 0}
+.tetapa-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:.7rem 0}
 .tetapa-box{background:var(--d4);border:1px solid var(--brd);border-radius:6px;padding:6px 4px;text-align:center}
 .tetapa-box.tativo{border-color:var(--gold);background:rgba(201,168,76,.08)}
 .tetapa-n{font-family:'Marcellus',serif;font-size:.68rem;color:var(--gold)}
 .tetapa-l{font-size:.52rem;color:var(--t2);line-height:1.3;margin-top:2px}
 
-.tfunil{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:.5rem 0}
+.tfunil{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:.5rem 0}
 .tfc{background:var(--d3);border:1px solid var(--brd);border-radius:6px;padding:6px 5px}
 .tfc-hd{font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;color:var(--t2);
   margin-bottom:3px;display:flex;justify-content:space-between}
@@ -567,6 +568,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
               <option value="3">3 · Follow-up (48h)</option>
               <option value="4">4 · Conversa / qualificação</option>
               <option value="5">5 · Convite p/ telefone</option>
+              <option value="6">6 · Contato telefônico</option>
             </select>
           </div>
         </div>
@@ -901,6 +903,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
         <option value="3">3 · Follow-up (48h)</option>
         <option value="4">4 · Conversa / qualificação</option>
         <option value="5">5 · Convite p/ telefone</option>
+        <option value="6">6 · Contato telefônico</option>
       </select></div>
     <div class="fld"><label>Matéria</label>
       <select id="eArea">
@@ -908,6 +911,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
         <option value="Auxílio-Acidente">Auxílio-Acidente</option>
         <option value="ACP dos Tetos">ACP dos Tetos</option>
       </select></div>
+    <div class="fld"><label>Observações</label>
+      <textarea id="eObs" rows="3" placeholder="Atualize aqui o andamento deste lead..."></textarea></div>
     <div class="merr" id="eErr"></div>
     <div class="mbtns">
       <button class="btn-cancel" id="btnECancel">Cancelar</button>
@@ -1063,13 +1068,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
             </div>
           </div>
         </div>
-        <div style="margin:.7rem 0 .3rem;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)">As 5 etapas de abordagem</div>
+        <div style="margin:.7rem 0 .3rem;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)">As 6 etapas de abordagem</div>
         <div class="tetapa-grid">
           <div class="tetapa-box"><div class="tetapa-n">1</div><div class="tetapa-l">Folder + apresentação</div></div>
           <div class="tetapa-box"><div class="tetapa-n">2</div><div class="tetapa-l">Mensagem de áudio</div></div>
           <div class="tetapa-box tativo"><div class="tetapa-n">3</div><div class="tetapa-l">Follow-up (48h)</div></div>
           <div class="tetapa-box"><div class="tetapa-n">4</div><div class="tetapa-l">Conversa / qualificação</div></div>
           <div class="tetapa-box"><div class="tetapa-n">5</div><div class="tetapa-l">Convite p/ telefone</div></div>
+          <div class="tetapa-box"><div class="tetapa-n">6</div><div class="tetapa-l">Contato telefônico</div></div>
         </div>
         <div class="tinfo-list">
           <div class="tinfo-item"><div class="tinfo-num">1</div><div class="tinfo-text"><strong>Avançar</strong> — sobe uma etapa de forma rápida, sem abrir modal</div></div>
@@ -1111,6 +1117,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
           <div class="tfc"><div class="tfc-hd">Etapa 3 <span>1</span></div><div class="tfc-card">João P.<div class="tfc-area">Acidente</div></div></div>
           <div class="tfc"><div class="tfc-hd">Etapa 4 <span>0</span></div></div>
           <div class="tfc"><div class="tfc-hd">Etapa 5 <span>0</span></div></div>
+          <div class="tfc"><div class="tfc-hd">Etapa 6 <span>0</span></div></div>
         </div>
         <div class="tinfo-list">
           <div class="tinfo-item"><div class="tinfo-num">1</div><div class="tinfo-text">Selecione matéria, etapa e nome do lead; clique <strong>Gerar script</strong></div></div>
@@ -1181,7 +1188,8 @@ const USERS = [
 ];
 const ETAPA_LABEL = {
   '1':'Folder + apresentação','2':'Mensagem de áudio',
-  '3':'Follow-up (48h)','4':'Conversa / qualificação','5':'Convite p/ telefone'
+  '3':'Follow-up (48h)','4':'Conversa / qualificação','5':'Convite p/ telefone',
+  '6':'Contato telefônico'
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -1325,7 +1333,7 @@ function renderLeads(){
       <div class="lcard-step">${l.etapa||1}</div>
       <div class="lcard-info">
         <div class="lcard-name">${l.nome}</div>
-        <div class="lcard-meta">${l.tel?l.tel+' · ':''}${l.area}${l.obs?' · '+l.obs:''}</div>
+        <div class="lcard-meta">${l.tel?l.tel+' · ':''}${l.area}${(l.notes||l.obs)?' · '+(l.notes||l.obs):''}</div>
       </div>
       <div class="lcard-r">
         <span class="badge b-${l.etapa||1}">${ETAPA_LABEL[l.etapa||1]}</span>
@@ -1343,7 +1351,7 @@ function advLead(ts){
   const i=leads.findIndex(l=>l.ts===ts);
   if(i<0) return;
   const cur=parseInt(leads[i].etapa||1);
-  if(cur<5){
+  if(cur<6){
     leads[i].etapa=String(cur+1);
     addAtiv(`<strong>${leads[i].nome}</strong> avançou para etapa ${leads[i].etapa}: ${ETAPA_LABEL[leads[i].etapa]}`);
     setLeads(leads);
@@ -1398,6 +1406,7 @@ function openEdit(ts){
   const l=leads[editIdx];
   document.getElementById('eEtapa').value=l.etapa||1;
   document.getElementById('eArea').value=l.area;
+  document.getElementById('eObs').value=l.notes||l.obs||'';
   document.getElementById('eErr').textContent='';
   document.getElementById('modEdit').style.display='flex';
 }
@@ -1405,10 +1414,15 @@ function closeEdit(){ document.getElementById('modEdit').style.display='none'; }
 function saveEdit(){
   const leads=getLeads();
   const oldEtapa=leads[editIdx].etapa;
+  const oldNotes=leads[editIdx].notes||leads[editIdx].obs||'';
+  const newNotes=document.getElementById('eObs').value.trim();
   leads[editIdx].etapa=document.getElementById('eEtapa').value;
   leads[editIdx].area=document.getElementById('eArea').value;
+  leads[editIdx].notes=newNotes;
   if(leads[editIdx].etapa!==oldEtapa)
     addAtiv(`<strong>${leads[editIdx].nome}</strong> editado — etapa ${leads[editIdx].etapa}`);
+  if(newNotes!==oldNotes)
+    addAtiv(`<strong>${leads[editIdx].nome}</strong> — observações atualizadas`);
   setLeads(leads); closeEdit();
 }
 
@@ -1499,7 +1513,7 @@ function copyScript(btn){
 function renderFunil(){
   const leads=getLeads();
   const cols=document.getElementById('funilCols');
-  cols.innerHTML=[1,2,3,4,5].map(e=>{
+  cols.innerHTML=[1,2,3,4,5,6].map(e=>{
     const items=leads.filter(l=>parseInt(l.etapa||1)===e);
     return `<div class="funil-col">
       <div class="funil-col-hd">${ETAPA_LABEL[e]} <span>${items.length}</span></div>
