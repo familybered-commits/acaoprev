@@ -199,7 +199,10 @@
     position: relative; width: 100%;
     aspect-ratio: 3/4; object-fit: cover; object-position: top center;
     display: block; filter: grayscale(15%) contrast(1.05);
+    pointer-events: none; -webkit-user-drag: none; user-drag: none;
+    -webkit-user-select: none; user-select: none;
   }
+  .team-photo-frame { -webkit-touch-callout: none; }
 
   /* Placeholder photo */
   .photo-placeholder {
@@ -385,6 +388,13 @@
   }
   /* Intros de seções centralizadas permanecem centralizadas */
   #areas .section-intro, #quem-somos .section-intro { text-align: center; }
+
+  /* Proteção básica das imagens/fotos do site (dificulta salvar via clique-direito/arrastar) */
+  img {
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-touch-callout: none;
+  }
 </style>
 </head>
 <body>
@@ -1096,6 +1106,17 @@
     clone.className = 'footer-logo-overlay';
     footerEl.insertBefore(clone, footerEl.querySelector('.footer-text'));
   }
+
+  // Proteção básica das fotos/imagens do site: bloqueia clique-direito e arrastar
+  document.addEventListener('contextmenu', function (e) {
+    if (e.target && e.target.tagName === 'IMG') e.preventDefault();
+  });
+  document.addEventListener('dragstart', function (e) {
+    if (e.target && e.target.tagName === 'IMG') e.preventDefault();
+  });
+  document.querySelectorAll('img').forEach(function (img) {
+    img.setAttribute('draggable', 'false');
+  });
 </script>
 </body>
 </html>
