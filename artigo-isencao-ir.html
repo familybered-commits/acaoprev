@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isenção de Imposto de Renda por Doença Grave: Quem Tem Direito e Como Recuperar o que Foi Pago — AÇÃOPREV</title>
+<meta name="description" content="Aposentados, pensionistas e militares reformados com doença grave têm direito a parar de pagar Imposto de Renda sobre seus proventos — e a recuperar tudo o que ">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E4C87A;
+  --dark: #0D0D0D; --dark-2: #141414; --dark-3: #1C1C1C;
+  --text-primary: #F0EAD6; --text-secondary: #A89880; --text-muted: #706858;
+  --border: rgba(201,168,76,0.18); --border-strong: rgba(201,168,76,0.35);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Lora', serif; background: var(--dark); color: var(--text-primary); line-height: 1.85; font-size: 16px; }
+.read-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 200; transition: width 0.1s linear; width: 0; }
+.site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,13,0.93); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); padding: 0 clamp(1.5rem, 5vw, 4rem); display: flex; align-items: center; justify-content: space-between; height: 76px; }
+.site-header a { text-decoration: none; }
+.header-brand { font-family: 'Marcellus', serif; font-size: 1.1rem; letter-spacing: 0.24em; color: var(--text-primary); transition: color .25s; }
+.header-brand:hover { color: var(--gold); }
+.header-back { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); transition: color .25s; }
+.header-back:hover { color: var(--gold); }
+.article-wrap { max-width: 760px; margin: 0 auto; padding: 120px clamp(1.5rem, 5vw, 3rem) 80px; }
+.article-hero { margin-bottom: 3.5rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem; }
+.article-category { display: inline-flex; align-items: center; gap: 10px; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+.article-category::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+.article-title { font-family: 'Marcellus', serif; font-size: clamp(1.9rem, 4vw, 2.9rem); font-weight: 400; line-height: 1.2; color: var(--text-primary); letter-spacing: 0.03em; margin-bottom: 1.25rem; }
+.article-title em { font-style: normal; color: var(--gold); }
+.article-lead { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 2rem; text-align: justify; hyphens: auto; }
+.article-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+.article-meta-item { font-size: 0.78rem; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; }
+.article-meta-sep { width: 1px; height: 14px; background: var(--border); }
+.share-bar { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 2.5rem 0; }
+.share-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-right: 4px; }
+.share-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 18px; border: 1px solid var(--border-strong); color: var(--gold); background: none; cursor: pointer; transition: background .2s; text-decoration: none; }
+.share-btn:hover { background: rgba(201,168,76,.1); }
+.share-toast { font-size: 0.76rem; color: var(--gold); opacity: 0; transition: opacity .3s; margin-left: 4px; }
+.share-toast.show { opacity: 1; }
+.prose { font-size: 1rem; color: var(--text-secondary); line-height: 1.9; }
+.prose p { margin-bottom: 1.25rem; text-align: justify; hyphens: auto; }
+.prose p:last-child { margin-bottom: 0; }
+.prose strong { color: var(--text-primary); font-weight: 600; }
+.prose ul { margin: 1rem 0 1.25rem 1.25rem; }
+.prose li { margin-bottom: 0.6rem; color: var(--text-secondary); line-height: 1.8; text-align: justify; hyphens: auto; }
+.prose li strong { color: var(--text-primary); }
+.article-section { margin-bottom: 3rem; }
+.article-section h2 { font-family: 'Marcellus', serif; font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 400; color: var(--text-primary); letter-spacing: 0.04em; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+.article-section h3 { font-family: 'Marcellus', serif; font-size: 1.1rem; color: var(--gold-light); letter-spacing: 0.04em; margin: 1.75rem 0 0.75rem; }
+.hl-box { background: var(--dark-3); border-left: 2px solid var(--gold); padding: 1.25rem 1.5rem; margin: 1.75rem 0; font-size: 0.97rem; color: var(--text-secondary); line-height: 1.85; text-align: justify; hyphens: auto; }
+.hl-box strong { color: var(--text-primary); }
+.alert-box { background: rgba(192,112,112,.08); border-left: 2px solid #C07070; padding: 1.25rem 1.5rem; margin: 1.75rem 0; font-size: 0.95rem; color: #C8A0A0; line-height: 1.85; text-align: justify; hyphens: auto; }
+.alert-box strong { color: #D4B0B0; }
+.success-box { background: rgba(80,200,144,.07); border-left: 2px solid #50C890; padding: 1.25rem 1.5rem; margin: 1.75rem 0; font-size: 0.95rem; color: #90C8A8; line-height: 1.85; text-align: justify; hyphens: auto; }
+.success-box strong { color: #A8D8B8; }
+.pull-quote { border-left: 2px solid var(--gold); padding: 1.25rem 1.75rem; background: linear-gradient(90deg, rgba(201,168,76,.07) 0%, transparent 100%); margin: 2rem 0; }
+.pull-quote p { font-family: 'Marcellus', serif; font-size: 1.2rem; font-style: italic; color: var(--gold-light); line-height: 1.6; text-align: justify; hyphens: auto; }
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 2px; background: rgba(201,168,76,.12); margin: 1.75rem 0; }
+.stat-cell { background: var(--dark-2); padding: 1.25rem; text-align: center; }
+.stat-num { font-family: 'Marcellus', serif; font-size: 2rem; color: var(--gold); line-height: 1; margin-bottom: 0.4rem; }
+.stat-lbl { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); line-height: 1.5; }
+.data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.92rem; }
+.data-table th { background: var(--dark-3); color: var(--gold); font-family: 'Marcellus', serif; font-weight: 400; letter-spacing: 0.08em; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-strong); }
+.data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table td strong { color: var(--text-primary); }
+.teses-grid { display: grid; grid-template-columns: 1fr; gap: 2px; background: rgba(201,168,76,.1); margin: 1.5rem 0; }
+.tese-card { background: var(--dark-2); padding: 1.25rem 1.5rem; }
+.tese-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+.tese-title { font-family: 'Marcellus', serif; font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.5rem; }
+.tese-body { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75; text-align: justify; hyphens: auto; }
+.disease-list { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(201,168,76,.08); margin: 1.5rem 0; }
+.disease-item { background: var(--dark-2); padding: 0.9rem 1.1rem; font-size: 0.88rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.disease-item::before { content: '▸'; color: var(--gold); flex-shrink: 0; }
+.benefit-list { display: flex; flex-direction: column; gap: 2px; background: rgba(201,168,76,.08); margin: 1.5rem 0; }
+.benefit-item { background: var(--dark-2); padding: 1rem 1.25rem; display: flex; gap: 12px; align-items: flex-start; }
+.benefit-icon { flex-shrink: 0; font-family: 'Marcellus', serif; font-size: 0.8rem; color: var(--gold); background: var(--dark-3); border: 1px solid var(--border-strong); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+.benefit-body {}
+.benefit-title { font-weight: 600; color: var(--text-primary); font-size: 0.95rem; margin-bottom: 0.25rem; }
+.benefit-sub { font-size: 0.87rem; color: var(--text-secondary); line-height: 1.7; text-align: justify; hyphens: auto; }
+.article-cta { background: linear-gradient(135deg, rgba(201,168,76,.1) 0%, rgba(201,168,76,.03) 100%); border: 1px solid var(--border-strong); padding: 2.5rem; margin-top: 3rem; text-align: center; }
+.article-cta h3 { font-family: 'Marcellus', serif; font-size: 1.6rem; color: var(--gold-light); margin-bottom: 0.75rem; font-weight: 400; }
+.article-cta p { color: var(--text-secondary); margin-bottom: 1.75rem; font-size: 0.97rem; }
+.btn-gold { display: inline-block; background: var(--gold); color: var(--dark); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 13px 30px; text-decoration: none; border-radius: 2px; transition: background .25s; }
+.btn-gold:hover { background: var(--gold-light); }
+.article-footer { text-align: center; padding: 3rem 0 1rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+.article-footer p { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; }
+@media(max-width:640px){ .disease-list { grid-template-columns: 1fr; } .article-cta { padding: 2rem 1.25rem; } }
+</style>
+</head>
+<body>
+<div class="read-progress" id="readProgress"></div>
+<header class="site-header">
+  <a href="index.html" class="header-brand">AÇÃOPREV</a>
+  <a href="index.html#artigos" class="header-back">← Todos os Artigos</a>
+</header>
+<div class="article-wrap">
+  <div class="article-hero">
+    <div class="article-category">Isenção de IR</div>
+    <h1 class="article-title">Isenção de Imposto de Renda por Doença Grave: Quem Tem Direito e Como Recuperar o que Foi Pago</h1>
+    <p class="article-lead">Aposentados, pensionistas e militares reformados com doença grave têm direito a parar de pagar Imposto de Renda sobre seus proventos — e a recuperar tudo o que pagaram nos últimos 5 anos, com correção pela Selic. A maioria não sabe desse direito.</p>
+    <div class="article-meta">
+      <span class="article-meta-item">AÇÃOPREV Advocacia</span>
+      <div class="article-meta-sep"></div>
+      <span class="article-meta-item">Isenção de IR</span>
+      <div class="article-meta-sep"></div>
+      <span class="article-meta-item">Leitura: 7 min</span>
+    </div>
+  </div>
+  <div class="share-bar">
+    <span class="share-label">Compartilhar</span>
+    <button class="share-btn" id="shareBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Compartilhar artigo</button>
+    <a class="share-btn" href="https://wa.me/?text=Aposentado+com+doen%C3%A7a+grave+pode+ter+direito+%C3%A0+isen%C3%A7%C3%A3o+de+IR+e+%C3%A0+devolu%C3%A7%C3%A3o+dos+%C3%BAltimos+5+anos.+Saiba+mais+no+site+da+A%C3%87%C3%83OPREV%3A+https%3A%2F%2Facaoprev.com" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.528 5.836L0 24l6.341-1.502A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-4.964-1.344l-.356-.212-3.667.868.937-3.566-.233-.37A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg> WhatsApp</a>
+    <span class="share-toast" id="shareToast">Link copiado!</span>
+  </div>
+
+  <div class="article-section">
+    <h2>1. O Que É a Isenção</h2>
+    <div class="prose">
+      <p>O artigo 6º, inciso XIV, da Lei nº 7.713/88 estabelece que os rendimentos de aposentadoria, pensão ou reforma percebidos por portadores de certas doenças graves são <strong>isentos de Imposto de Renda</strong>. Trata-se de isenção total: o valor que antes ia para a Receita Federal passa a ficar integralmente no bolso do contribuinte.</p>
+      <p>Além da isenção a partir do diagnóstico — ou da data em que o contribuinte tinha direito e não sabia —, é possível recuperar os valores pagos indevidamente nos <strong>últimos 5 anos</strong>, corrigidos pela taxa Selic, por meio de pedido de restituição à Receita Federal ou ação judicial.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-cell"><div class="stat-num">0%</div><div class="stat-lbl">de IR sobre a aposentadoria</div></div>
+      <div class="stat-cell"><div class="stat-num">5</div><div class="stat-lbl">anos de restituição com Selic</div></div>
+      <div class="stat-cell"><div class="stat-num">+20%</div><div class="stat-lbl">aumento médio da renda líquida</div></div>
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>2. Doenças que Garantem a Isenção</h2>
+    <div class="prose"><p>A lista consta da Lei nº 7.713/88 e inclui, entre outras:</p></div>
+    <div class="disease-list">
+      <div class="disease-item">Câncer (neoplasia maligna)</div>
+      <div class="disease-item">Cardiopatia grave</div>
+      <div class="disease-item">Doença de Parkinson</div>
+      <div class="disease-item">Esclerose múltipla</div>
+      <div class="disease-item">Nefropatia grave</div>
+      <div class="disease-item">Hepatopatia grave</div>
+      <div class="disease-item">Cegueira (inclusive em um só olho)</div>
+      <div class="disease-item">Paralisia irreversível e incapacitante</div>
+      <div class="disease-item">Espondiloartrose anquilosante</div>
+      <div class="disease-item">Hanseníase</div>
+      <div class="disease-item">Alienação mental (incl. Alzheimer)</div>
+      <div class="disease-item">Tuberculose ativa</div>
+      <div class="disease-item">AIDS</div>
+      <div class="disease-item">Contaminação por radiação</div>
+      <div class="disease-item">Fibrose cística</div>
+      <div class="disease-item">Paget em estágio avançado</div>
+    </div>
+    <div class="hl-box"><strong>Síndrome de burnout, hipertensão, diabetes e artrose</strong> não constam da lista legal e, em regra, não garantem a isenção sozinhas — a menos que causem uma das condições listadas acima. Consulte um advogado para análise do seu caso específico.</div>
+  </div>
+
+  <div class="article-section">
+    <h2>3. A Dúvida que Mais Impede Pessoas de Buscar o Benefício</h2>
+    <div class="prose">
+      <p><strong>"Meu câncer está curado. Ainda tenho direito?"</strong></p>
+      <p>Sim. O Superior Tribunal de Justiça pacificou na <strong>Súmula 627</strong> que a isenção não exige a presença atual de sintomas ou a incapacidade laborativa. Quem tratou um câncer há anos e está em remissão completa, quem teve cardiopatia grave corrigida por cirurgia, quem convive com Parkinson estabilizado por medicação — todos mantêm integralmente o direito.</p>
+      <p>O que importa é o diagnóstico médico confirmado, não o estado atual da doença.</p>
+    </div>
+    <div class="pull-quote">
+      <p>"A lei protege quem foi acometido pela doença — não apenas quem ainda está gravemente enfermo. O STJ pacificou esse entendimento na Súmula 627, e ele é amplamente aplicado pelos tribunais."</p>
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>4. Quem Tem Direito</h2>
+    <div class="prose">
+      <p>A isenção alcança os rendimentos de <strong>aposentadoria, pensão e reforma militar</strong> recebidos por portador de doença grave listada na lei. Os requisitos são simples:</p>
+      <ul>
+        <li>Receber aposentadoria, pensão ou proventos de reforma militar do INSS, de regime próprio (servidores públicos) ou de previdência privada;</li>
+        <li>Ter diagnóstico de uma das doenças da lista legal — mesmo que já tratada, controlada ou em remissão;</li>
+        <li>Comprovar o diagnóstico com laudo médico.</li>
+      </ul>
+    </div>
+    <div class="alert-box"><strong>Atenção:</strong> a isenção se aplica aos proventos de aposentadoria, pensão ou reforma — não a salários de quem ainda está em atividade. Trabalhadores com doença grave que ainda não se aposentaram têm outros instrumentos protetivos, mas não esta isenção específica.</div>
+  </div>
+
+  <div class="article-section">
+    <h2>5. Como Funciona na Prática</h2>
+    <div class="prose">
+      <p>O processo começa com a análise dos laudos médicos disponíveis e das declarações de Imposto de Renda dos últimos 5 anos. Com base nesses documentos, formulamos o pedido de isenção junto ao INSS (ou ao órgão pagador) para que o IR deixe de ser retido na fonte, e o pedido de restituição à Receita Federal dos valores retidos nos últimos 5 anos.</p>
+      <p>Quando o pedido administrativo é negado — o que ocorre em alguns casos —, ajuizamos ação ordinária ou mandado de segurança para garantir a isenção e a devolução dos valores. O resultado, na maioria dos casos, inclui dois benefícios simultâneos: o aumento imediato da renda mensal líquida e uma restituição que, em muitos casos, representa anos de contribuição indevida.</p>
+    </div>
+    <div class="success-box"><strong>Sem risco financeiro:</strong> assim como nas revisões previdenciárias, o honorário é cobrado apenas em caso de êxito — um percentual sobre os valores restituídos. Nenhum pagamento antecipado.</div>
+  </div>
+
+  <div class="article-cta">
+    <h3>Avalie Seu Caso com a AÇÃOPREV</h3>
+    <p>Se você ou um familiar recebe aposentadoria ou pensão e tem diagnóstico de doença grave — mesmo controlada ou curada —, faça uma avaliação gratuita. O direito pode existir há anos sem que você soubesse.</p>
+    
+    <a href="index.html#contato" class="btn-gold">Entre em Contato</a>
+  </div>
+  <div class="article-footer"><p>AÇÃOPREV Advocacia — Porto Alegre / Canela RS · acaoprev.com</p></div>
+</div>
+<script>
+window.addEventListener('scroll', function(){
+  var d = document.documentElement;
+  document.getElementById('readProgress').style.width = Math.min((d.scrollTop/(d.scrollHeight-d.clientHeight))*100,100)+'%';
+});
+document.getElementById('shareBtn').addEventListener('click', function(){
+  var url = window.location.href;
+  if(navigator.share){ navigator.share({title:'Isenção de Imposto de Renda por Doença Grave: Quem Tem Direito e Como Recuperar o que Foi Pago — AÇÃOPREV', url:url}); }
+  else{ navigator.clipboard.writeText(url).then(function(){
+    var t=document.getElementById('shareToast'); t.classList.add('show');
+    setTimeout(function(){t.classList.remove('show');},2500);
+  }); }
+});
+</script>
+</body>
+</html>

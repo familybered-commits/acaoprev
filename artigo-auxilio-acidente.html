@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auxílio-Acidente: O Benefício que Poucos Trabalhadores Conhecem — AÇÃOPREV</title>
+<meta name="description" content="Voltou ao trabalho com sequela? Saiba o que é o auxílio-acidente, quem tem direito, quanto vale e como pedir ao INSS.">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E4C87A;
+  --dark: #0D0D0D;
+  --dark-2: #141414;
+  --dark-3: #1C1C1C;
+  --dark-4: #242424;
+  --text-primary: #F0EAD6;
+  --text-secondary: #A89880;
+  --text-muted: #706858;
+  --border: rgba(201,168,76,0.18);
+  --border-strong: rgba(201,168,76,0.35);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Lora', serif; background: var(--dark); color: var(--text-primary); line-height: 1.85; font-size: 16px; }
+
+/* Read progress */
+.read-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 200; transition: width 0.1s linear; width: 0; }
+
+/* Header */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,13,13,0.93); backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  display: flex; align-items: center; justify-content: space-between;
+  height: 76px;
+}
+.site-header a { text-decoration: none; }
+.header-brand { font-family: 'Marcellus', serif; font-size: 1.1rem; letter-spacing: 0.24em; color: var(--text-primary); transition: color .25s; }
+.header-brand:hover { color: var(--gold); }
+.header-back { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); transition: color .25s; }
+.header-back:hover { color: var(--gold); }
+
+/* Article layout */
+.article-wrap { max-width: 760px; margin: 0 auto; padding: 120px clamp(1.5rem, 5vw, 3rem) 80px; }
+
+/* Hero block */
+.article-hero { margin-bottom: 3.5rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem; }
+.article-category {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.5rem;
+}
+.article-category::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+.article-title {
+  font-family: 'Marcellus', serif;
+  font-size: clamp(1.9rem, 4vw, 2.9rem); font-weight: 400;
+  line-height: 1.2; color: var(--text-primary); letter-spacing: 0.03em; margin-bottom: 1.25rem;
+}
+.article-title em { font-style: normal; color: var(--gold); }
+.article-lead { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 2rem; text-align: justify; hyphens: auto; }
+.article-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+.article-meta-item { font-size: 0.78rem; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; }
+.article-meta-sep { width: 1px; height: 14px; background: var(--border); }
+
+/* Share bar */
+.share-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+.share-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-right: 4px; }
+.share-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 8px 18px; border: 1px solid var(--border-strong);
+  color: var(--gold); background: none; cursor: pointer;
+  transition: background .2s, color .2s; text-decoration: none;
+}
+.share-btn:hover { background: rgba(201,168,76,.1); }
+.share-toast {
+  font-size: 0.76rem; color: var(--gold); opacity: 0;
+  transition: opacity .3s; margin-left: 4px;
+}
+.share-toast.show { opacity: 1; }
+
+/* Prose */
+.prose { font-size: 1rem; color: var(--text-secondary); line-height: 1.9; }
+.prose p { margin-bottom: 1.25rem; text-align: justify; hyphens: auto; }
+.prose p:last-child { margin-bottom: 0; }
+.prose strong { color: var(--text-primary); font-weight: 600; }
+.prose em { font-style: italic; color: var(--gold-light); }
+
+/* Sections */
+.article-section { margin-bottom: 3rem; }
+.article-section h2 {
+  font-family: 'Marcellus', serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 400;
+  color: var(--text-primary); letter-spacing: 0.04em;
+  margin-bottom: 1.25rem; padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.article-section h3 {
+  font-family: 'Marcellus', serif; font-size: 1.1rem;
+  color: var(--gold-light); letter-spacing: 0.04em; margin: 1.75rem 0 0.75rem;
+}
+
+/* Highlight box */
+.hl-box {
+  background: var(--dark-3); border-left: 2px solid var(--gold);
+  padding: 1.25rem 1.5rem; margin: 1.75rem 0;
+  font-size: 0.97rem; color: var(--text-secondary); line-height: 1.85;
+  text-align: justify; hyphens: auto;
+}
+.hl-box strong { color: var(--text-primary); }
+
+/* Alert box */
+.alert-box {
+  background: rgba(192,112,112,.08); border-left: 2px solid #C07070;
+  padding: 1.25rem 1.5rem; margin: 1.75rem 0;
+  font-size: 0.95rem; color: #C8A0A0; line-height: 1.85;
+  text-align: justify; hyphens: auto;
+}
+.alert-box strong { color: #D4B0B0; }
+
+/* Success box */
+.success-box {
+  background: rgba(80,200,144,.07); border-left: 2px solid #50C890;
+  padding: 1.25rem 1.5rem; margin: 1.75rem 0;
+  font-size: 0.95rem; color: #90C8A8; line-height: 1.85;
+  text-align: justify; hyphens: auto;
+}
+.success-box strong { color: #A8D8B8; }
+
+/* Pull quote */
+.pull-quote {
+  border-left: 2px solid var(--gold);
+  padding: 1.25rem 1.75rem;
+  background: linear-gradient(90deg, rgba(201,168,76,.07) 0%, transparent 100%);
+  margin: 2rem 0;
+}
+.pull-quote p {
+  font-family: 'Marcellus', serif; font-size: 1.2rem; font-style: italic;
+  color: var(--gold-light); line-height: 1.6;
+  text-align: justify; hyphens: auto;
+}
+
+/* Stat row */
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 2px; background: rgba(201,168,76,.12); margin: 1.75rem 0; }
+.stat-cell { background: var(--dark-2); padding: 1.25rem 1.25rem; text-align: center; }
+.stat-num { font-family: 'Marcellus', serif; font-size: 2rem; color: var(--gold); line-height: 1; margin-bottom: 0.4rem; }
+.stat-lbl { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); line-height: 1.5; }
+
+/* Check / X list */
+.check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(201,168,76,.08); margin: 1.5rem 0; }
+.check-col { background: var(--dark-2); padding: 1.25rem; }
+.check-col-title { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.75rem; font-weight: 600; }
+.check-col-title.ok { color: #50C890; }
+.check-col-title.no { color: #C07070; }
+.check-item { display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; line-height: 1.5; }
+.check-item .ic { flex-shrink: 0; font-weight: 700; margin-top: 1px; }
+.check-item .ic.ok { color: #50C890; }
+.check-item .ic.no { color: #C07070; }
+
+/* Table */
+.data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.92rem; }
+.data-table th { background: var(--dark-3); color: var(--gold); font-family: 'Marcellus', serif; font-weight: 400; letter-spacing: 0.08em; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-strong); }
+.data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table td strong { color: var(--text-primary); }
+
+/* Flow steps */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; }
+.flow-step { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+.flow-step:last-child { border-bottom: none; }
+.flow-n { flex-shrink: 0; width: 32px; height: 32px; background: var(--dark-3); border: 1px solid var(--border-strong); font-family: 'Marcellus', serif; font-size: 0.85rem; color: var(--gold); display: flex; align-items: center; justify-content: center; }
+.flow-body {}
+.flow-title { font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem; }
+.flow-sub { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; text-align: justify; hyphens: auto; }
+
+/* CTA */
+.article-cta {
+  background: linear-gradient(135deg, rgba(201,168,76,.1) 0%, rgba(201,168,76,.03) 100%);
+  border: 1px solid var(--border-strong); padding: 2.5rem 2.5rem; margin-top: 3rem; text-align: center;
+}
+.article-cta h3 { font-family: 'Marcellus', serif; font-size: 1.6rem; color: var(--gold-light); margin-bottom: 0.75rem; font-weight: 400; }
+.article-cta p { color: var(--text-secondary); margin-bottom: 1.75rem; font-size: 0.97rem; text-align: center; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-gold { display: inline-block; background: var(--gold); color: var(--dark); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 13px 30px; text-decoration: none; border-radius: 2px; transition: background .25s; }
+.btn-gold:hover { background: var(--gold-light); }
+.btn-outline { display: inline-block; border: 1px solid var(--border-strong); color: var(--gold); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 12px 30px; text-decoration: none; border-radius: 2px; transition: border-color .25s, color .25s; }
+.btn-outline:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+/* Footer */
+.article-footer { text-align: center; padding: 3rem 0 1rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+.article-footer p { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.05em; }
+
+@media(max-width:640px){
+  .check-grid { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+  .article-cta { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="read-progress" id="readProgress"></div>
+
+<header class="site-header">
+  <a href="index.html" class="header-brand">AÇÃOPREV</a>
+  <a href="index.html#artigos" class="header-back">← Todos os Artigos</a>
+</header>
+
+<div class="article-wrap">
+
+  <!-- HERO -->
+  <div class="article-hero">
+    <div class="article-category">Direito Previdenciário</div>
+    <h1 class="article-title">Auxílio-Acidente: <em>O Benefício que Poucos Trabalhadores Conhecem</em></h1>
+    <p class="article-lead">Voltou ao trabalho depois de um acidente — mas voltou com sequela? A Lei 8.213/91 garante um benefício permanente e cumulativo com o salário que a maioria dos trabalhadores desconhece.</p>
+    <div class="article-meta">
+      <span class="article-meta-item">AÇÃOPREV Advocacia</span>
+      <div class="article-meta-sep"></div>
+      <span class="article-meta-item">Direito Previdenciário</span>
+      <div class="article-meta-sep"></div>
+      <span class="article-meta-item">Leitura: 8 min</span>
+    </div>
+  </div>
+
+  <!-- SHARE BAR -->
+  <div class="share-bar">
+    <span class="share-label">Compartilhar</span>
+    <button class="share-btn" id="shareBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Compartilhar artigo
+    </button>
+    <a class="share-btn" href="https://wa.me/?text=Auxílio-Acidente%3A%20o%20benefício%20permanente%20que%20poucos%20trabalhadores%20conhecem%20—%20leia%20no%20site%20da%20AÇÃOPREV%3A%20https%3A%2F%2Facaoprev.com" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.528 5.836L0 24l6.341-1.502A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-4.964-1.344l-.356-.212-3.667.868.937-3.566-.233-.37A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      WhatsApp
+    </a>
+    <span class="share-toast" id="shareToast">Link copiado!</span>
+  </div>
+
+  <!-- SEÇÃO 1 -->
+  <div class="article-section">
+    <h2>1. O Que É o Auxílio-Acidente</h2>
+    <div class="prose">
+      <p>O auxílio-acidente está previsto no artigo 86 da Lei 8.213/91 e é concedido ao segurado que, após a consolidação das lesões decorrentes de acidente de qualquer natureza, resultar com sequela definitiva que implique <strong>redução da capacidade para o trabalho que habitualmente exercia</strong>.</p>
+      <p>O ponto central que diferencia esse benefício de outros é precisamente seu pressuposto: ele não é para quem deixou de trabalhar. É para quem <strong>voltou a trabalhar, mas voltou diferente</strong> — com dor crônica, com limitação de movimento, com perda de força ou de função, com sequela auditiva ou visual. A redução não precisa ser total; basta que seja permanente e parcial.</p>
+    </div>
+    <div class="pull-quote">
+      <p>"Esse benefício não é para quem não pode trabalhar. É para quem voltou a trabalhar, mas voltou diferente — com dor, com limitação, com sequela que o acompanhará pelo resto da vida profissional."</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-cell"><div class="stat-num">50%</div><div class="stat-lbl">do salário-de-benefício, por mês</div></div>
+      <div class="stat-cell"><div class="stat-num">0</div><div class="stat-lbl">meses de carência exigidos</div></div>
+      <div class="stat-cell"><div class="stat-num">∞</div><div class="stat-lbl">permanente até a aposentadoria</div></div>
+      <div class="stat-cell"><div class="stat-num">+</div><div class="stat-lbl">cumulativo com o salário</div></div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 2 -->
+  <div class="article-section">
+    <h2>2. Quem Tem Direito</h2>
+    <div class="prose">
+      <p>Diferentemente de outros benefícios previdenciários, o auxílio-acidente tem um rol específico de segurados que podem recebê-lo. Nem todas as categorias estão contempladas pela lei.</p>
+    </div>
+    <div class="check-grid">
+      <div class="check-col">
+        <div class="check-col-title ok">✔ Têm Direito</div>
+        <div class="check-item"><span class="ic ok">✔</span><span>Empregado (CLT)</span></div>
+        <div class="check-item"><span class="ic ok">✔</span><span>Trabalhador avulso</span></div>
+        <div class="check-item"><span class="ic ok">✔</span><span>Segurado especial (rural)</span></div>
+      </div>
+      <div class="check-col">
+        <div class="check-col-title no">✘ Não Têm Direito</div>
+        <div class="check-item"><span class="ic no">✘</span><span>Contribuinte individual (autônomo)</span></div>
+        <div class="check-item"><span class="ic no">✘</span><span>MEI</span></div>
+        <div class="check-item"><span class="ic no">✘</span><span>Segurado facultativo</span></div>
+      </div>
+    </div>
+    <div class="alert-box">
+      <strong>Atenção para MEI e autônomos:</strong> o auxílio-acidente não está disponível para essas categorias. Se você contribui como MEI ou autônomo e sofreu um acidente com sequela, existem outros instrumentos jurídicos que podem garantir sua proteção — entre em contato com nosso escritório para uma análise individual.
+    </div>
+  </div>
+
+  <!-- SEÇÃO 3 -->
+  <div class="article-section">
+    <h2>3. Qual Acidente Conta</h2>
+    <div class="prose">
+      <p>Um dos maiores equívocos sobre o auxílio-acidente é acreditar que ele se aplica apenas a acidentes ocorridos dentro da empresa ou durante o exercício direto da atividade profissional. A lei é bem mais ampla: fala em <strong>"acidente de qualquer natureza"</strong>.</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Tipo de Acidente</th><th>Cobertura</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Acidente de trabalho típico</strong> — dentro da empresa, durante o exercício da atividade</td><td>✔ Coberto</td></tr>
+        <tr><td><strong>Acidente de trajeto</strong> — no percurso entre a residência e o trabalho</td><td>✔ Coberto</td></tr>
+        <tr><td><strong>Doença ocupacional</strong> — LER, DORT, perda auditiva por ruído (PAIR), tenossinovite</td><td>✔ Coberto</td></tr>
+        <tr><td><strong>Acidente doméstico</strong> — queda em casa, corte, lesão durante afazeres domésticos</td><td>✔ Coberto</td></tr>
+        <tr><td><strong>Acidente de lazer ou trânsito</strong> — no fim de semana, durante atividade esportiva</td><td>✔ Coberto</td></tr>
+      </tbody>
+    </table>
+    <div class="hl-box">
+      <strong>Exemplo prático:</strong> um empregado CLT que cai em casa no sábado, fratura o joelho e fica com limitação permanente de movimentação — mesmo sem qualquer relação com o trabalho — pode ter direito ao auxílio-acidente se a sequela reduziu sua capacidade laborativa.
+    </div>
+  </div>
+
+  <!-- SEÇÃO 4 -->
+  <div class="article-section">
+    <h2>4. Requisitos Legais</h2>
+    <div class="prose">
+      <p>Para que o benefício seja concedido, a lei estabelece três requisitos cumulativos que devem estar simultaneamente presentes:</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-n">I</div><div class="flow-body"><div class="flow-title">Qualidade de segurado</div><div class="flow-sub">O trabalhador deve ser empregado, avulso ou segurado especial no momento do acidente, ou ainda estar dentro do período de graça — o intervalo em que a qualidade de segurado se mantém mesmo sem contribuições.</div></div></div>
+      <div class="flow-step"><div class="flow-n">II</div><div class="flow-body"><div class="flow-title">Acidente de qualquer natureza</div><div class="flow-sub">O evento que originou a lesão pode ser de qualquer tipo: laboral, doméstico, de lazer ou doença equiparada a acidente do trabalho. A abrangência é proposital e favorável ao trabalhador.</div></div></div>
+      <div class="flow-step"><div class="flow-n">III</div><div class="flow-body"><div class="flow-title">Sequela permanente com redução da capacidade laborativa</div><div class="flow-sub">A lesão deve ter se consolidado — isto é, o tratamento chegou ao limite do que é possível — e deve ter deixado uma sequela permanente que reduza, mesmo que parcialmente, a capacidade para o trabalho habitual. A redução não precisa ser total.</div></div></div>
+    </div>
+    <div class="success-box">
+      <strong>Não há carência:</strong> ao contrário de vários outros benefícios do INSS, o auxílio-acidente não exige um número mínimo de contribuições para ser concedido. Basta ter qualidade de segurado no momento do acidente.
+    </div>
+  </div>
+
+  <!-- SEÇÃO 5 -->
+  <div class="article-section">
+    <h2>5. Valor e Cálculo do Benefício</h2>
+    <div class="prose">
+      <p>O auxílio-acidente corresponde a <strong>50% do salário-de-benefício</strong> do segurado. O salário-de-benefício é calculado com base na média dos salários de contribuição do segurado — antes da EC 103/2019, utilizava-se os melhores 80% do período contributivo; após a reforma, utiliza-se a média de todos os salários.</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Salário Mensal (exemplo)</th><th>Auxílio-Acidente (50%)</th><th>Renda Total</th></tr></thead>
+      <tbody>
+        <tr><td>R$ 1.412 (salário mínimo)</td><td>R$ 706</td><td>R$ 2.118/mês</td></tr>
+        <tr><td>R$ 2.500</td><td>R$ 1.250</td><td>R$ 3.750/mês</td></tr>
+        <tr><td>R$ 3.000</td><td>R$ 1.500</td><td>R$ 4.500/mês</td></tr>
+        <tr><td>R$ 5.000</td><td>R$ 2.500</td><td>R$ 7.500/mês</td></tr>
+      </tbody>
+    </table>
+    <div class="pull-quote">
+      <p>"Você não precisa escolher entre trabalhar e receber. Os dois são cumulativos. Todo mês, na sua conta — pelo resto da vida profissional, até a aposentadoria."</p>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 6 -->
+  <div class="article-section">
+    <h2>6. A Regra de Cumulação que Todo Mundo Confunde</h2>
+    <div class="prose">
+      <p>O auxílio-acidente é <strong>cumulativo com o salário</strong> — o trabalhador continua exercendo sua atividade normalmente e, além do salário, recebe o benefício. Mas existe uma regra que confunde muitos segurados e pode ter impacto financeiro relevante:</p>
+      <p>O benefício <strong>cessa com a concessão de qualquer aposentadoria</strong>. Ao se aposentar — seja por idade, por tempo de contribuição ou por incapacidade permanente — o auxílio-acidente é cancelado automaticamente. Não há cumulação com a aposentadoria.</p>
+    </div>
+    <div class="hl-box">
+      <strong>Implicação estratégica:</strong> para muitos trabalhadores que recebem auxílio-acidente e estão próximos de se aposentar, a decisão de quando requerer a aposentadoria tem impacto financeiro direto e permanente. Em alguns casos, adiar a aposentadoria pode ser financeiramente mais vantajoso do que antecipar. Esse cálculo deve ser feito com um advogado previdenciário antes de qualquer decisão.
+    </div>
+  </div>
+
+  <!-- SEÇÃO 7 -->
+  <div class="article-section">
+    <h2>7. Como Requerer o Benefício</h2>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-n">1</div><div class="flow-body"><div class="flow-title">Aguardar a consolidação das lesões</div><div class="flow-sub">O benefício só pode ser requerido depois que o tratamento chegou ao seu limite e a sequela foi classificada como permanente pelo médico assistente. Não é possível requerer durante a fase aguda do tratamento.</div></div></div>
+      <div class="flow-step"><div class="flow-n">2</div><div class="flow-body"><div class="flow-title">Reunir documentação médica</div><div class="flow-sub">Laudos médicos, relatório do médico assistente com descrição da sequela e sua repercussão funcional, exames de imagem (raio-x, ressonância, tomografia) e qualquer documentação que demonstre a limitação permanente decorrente do acidente.</div></div></div>
+      <div class="flow-step"><div class="flow-n">3</div><div class="flow-body"><div class="flow-title">Comunicação de Acidente de Trabalho (CAT)</div><div class="flow-sub">Nos acidentes tipicamente laborais, exija que o empregador emita a CAT. Em caso de recusa, o próprio trabalhador, o sindicato, o médico assistente ou autoridades competentes podem registrá-la. O registro da CAT não depende de autorização do empregador.</div></div></div>
+      <div class="flow-step"><div class="flow-n">4</div><div class="flow-body"><div class="flow-title">Requerimento no Meu INSS</div><div class="flow-sub">Acesse meu.inss.gov.br ou ligue 135. O INSS convocará o segurado para perícia médica. É nessa etapa que a maioria dos pedidos é indeferida — a preparação é fundamental.</div></div></div>
+      <div class="flow-step"><div class="flow-n">5</div><div class="flow-body"><div class="flow-title">Perícia médica</div><div class="flow-sub">O perito do INSS avaliará a sequela. Leve toda a documentação médica, incluindo o laudo do seu médico assistente descrevendo a limitação funcional. Se possível, leve também laudo de perito de sua confiança.</div></div></div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 8 -->
+  <div class="article-section">
+    <h2>8. Sequelas que Mais Frequentemente Geram Direito</h2>
+    <div class="prose">
+      <p>Embora qualquer sequela permanente que reduza a capacidade laborativa possa ensejar o auxílio-acidente, algumas são mais comuns nos requerimentos:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Tipo de Sequela</th><th>Exemplos Frequentes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ortopédicas</strong></td><td>Fraturas com consolidação viciosa, limitação de amplitude de joelho, ombro ou coluna, ruptura de ligamentos com instabilidade residual</td></tr>
+        <tr><td><strong>Auditivas</strong></td><td>Perda auditiva induzida por ruído (PAIR) em trabalhadores de ambientes industriais, perfuração timpânica</td></tr>
+        <tr><td><strong>LER / DORT</strong></td><td>Tenossinovite, síndrome do túnel do carpo, epicondilite em digitadores, caixas de supermercado, costureiras</td></tr>
+        <tr><td><strong>Neurológicas</strong></td><td>Compressão nervosa com perda de força ou sensibilidade, lesão de plexo, neuropatia periférica</td></tr>
+        <tr><td><strong>Amputações parciais</strong></td><td>Perda de dedos ou partes de membros com limitação funcional demonstrável</td></tr>
+        <tr><td><strong>Visuais</strong></td><td>Redução permanente da acuidade visual após trauma ocular</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SEÇÃO 9 -->
+  <div class="article-section">
+    <h2>9. Se o INSS Negar</h2>
+    <div class="prose">
+      <p>O indeferimento do auxílio-acidente é um dos mais comuns na prática previdenciária. O perito do INSS frequentemente classifica a sequela como "sem repercussão funcional" ou "sem nexo com o acidente", mesmo diante de laudos médicos contrários.</p>
+      <p>O indeferimento, porém, não é o fim do processo:</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-n">I</div><div class="flow-body"><div class="flow-title">Recurso administrativo</div><div class="flow-sub">Há prazo de 30 dias após o indeferimento para interpor recurso ao Conselho de Recursos da Previdência Social (CRPS). O recurso deve ser instruído com nova documentação médica, preferencialmente com laudo de perito de confiança do segurado.</div></div></div>
+      <div class="flow-step"><div class="flow-n">II</div><div class="flow-body"><div class="flow-title">Ação judicial</div><div class="flow-sub">Se o recurso administrativo também for indeferido, cabe ação no Juizado Especial Federal (JEF), sem necessidade de advogado para causas de até 60 salários mínimos — embora a assistência técnica seja fortemente recomendada. Na esfera judicial, o juiz nomeia perito imparcial, e o resultado costuma ser diferente do obtido na perícia do INSS.</div></div></div>
+    </div>
+    <div class="pull-quote">
+      <p>"Sequela não é fraqueza — é direito. Saiba o que a lei garante antes de aceitar a alta definitiva e abrir mão de um benefício permanente."</p>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 10 -->
+  <div class="article-section">
+    <h2>10. Resumo</h2>
+    <div class="hl-box">
+      <strong>Auxílio-acidente em síntese:</strong><br><br>
+      • Benefício de <strong>50% do salário-de-benefício</strong>, pago mensalmente<br>
+      • Para empregados CLT, trabalhadores avulsos e segurados especiais<br>
+      • Cobre acidentes de <strong>qualquer natureza</strong>, não apenas de trabalho<br>
+      • Exige sequela <strong>permanente e parcial</strong> que reduza a capacidade laborativa<br>
+      • <strong>Sem carência</strong> — não depende de meses de contribuição<br>
+      • <strong>Cumulativo com o salário</strong> — você continua trabalhando e recebendo<br>
+      • <strong>Cessa com a aposentadoria</strong> — a decisão de quando se aposentar é estratégica<br>
+      • Indeferimento pelo INSS pode e deve ser contestado
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="article-cta">
+    <h3>Avalie Seu Caso com a AÇÃOPREV</h3>
+    <p>Se você passou por um acidente e ficou com sequela permanente — dor crônica, limitação de movimento, perda auditiva, qualquer redução de capacidade — não aceite a alta definitiva sem antes saber se tem direito ao auxílio-acidente.</p>
+    <div class="cta-btns">
+      <a href="index.html#contato" class="btn-gold">Compre o Planejamento AÇÃOPREV — Entre em Contato</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="article-footer">
+    <p>AÇÃOPREV Advocacia — Porto Alegre / Canela RS · acaoprev.com</p>
+  </div>
+
+</div><!-- /article-wrap -->
+
+<script>
+// Read progress
+window.addEventListener('scroll', function(){
+  const d = document.documentElement;
+  const pct = (d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100;
+  document.getElementById('readProgress').style.width = Math.min(pct,100) + '%';
+});
+
+// Share
+document.getElementById('shareBtn').addEventListener('click', function(){
+  const url = window.location.href;
+  const text = 'Auxílio-Acidente: o benefício permanente que poucos trabalhadores conhecem — AÇÃOPREV';
+  if(navigator.share){
+    navigator.share({ title: text, url: url });
+  } else {
+    navigator.clipboard.writeText(url).then(function(){
+      var t = document.getElementById('shareToast');
+      t.classList.add('show');
+      setTimeout(function(){ t.classList.remove('show'); }, 2500);
+    });
+  }
+});
+</script>
+</body>
+</html>

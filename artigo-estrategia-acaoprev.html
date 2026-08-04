@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Estratégia Inteligente de Planejamento Previdenciário — AÇÃOPREV</title>
+<meta name="description" content="Por que pagar o mínimo ao INSS e aposentar o quanto antes não é improviso — é ciência financeira. Um artigo da AÇÃOPREV Advocacia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #0e0e1c;
+    --bg2:     #13132a;
+    --bg3:     #1a1a35;
+    --gold:    #C9A84C;
+    --gold2:   #e8c870;
+    --text:    #e8e8e8;
+    --text2:   #b0abb8;
+    --text3:   #888892;
+    --border:  rgba(201,168,76,.20);
+    --radius:  10px;
+    --max:     760px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lora', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ──────────────────────────────────────────────────── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14,14,28,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: 'Marcellus', serif;
+    font-size: 22px;
+    color: var(--gold);
+    letter-spacing: .05em;
+    text-decoration: none;
+  }
+  .logo span { color: var(--text2); font-size: 12px; display: block; letter-spacing: .1em; text-transform: uppercase; }
+  .header-tag {
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  /* ── HERO ────────────────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(160deg, #0e0e1c 0%, #141428 50%, #0e0e1c 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 32px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,168,76,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,.4);
+    padding: 5px 18px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: 'Marcellus', serif;
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.25;
+    max-width: 760px;
+    margin: 0 auto 20px;
+  }
+  .hero h1 em { color: var(--gold); font-style: normal; }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text2);
+    font-style: italic;
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 6px; }
+  .hero-meta .dot { width: 3px; height: 3px; background: var(--border); border-radius: 50%; }
+
+  /* ── ARTICLE ─────────────────────────────────────────────────── */
+  .article-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  /* ── SECTIONS ────────────────────────────────────────────────── */
+  .section { margin-bottom: 64px; }
+
+  .section-num {
+    display: block;
+    font-size: 11px;
+    letter-spacing: .18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .section h2 {
+    font-family: 'Marcellus', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section p {
+    color: var(--text2);
+    margin-bottom: 18px;
+    line-height: 1.85;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  .section p strong { color: var(--text); font-weight: 600; }
+
+  /* ── PULL QUOTE ──────────────────────────────────────────────── */
+  .pullquote {
+    margin: 40px 0;
+    padding: 32px 36px;
+    border-left: 3px solid var(--gold);
+    background: linear-gradient(90deg, rgba(201,168,76,.07) 0%, transparent 100%);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .pullquote p {
+    font-family: 'Marcellus', serif;
+    font-size: 20px;
+    color: var(--gold);
+    line-height: 1.5;
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* ── LIST ────────────────────────────────────────────────────── */
+  .art-list { margin: 20px 0 20px 0; padding: 0; list-style: none; }
+  .art-list li {
+    color: var(--text2);
+    padding: 8px 0 8px 28px;
+    position: relative;
+    border-bottom: 1px solid rgba(201,168,76,.07);
+    line-height: 1.75;
+  }
+  .art-list li:last-child { border-bottom: none; }
+  .art-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 13px;
+    top: 10px;
+  }
+  .art-list li strong { color: var(--text); }
+
+  /* ── TABLE ───────────────────────────────────────────────────── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 28px 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead tr { background: var(--bg3); }
+  thead th {
+    padding: 14px 18px;
+    text-align: center;
+    font-family: 'Marcellus', serif;
+    font-weight: 400;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: .05em;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr { transition: background .15s; }
+  tbody tr:nth-child(odd)  { background: var(--bg2); }
+  tbody tr:nth-child(even) { background: var(--bg); }
+  tbody tr:hover { background: rgba(201,168,76,.06); }
+  tbody td {
+    padding: 12px 18px;
+    text-align: center;
+    color: var(--text2);
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+  }
+  tbody td:first-child { color: var(--gold); font-weight: 600; }
+  .table-note {
+    font-size: 12px;
+    color: var(--text3);
+    font-style: italic;
+    margin-top: 10px;
+    padding: 0 4px;
+    line-height: 1.6;
+  }
+
+  /* ── HIGHLIGHT BOX ───────────────────────────────────────────── */
+  .highlight-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin: 28px 0;
+  }
+  .highlight-box .hb-label {
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .highlight-box .hb-title {
+    font-family: 'Marcellus', serif;
+    font-size: 17px;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  /* ── COMPARISON GRID ─────────────────────────────────────────── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+  .compare-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .compare-card.best { border-color: var(--gold); }
+  .compare-card .cc-label {
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .compare-card h4 {
+    font-family: 'Marcellus', serif;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-card h4.gold { color: var(--gold); }
+  .cc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text2);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+  }
+  .cc-row:last-child { border-bottom: none; }
+  .cc-val { font-weight: 600; white-space: nowrap; color: var(--text); }
+  .cc-val.gold { color: var(--gold); }
+  .cc-val.red  { color: #e07070; }
+  .cc-total {
+    margin-top: 14px;
+    padding: 12px 0 0;
+    border-top: 1px solid var(--border);
+    font-family: 'Marcellus', serif;
+    font-size: 15px;
+    color: var(--text);
+    display: flex;
+    justify-content: space-between;
+  }
+  .cc-total .val { color: var(--gold); font-size: 20px; }
+  @media(max-width:520px){ .compare-grid{ grid-template-columns:1fr; } }
+
+  /* ── CONCLUSION BOX ──────────────────────────────────────────── */
+  .conclusion {
+    background: linear-gradient(135deg, rgba(201,168,76,.10) 0%, rgba(201,168,76,.03) 100%);
+    border: 1px solid rgba(201,168,76,.35);
+    border-radius: var(--radius);
+    padding: 40px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .conclusion p {
+    font-size: 15px;
+    color: var(--text2);
+    margin-bottom: 14px;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  .conclusion .final-quote {
+    font-family: 'Marcellus', serif;
+    font-size: 22px;
+    color: var(--gold);
+    line-height: 1.45;
+    margin: 28px 0 0;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ──────────────────────────────────────────────────── */
+  .article-footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 24px;
+    max-width: var(--max);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-brand { font-family: 'Marcellus', serif; font-size: 20px; color: var(--gold); }
+  .footer-brand span { display: block; font-family: 'Lora', serif; font-size: 12px; color: var(--text3); margin-top: 4px; }
+  .footer-links { display: flex; flex-direction: column; gap: 6px; }
+  .footer-links a, .footer-links span { font-size: 13px; color: var(--text3); text-decoration: none; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-disclaimer {
+    border-top: 1px solid var(--border);
+    padding: 24px;
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text3);
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* ── PROGRESS BAR (decorativa) ───────────────────────────────── */
+  .read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--gold);
+    z-index: 200;
+    transition: width .1s linear;
+    width: 0%;
+  }
+
+  @media(max-width:600px){
+    .hero { padding: 56px 20px 48px; }
+    .article-wrap { padding: 40px 18px 72px; }
+    .pullquote { padding: 24px 22px; }
+    .pullquote p { font-size: 17px; }
+    .hero-meta { flex-direction: column; gap: 8px; }
+    .hero-meta .dot { display: none; }
+    .site-header { padding: 12px 18px; }
+    .highlight-box { padding: 22px 20px; }
+  }
+
+  /* Share bar */
+  .share-bar-inline {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 16px 0; border-top: 1px solid rgba(201,168,76,.18); border-bottom: 1px solid rgba(201,168,76,.18);
+    margin: 2rem 0 2.5rem;
+  }
+  .share-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted, #666); }
+  .share-action {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 8px 18px; border: 1px solid rgba(201,168,76,.35);
+    color: var(--gold, #C9A84C); background: none; cursor: pointer;
+    transition: background .2s; text-decoration: none;
+  }
+  .share-action:hover { background: rgba(201,168,76,.1); }
+  .share-toast-msg { font-size: 0.76rem; color: var(--gold, #C9A84C); opacity: 0; transition: opacity .3s; }
+  .share-toast-msg.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="read-progress" id="readProgress"></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="index.html" class="logo">
+    AÇÃOPREV
+    <span>Advocacia Previdenciária</span>
+  </a>
+  <a href="index.html#artigos" style="font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted,#666);text-decoration:none;transition:color .25s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color=''">← Todos os Artigos</a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Planejamento Previdenciário Estratégico</div>
+  <h1>A Estratégia Inteligente de<br><em>Planejamento Previdenciário</em></h1>
+  <p class="hero-sub">Por que pagar o mínimo ao INSS e aposentar o quanto antes não é improviso — é ciência financeira</p>
+  <div class="hero-meta">
+    <span>AÇÃOPREV Advocacia</span>
+    <span class="dot"></span>
+    <span>Porto Alegre / Canela — RS</span>
+    <span class="dot"></span>
+    <span>Leitura: 8 min</span>
+  </div>
+</section>
+
+<div class="share-bar-inline">
+  <span class="share-label">Compartilhar</span>
+  <button class="share-action" id="shareBtnEst">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    Compartilhar artigo
+  </button>
+  <a class="share-action" href="https://wa.me/?text=A%20estrat%C3%A9gia%20inteligente%20de%20planejamento%20previd%C3%AAncia%20%E2%80%94%20AÇÃOPREV%3A%20https%3A%2F%2Facaoprev.com" target="_blank" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.528 5.836L0 24l6.341-1.502A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-4.964-1.344l-.356-.212-3.667.868.937-3.566-.233-.37A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+    WhatsApp
+  </a>
+  <span class="share-toast-msg" id="shareToastEst">Link copiado!</span>
+</div>
+
+
+<!-- ARTICLE -->
+<article class="article-wrap">
+
+  <!-- 1. Paradoxo -->
+  <div class="section">
+    <span class="section-num">01 — Introdução</span>
+    <h2>O Paradoxo Previdenciário</h2>
+    <p>Durante décadas, o senso comum previdenciário foi simples: pague mais ao INSS, quanto antes, durante o maior tempo possível. Contribua mensalmente, declare o maior salário que puder e aguarde para colher um benefício mais alto na aposentadoria.</p>
+    <p>Esse paradigma, ainda hoje presente na maioria dos escritórios e contadores, ignora três realidades econômicas devastadoras: o <strong>achatamento progressivo dos benefícios</strong> frente ao salário mínimo, o <strong>custo de oportunidade</strong> do capital desnecessariamente aportado e o <strong>valor temporal do dinheiro</strong>. A somatória desses fatores transforma contribuições excessivas em um mau negócio financeiro documentável.</p>
+    <p>A estratégia da AÇÃOPREV parte de um princípio diferente: o INSS deve ser tratado como o que juridicamente é — um <strong>seguro social de piso</strong>. Não uma poupança, não um investimento, não uma previdência privada disfarçada. E como todo seguro, a lógica racional é pagar o prêmio mínimo necessário para manter a cobertura.</p>
+
+    <div class="pullquote">
+      <p>"O INSS não é uma carteira de investimentos. É um seguro social de piso. E nenhuma pessoa racional paga mais pelo seguro do que o mínimo necessário para manter a cobertura."</p>
+    </div>
+  </div>
+
+  <!-- 2. Achatamento -->
+  <div class="section">
+    <span class="section-num">02 — O argumento mais subestimado</span>
+    <h2>O Fenômeno do Achatamento — A Convergência para o Salário Mínimo</h2>
+    <p>Este é o argumento mais subestimado do planejamento previdenciário e também o mais matematicamente inevitável.</p>
+    <p>A Constituição Federal (art. 201, §12) garante que <strong>nenhum benefício de prestação continuada do INSS pode ser inferior ao salário mínimo</strong>. O que a maioria das pessoas não percebe é a assimetria nos reajustes: benefícios acima do salário mínimo são corrigidos pelo <strong>INPC</strong> — o índice de inflação ao consumidor. O salário mínimo, por sua vez, historicamente recebe reajuste acima do INPC, incorporando crescimento real.</p>
+    <p>O resultado é matemático e inexorável: ao longo dos anos, benefícios que hoje estão muito acima do salário mínimo gradualmente perdem poder aquisitivo relativo e <strong>convergem para ele</strong>. A tabela abaixo ilustra esse fenômeno:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ano</th>
+            <th>Salário Mínimo</th>
+            <th>Benefício (2,0× SM em 2004)</th>
+            <th>Múltiplo do SM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>2004</td><td>R$ 260,00</td><td>R$ 520,00</td><td>2,0×</td></tr>
+          <tr><td>2010</td><td>R$ 510,00</td><td>R$ 645,00</td><td>1,26×</td></tr>
+          <tr><td>2016</td><td>R$ 880,00</td><td>R$ 830,00</td><td>0,94×</td></tr>
+          <tr><td>2020</td><td>R$ 1.045,00</td><td>R$ 980,00</td><td>0,94×</td></tr>
+          <tr><td>2024</td><td>R$ 1.412,00</td><td>R$ 1.310,00</td><td>0,93×</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Simulação ilustrativa com base na política de reajuste do salário mínimo acima do INPC. Benefício corrigido anualmente pelo INPC médio do período. Valores aproximados para fins didáticos.</p>
+
+    <p>A conclusão é direta: quem se aposenta hoje com um benefício de R$ 3.000 — mais que o dobro do salário mínimo — observará, em 15 a 20 anos, esse mesmo benefício (corrigido pelo INPC) próximo ou abaixo do salário mínimo em termos reais. <strong>Pagar mais contribuições para ter um benefício inicial maior é perseguir uma vantagem que o tempo sistematicamente corrói.</strong></p>
+    <p>Diante disso, a estratégia racional é clara: garantir o benefício de 1 salário mínimo o mais rapidamente possível e concentrar o esforço de formação de patrimônio em ativos que preservam e multiplicam o poder de compra — como investimentos em renda fixa ou variável.</p>
+  </div>
+
+  <!-- 3. Custo de Oportunidade -->
+  <div class="section">
+    <span class="section-num">03 — A matemática do capital perdido</span>
+    <h2>O Custo de Oportunidade que Ninguém Calcula</h2>
+    <p>Cada contribuição paga ao INSS além do mínimo necessário representa um capital que deixou de trabalhar para o segurado. Com a Selic estruturalmente elevada na economia brasileira e instrumentos como CDB, Tesouro Selic e Tesouro IPCA+ acessíveis a qualquer investidor, o custo de oportunidade é concreto e mensurável.</p>
+    <p>Considere um segurado que completou a <strong>carência de 180 meses</strong> (15 anos de contribuições) e continuou pagando ao INSS mensalmente por mais 20 anos — quando poderia ter mantido a qualidade de segurado pagando apenas uma vez a cada 12 ou 24 meses. Nesse cenário:</p>
+
+    <ul class="art-list">
+      <li>Contribuição mensal: <strong>R$ 303,60</strong> (20% do salário mínimo)</li>
+      <li>Contribuições desnecessárias em 20 anos (estratégia 12 meses): aproximadamente <strong>220 pagamentos</strong></li>
+      <li>Total aportado desnecessariamente ao INSS: <strong>R$ 66.792</strong></li>
+      <li>Esse capital, investido mensalmente à taxa Selic (11% a.a.), valeria hoje aproximadamente <strong>R$ 220.000</strong></li>
+      <li>Aplicado conservadoramente (Tesouro IPCA+ a 6% a.a.), geraria <strong>R$ 1.100/mês em perpetuidade</strong> — sem tocar no capital</li>
+    </ul>
+
+    <div class="pullquote">
+      <p>"Cada real pago ao INSS além do necessário é um real que não está trabalhando para você. A diferença, investida ao longo de 20 anos, pode construir um patrimônio de R$ 200 mil."</p>
+    </div>
+
+    <p>A AÇÃOPREV desenvolveu uma <strong>calculadora de planejamento previdenciário</strong> que demonstra, caso a caso, exatamente essa análise: o custo de oportunidade histórico (quanto foi pago além do necessário desde a carência) e o prospectivo (quanto a economia futura renderá até a aposentadoria e que renda mensal esse capital gerará).</p>
+  </div>
+
+  <!-- 4. Valor do Tempo -->
+  <div class="section">
+    <span class="section-num">04 — O preço de cada mês</span>
+    <h2>Cada Mês de Atraso na Aposentadoria Tem Preço</h2>
+    <p>O planejamento previdenciário convencional frequentemente se concentra em maximizar o benefício. Raramente calcula o <strong>custo de cada mês adicional de trabalho</strong> para "melhorar" o benefício.</p>
+    <p>A aritmética é simples: aposentar-se 12 meses antes significa receber 12 meses adicionais de benefício ao longo da vida. Com o benefício de 1 salário mínimo (R$ 1.518 em 2024), isso representa <strong>R$ 18.216 a mais ao longo da vida</strong> — fora os 13os salários. Postergar a aposentadoria em 5 anos para obter um benefício marginalmente maior — que será corrigido apenas pelo INPC enquanto o salário mínimo cresce acima da inflação — raramente compensa o sacrifício.</p>
+    <p>A estratégia AÇÃOPREV é <strong>aposentar o quanto antes</strong>, pelo critério mais favorável disponível (por pontos, por idade ou por tempo de contribuição com idade progressiva), e usar os anos de vida saudável para construir patrimônio privado e desfrutar de liberdade financeira.</p>
+
+    <ul class="art-list">
+      <li><strong>Aposentadoria antecipada:</strong> mais meses de benefício durante a vida ativa e saudável</li>
+      <li><strong>Menos anos na ativa:</strong> mais qualidade de vida, disponibilidade para a família e projetos pessoais</li>
+      <li><strong>Capital não pago ao INSS:</strong> reinvestido em ativos privados que crescem acima da inflação</li>
+      <li><strong>Risco de adoecimento ou incapacidade:</strong> minimizado — a aposentadoria já está garantida</li>
+      <li><strong>Benefício por incapacidade:</strong> disponível enquanto a qualidade de segurado é mantida, independente da aposentadoria</li>
+    </ul>
+  </div>
+
+  <!-- 5. Risco Sistêmico -->
+  <div class="section">
+    <span class="section-num">05 — Proteção contra o imprevisível</span>
+    <h2>O Risco Sistêmico: Reformas Mudam as Regras</h2>
+    <p>A <strong>Emenda Constitucional nº 103/2019</strong> alterou profundamente as regras do INSS, elevando idades mínimas, aumentando exigências de pontos e modificando fórmulas de cálculo. Quem planejava aposentar-se em 2021 com base nas regras de 2018 foi surpreendido com requisitos completamente diferentes.</p>
+    <p>O histórico brasileiro mostra que o sistema previdenciário está em permanente evolução — e as mudanças tendem a ser mais restritivas, não mais generosas, dada a pressão fiscal crescente sobre o RGPS. <strong>Aposentar-se mais cedo é, também, uma forma de proteção contra reformas futuras:</strong> uma vez concedido, o benefício de aposentadoria tem proteção constitucional (art. 5º, XXXVI — direito adquirido).</p>
+    <p>A estratégia de manter a qualidade de segurado com o mínimo de contribuições garante que, ao atingir os requisitos legais do momento, o segurado está pronto para requerer o benefício imediatamente — sem aguardar meses de contribuições adicionais que poderiam ser exigidos por uma eventual reforma.</p>
+
+    <div class="highlight-box">
+      <span class="hb-label">Princípio jurídico fundamental</span>
+      <div class="hb-title">Direito Adquirido e Proteção Constitucional</div>
+      <p style="color:var(--text2);font-size:14px;line-height:1.75;margin:0">Uma aposentadoria já concedida não pode ser reduzida nem cassada por reforma previdenciária posterior. O benefício de quem se aposenta hoje está protegido pelo art. 5º, XXXVI da Constituição Federal. Cada mês de contribuição além do necessário é, portanto, um risco adicional de ser pego por uma nova reforma antes de efetivar o benefício.</p>
+    </div>
+  </div>
+
+  <!-- 6. A Estratégia -->
+  <div class="section">
+    <span class="section-num">06 — O método</span>
+    <h2>A Estratégia AÇÃOPREV: Qualidade de Segurado com Custo Mínimo</h2>
+    <p>A legislação previdenciária brasileira (Lei 8.213/91) prevê o chamado <strong>"período de graça"</strong>: o prazo em que o segurado mantém todos os direitos previdenciários mesmo sem contribuir. Para segurados com 120 ou mais contribuições, esse período é de <strong>24 meses</strong> após a última contribuição.</p>
+    <p>Isso significa, na prática, que um segurado com histórico de contribuições suficiente pode pagar <strong>apenas uma contribuição a cada 24 meses</strong> e manter ininterruptamente a qualidade de segurado — com acesso a todos os benefícios: aposentadoria, auxílio por incapacidade, pensão por morte e salário-maternidade.</p>
+    <p>A estratégia completa é:</p>
+
+    <ul class="art-list">
+      <li>Completar a <strong>carência de 180 meses</strong> e o tempo de contribuição mínimo para a regra mais favorável</li>
+      <li>A partir daí, contribuir apenas o suficiente para <strong>manter o período de graça ativo</strong> (a cada 12 ou 24 meses)</li>
+      <li><strong>Investir a diferença</strong> entre o que seria pago mensalmente e o que é efetivamente pago</li>
+      <li>Requerer a aposentadoria <strong>assim que os requisitos de idade ou pontos forem atingidos</strong></li>
+      <li>Na aposentadoria: <strong>benefício INSS de piso + renda do patrimônio acumulado</strong></li>
+    </ul>
+
+    <p>Esse planejamento — legalmente impecável e baseado em normas expressas — é o que a AÇÃOPREV implementa para seus clientes, utilizando a <strong>calculadora de planejamento previdenciário</strong> desenvolvida pelo escritório para demonstrar, mês a mês, quando pagar, quanto economizar e quanto esse capital renderá.</p>
+  </div>
+
+  <!-- 7. Simulação -->
+  <div class="section">
+    <span class="section-num">07 — Números reais</span>
+    <h2>O Poder do Planejamento: Uma Simulação Real</h2>
+    <p>Para ilustrar a diferença entre a estratégia convencional e a estratégia AÇÃOPREV, considere o seguinte perfil:</p>
+    <ul class="art-list" style="margin-bottom:28px">
+      <li>Segurado do sexo masculino, <strong>60 anos</strong>, com contribuições antes de 13/11/2019 (pré-reforma)</li>
+      <li><strong>35 anos de tempo de contribuição</strong> (420 meses) — carência completa há aproximadamente 20 anos</li>
+      <li>Aposentadoria estimada em <strong>56 meses</strong> pelo critério de pontos (EC 103/2019)</li>
+      <li>Contribuição de referência: <strong>R$ 303,60/mês</strong> (20% do salário mínimo 2024)</li>
+    </ul>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <span class="cc-label">Sem planejamento</span>
+        <h4>Contribuição mensal</h4>
+        <div class="cc-row"><span>Contribuições até aposentar</span><span class="cc-val red">56 pagamentos</span></div>
+        <div class="cc-row"><span>Total pago ao INSS</span><span class="cc-val red">R$ 17.001,60</span></div>
+        <div class="cc-row"><span>Capital acumulado</span><span class="cc-val red">R$ 0,00</span></div>
+        <div class="cc-row"><span>Benefício INSS</span><span class="cc-val">R$ 1.518,00/mês</span></div>
+        <div class="cc-row"><span>Renda do capital</span><span class="cc-val red">R$ 0,00/mês</span></div>
+        <div class="cc-total"><span>Renda total mensal</span><span class="val">R$ 1.518</span></div>
+      </div>
+      <div class="compare-card best">
+        <span class="cc-label">Com planejamento AÇÃOPREV</span>
+        <h4 class="gold">A cada 24 meses</h4>
+        <div class="cc-row"><span>Contribuições até aposentar</span><span class="cc-val gold">2 pagamentos</span></div>
+        <div class="cc-row"><span>Total pago ao INSS</span><span class="cc-val gold">R$ 607,20</span></div>
+        <div class="cc-row"><span>Economia reinvestida à Selic</span><span class="cc-val gold">≈ R$ 21.030</span></div>
+        <div class="cc-row"><span>Benefício INSS</span><span class="cc-val">R$ 1.518,00/mês</span></div>
+        <div class="cc-row"><span>Renda do capital (6% a.a.)</span><span class="cc-val gold">+ R$ 103/mês</span></div>
+        <div class="cc-total"><span>Renda total mensal</span><span class="val">R$ 1.621</span></div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:8px">
+      <span class="hb-label">Análise retroativa — se tivesse otimizado desde a carência (há ~20 anos)</span>
+      <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:4px">
+        <div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em">Patrimônio potencial hoje</div>
+          <div style="font-size:28px;font-family:'Marcellus',serif;color:var(--gold)">≈ R$ 240.000</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em">Renda extra mensal</div>
+          <div style="font-size:28px;font-family:'Marcellus',serif;color:var(--gold)">+ R$ 1.200/mês</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em">Renda total na aposentadoria</div>
+          <div style="font-size:28px;font-family:'Marcellus',serif;color:var(--gold)">R$ 2.718/mês</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text3);margin-top:14px;font-style:italic">Calculado pela Calculadora de Planejamento Previdenciário AÇÃOPREV. Valores nominais sem ajuste pelo IPCA. Taxa Selic 11% a.a. na fase de acumulação; Tesouro IPCA+ 6% a.a. real na fase de renda.</p>
+    </div>
+  </div>
+
+  <!-- 8. Conclusão -->
+  <div class="section">
+    <span class="section-num">08 — Síntese</span>
+    <h2>Conclusão: Proteção de Piso + Liberdade Financeira</h2>
+    <div class="conclusion">
+      <p>O planejamento previdenciário estratégico não é sobre pagar menos ao INSS por descuido ou desconhecimento. É a <strong>decisão racional e documentada</strong> de utilizar o INSS pelo que ele é — um seguro de renda mínima — e concentrar os recursos excedentes em ativos que realmente multiplicam patrimônio.</p>
+      <p>A convergência dos benefícios para o salário mínimo ao longo do tempo retira qualquer vantagem sustentável de maximizar o benefício inicial. O custo de oportunidade das contribuições mensais desnecessárias é real e mensurável. O valor do tempo — de uma aposentadoria antecipada — é irreversível. E o risco de reformas futuras é permanente.</p>
+      <p>A estratégia AÇÃOPREV sintetiza esses princípios em um plano executável: identificar a data mais próxima de aposentadoria, manter a qualidade de segurado com o mínimo necessário, investir a diferença e construir renda privada que complemente o benefício do INSS.</p>
+      <p>O resultado é uma aposentadoria <strong>mais cedo</strong>, com <strong>maior renda total mensal</strong>, <strong>maior patrimônio acumulado</strong> e <strong>maior proteção</strong> contra as incertezas do sistema previdenciário brasileiro.</p>
+      <div class="final-quote">"Aposentar-se mais cedo, pagar menos ao INSS e investir a diferença: não é uma brecha — é planejamento."</div>
+    </div>
+  </div>
+
+</article>
+
+<!-- FOOTER -->
+<footer>
+  <div class="article-footer">
+    <div class="footer-brand">
+      AÇÃOPREV
+      <span>Outeiral & Bered Advogados Associados</span>
+      <span>Porto Alegre / Canela — RS</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://acaoprev.com">acaoprev.com</a>
+      <span>contato@acaoprev.com</span>
+      <span>(54) 99688-1567</span>
+    </div>
+  </div>
+  <div class="footer-disclaimer">
+    Este artigo tem caráter informativo e educacional. Cada situação previdenciária é única e os valores apresentados são ilustrativos. Consulte um advogado previdenciário para análise individualizada da sua situação.
+    © 2025 AÇÃOPREV Advocacia. Todos os direitos reservados.
+  </div>
+</footer>
+
+<script>
+  // Barra de progresso de leitura
+  const bar = document.getElementById('readProgress');
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+    bar.style.width = Math.min(100, pct) + '%';
+  }, { passive: true });
+</script>
+
+
+<script>
+document.getElementById('shareBtnEst').addEventListener('click', function(){
+  var url = window.location.href;
+  var text = 'A estratégia inteligente de planejamento previdenciário — AÇÃOPREV';
+  if(navigator.share){
+    navigator.share({ title: text, url: url });
+  } else {
+    navigator.clipboard.writeText(url).then(function(){
+      var t = document.getElementById('shareToastEst');
+      t.classList.add('show');
+      setTimeout(function(){ t.classList.remove('show'); }, 2500);
+    });
+  }
+});
+</script>
+</body>
+</html>
