@@ -310,7 +310,6 @@
   body.view-consulta #consulta-online-page,
   body.view-parceiros #parceiros-page,
   body.view-area #areas-page { display: block; }
-  body.view-artigos section.hero,
   body[class*="view-"] section.hero,
   body[class*="view-"] #areas,
   body[class*="view-"] #quem-somos,
@@ -397,68 +396,30 @@
     -webkit-touch-callout: none;
   }
 
-  /* ═══ ARTIGOS PAGE ═══════════════════════════════════════════ */
+  /* ===== Artigos ===== */
   body.view-artigos #artigos-page { display: block; }
-
-  .articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2px;
-    background: rgba(201,168,76,.1);
-    margin-top: 2.5rem;
-  }
-  .article-card {
-    background: var(--dark-2);
-    padding: 2rem 2rem 1.75rem;
-    display: flex; flex-direction: column;
-    transition: background .25s;
-  }
+  body.view-artigos section.hero,
+  body.view-artigos #areas,
+  body.view-artigos #quem-somos,
+  body.view-artigos #parceiros-cta,
+  body.view-artigos #contato { display: none; }
+  #artigos-page { display: none; padding: clamp(7rem,12vh,9rem) clamp(1.5rem,8vw,8rem) 5rem; max-width: 1100px; margin: 0 auto; }
+  #artigos-page h2 { font-family: 'Marcellus', serif; font-size: clamp(1.8rem,3.5vw,2.6rem); font-weight: 500; color: var(--white); letter-spacing: .04em; margin-bottom: .75rem; }
+  #artigos-page .intro { max-width: 760px; color: var(--text-secondary); margin-bottom: 3rem; font-size: 1.05rem; }
+  .articles-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 1.5px; background: var(--border); border: 1px solid var(--border); }
+  .article-card { background: var(--dark-2); padding: 2rem 1.75rem; display: flex; flex-direction: column; gap: .75rem; transition: background .25s; }
   .article-card:hover { background: var(--dark-3); }
-  .article-card-cat {
-    display: inline-flex; align-items: center; gap: 9px;
-    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 1rem;
-  }
-  .article-card-cat::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold); }
-  .article-card-title {
-    font-family: 'Marcellus', serif; font-size: 1.25rem; font-weight: 400;
-    color: var(--text-primary); line-height: 1.3; margin-bottom: 0.85rem;
-    letter-spacing: 0.03em;
-  }
-  .article-card-excerpt {
-    font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;
-    margin-bottom: 1.5rem; flex: 1;
-    text-align: justify; hyphens: auto;
-  }
-  .article-card-footer {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 10px; flex-wrap: wrap;
-    padding-top: 1.25rem; border-top: 1px solid var(--border);
-  }
-  .article-card-read {
-    display: inline-block; text-decoration: none;
-    font-size: 0.76rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--dark); background: var(--gold);
-    padding: 9px 22px; border-radius: 2px; transition: background .25s;
-  }
-  .article-card-read:hover { background: var(--gold-light); }
-  .article-card-share {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--gold); border: 1px solid var(--border-strong);
-    padding: 8px 16px; background: none; cursor: pointer; border-radius: 2px;
-    transition: background .2s; text-decoration: none;
-  }
-  .article-card-share:hover { background: rgba(201,168,76,.1); }
-  .article-card-meta { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; margin-top: 0.4rem; }
-
-  /* share toast */
-  .card-toast {
-    font-size: 0.74rem; color: var(--gold); opacity: 0;
-    transition: opacity .3s; margin-left: 2px; display: inline-block;
-  }
-  .card-toast.show { opacity: 1; }
-
+  .article-card-cat { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-family: 'Marcellus', serif; }
+  .article-card-title { font-family: 'Marcellus', serif; font-size: 1.08rem; color: var(--white); line-height: 1.35; letter-spacing: .02em; }
+  .article-card-excerpt { font-size: .88rem; color: var(--text-secondary); line-height: 1.7; flex: 1; }
+  .article-card-meta { font-size: .75rem; color: var(--text-muted); letter-spacing: .05em; }
+  .article-card-footer { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: .5rem; }
+  .article-card-read { font-size: .8rem; color: var(--gold); text-decoration: none; letter-spacing: .08em; transition: letter-spacing .25s; }
+  .article-card-read:hover { letter-spacing: .14em; }
+  .article-card-share { display: inline-flex; align-items: center; gap: 5px; font-family: 'Lora', serif; font-size: .75rem; color: var(--text-muted); background: none; border: 1px solid var(--border); border-radius: 3px; padding: 5px 10px; cursor: pointer; transition: color .2s, border-color .2s; }
+  .article-card-share:hover { color: var(--gold); border-color: var(--gold); }
+  .card-toast { display: block; font-size: .72rem; color: var(--gold); height: 0; overflow: hidden; transition: height .2s; }
+  .card-toast.show { height: 1.2em; }
 </style>
 </head>
 <body>
@@ -511,8 +472,8 @@
     <li><a href="#quem-somos">Quem Somos</a></li>
     <li><a href="#consulta-online">Avaliação Gratuita</a></li>
     <li><a href="#parceiros">Seja Parceiro</a></li>
-    <li><a href="#artigos">Artigos</a></li>
     <li><a href="portal-colaboradores.html" class="nav-portal">Portal</a></li>
+    <li><a href="#artigos">Artigos</a></li>
     <li><a href="#contato" class="nav-cta">Fale Conosco</a></li>
   </ul>
 </nav>
@@ -785,96 +746,6 @@
 </section>
 
 <!-- FOOTER -->
-
-<!-- ════════════════════════════════
-     ARTIGOS PAGE
-════════════════════════════════ -->
-<section class="subpage" id="artigos-page">
-  <a href="#home" class="subpage-back">← Voltar ao início</a>
-  <h2>Artigos</h2>
-  <p class="intro">Conteúdo educacional sobre Direito Previdenciário — produzido pela equipe AÇÃOPREV para que você conheça seus direitos e tome decisões informadas.</p>
-
-  <div class="articles-grid">
-
-    <!-- CARD 1 -->
-    <div class="article-card">
-      <span class="article-card-cat">Planejamento Previdenciário</span>
-      <div class="article-card-title">A Estratégia Inteligente de Planejamento Previdenciário</div>
-      <div class="article-card-excerpt">A maioria dos trabalhadores contribui pelo valor errado durante anos. Existe uma forma legal de contribuir pelo mínimo permitido, preservar a qualidade de segurado e se aposentar mais rápido — pagando significativamente menos ao INSS.</div>
-      <div class="article-card-meta">Leitura: 10 min · Planejamento</div>
-      <div class="article-card-footer">
-        <a href="artigo-estrategia-acaoprev.html" class="article-card-read">Ler artigo →</a>
-        <button class="article-card-share" onclick="shareArticle('artigo-estrategia-acaoprev.html','A Estratégia Inteligente de Planejamento Previdenciário — AÇÃOPREV','toast1')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Compartilhar
-        </button>
-      </div>
-      <span class="card-toast" id="toast1">Link copiado!</span>
-    </div>
-    <!-- CARD 2 -->
-    <div class="article-card">
-      <span class="article-card-cat">Auxílio-Acidente</span>
-      <div class="article-card-title">Auxílio-Acidente: O Benefício que Poucos Trabalhadores Conhecem</div>
-      <div class="article-card-excerpt">Voltou ao trabalho depois de um acidente, mas com sequela? A Lei 8.213/91 garante um benefício permanente de 50% do salário-de-benefício, cumulativo com o salário, sem carência. A maioria dos trabalhadores desconhece esse direito.</div>
-      <div class="article-card-meta">Leitura: 8 min · Benefícios</div>
-      <div class="article-card-footer">
-        <a href="artigo-auxilio-acidente.html" class="article-card-read">Ler artigo →</a>
-        <button class="article-card-share" onclick="shareArticle('artigo-auxilio-acidente.html','Auxílio-Acidente: O Benefício que Poucos Trabalhadores Conhecem — AÇÃOPREV','toast2')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Compartilhar
-        </button>
-      </div>
-      <span class="card-toast" id="toast2">Link copiado!</span>
-    </div>
-    <!-- CARD 3 -->
-    <div class="article-card">
-      <span class="article-card-cat">Teses Revisionais</span>
-      <div class="article-card-title">Revisão de Benefício do INSS: Como Corrigir um Cálculo Errado e Receber os Atrasados</div>
-      <div class="article-card-excerpt">Milhões de brasileiros recebem aposentadorias e auxílios calculados com critérios equivocados. A revisão corrige esses erros e pode gerar aumento permanente no valor mensal mais o pagamento de atrasados dos últimos 5 anos, com correção pela Selic.</div>
-      <div class="article-card-meta">Leitura: 9 min · Revisão</div>
-      <div class="article-card-footer">
-        <a href="artigo-teses-revisionais.html" class="article-card-read">Ler artigo →</a>
-        <button class="article-card-share" onclick="shareArticle('artigo-teses-revisionais.html','Revisão de Benefício do INSS — AÇÃOPREV','toast3')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Compartilhar
-        </button>
-      </div>
-      <span class="card-toast" id="toast3">Link copiado!</span>
-    </div>
-    <!-- CARD 4 -->
-    <div class="article-card">
-      <span class="article-card-cat">Isenção de IR</span>
-      <div class="article-card-title">Isenção de Imposto de Renda por Doença Grave: Quem Tem Direito e Como Recuperar o que Foi Pago</div>
-      <div class="article-card-excerpt">Aposentados e pensionistas com doença grave têm direito a parar de pagar IR sobre seus proventos — e a recuperar tudo o que pagaram nos últimos 5 anos, com correção pela Selic. Doença controlada ou curada também dá direito, conforme a Súmula 627 do STJ.</div>
-      <div class="article-card-meta">Leitura: 7 min · Isenção Fiscal</div>
-      <div class="article-card-footer">
-        <a href="artigo-isencao-ir.html" class="article-card-read">Ler artigo →</a>
-        <button class="article-card-share" onclick="shareArticle('artigo-isencao-ir.html','Isenção de IR por Doença Grave — AÇÃOPREV','toast4')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Compartilhar
-        </button>
-      </div>
-      <span class="card-toast" id="toast4">Link copiado!</span>
-    </div>
-    <!-- CARD 5 -->
-    <div class="article-card">
-      <span class="article-card-cat">Concessão de Benefícios</span>
-      <div class="article-card-title">Concessão de Benefícios do INSS: Como Requerer, O Que o INSS Costuma Negar e Como Reverter</div>
-      <div class="article-card-excerpt">Aposentadoria, auxílio-doença, pensão por morte, aposentadoria especial — ter direito a um benefício não significa recebê-lo automaticamente. Este guia explica os principais benefícios, as causas mais comuns de negativa e como contestá-las.</div>
-      <div class="article-card-meta">Leitura: 10 min · Benefícios</div>
-      <div class="article-card-footer">
-        <a href="artigo-concessao-beneficios.html" class="article-card-read">Ler artigo →</a>
-        <button class="article-card-share" onclick="shareArticle('artigo-concessao-beneficios.html','Concessão de Benefícios do INSS — AÇÃOPREV','toast5')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Compartilhar
-        </button>
-      </div>
-      <span class="card-toast" id="toast5">Link copiado!</span>
-    </div>
-
-  </div><!-- /articles-grid -->
-</section>
-
 <section class="subpage" id="consulta-online-page">
   <a href="#home" class="subpage-back">← Voltar ao início</a>
   <div class="section-label">Consulta Online</div>
@@ -1119,6 +990,107 @@
   </div>
 </section>
 
+
+<section id="artigos-page">
+  <a href="#home" class="subpage-back">← Voltar ao início</a>
+  <div class="section-label">Publicações</div>
+  <h2>Artigos</h2>
+  <p class="intro">Conteúdo técnico sobre direito previdenciário para ajudar você a entender seus direitos e tomar decisões mais informadas.</p>
+  <div class="articles-grid">
+
+    <div class="article-card">
+      <span class="article-card-cat">Planejamento</span>
+      <div class="article-card-title">Planejamento Previdenciário: A Estratégia que Pode Valer Anos de Salário</div>
+      <div class="article-card-excerpt">Antecipar a aposentadoria em dois, três ou cinco anos não é sorte — é resultado de um planejamento feito com antecedência.</div>
+      <div class="article-card-meta">Leitura: 8 min · Estratégia</div>
+      <div class="article-card-footer">
+        <a href="artigo-estrategia-acaoprev.html" class="article-card-read">Ler artigo →</a>
+        <button class="article-card-share" onclick="shareArticle('artigo-estrategia-acaoprev.html','Planejamento Previdenciário — AÇÃOPREV','toast1')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Compartilhar
+        </button>
+      </div>
+      <span class="card-toast" id="toast1">Link copiado!</span>
+    </div>
+
+    <div class="article-card">
+      <span class="article-card-cat">Auxílio-Acidente</span>
+      <div class="article-card-title">Auxílio-Acidente: O Benefício que Poucos Conhecem e Muitos Têm Direito</div>
+      <div class="article-card-excerpt">Acidente de trabalho deixou sequela? Você pode receber 50% do salário de benefício todo mês — sem precisar se afastar.</div>
+      <div class="article-card-meta">Leitura: 7 min · Benefícios</div>
+      <div class="article-card-footer">
+        <a href="artigo-auxilio-acidente.html" class="article-card-read">Ler artigo →</a>
+        <button class="article-card-share" onclick="shareArticle('artigo-auxilio-acidente.html','Auxílio-Acidente — AÇÃOPREV','toast2')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Compartilhar
+        </button>
+      </div>
+      <span class="card-toast" id="toast2">Link copiado!</span>
+    </div>
+
+    <div class="article-card">
+      <span class="article-card-cat">Revisão de Benefício</span>
+      <div class="article-card-title">Teses Revisionais: Quando Vale a Pena Revisar Seu Benefício do INSS</div>
+      <div class="article-card-excerpt">Seu benefício pode estar sendo pago a menor. Conheça as principais teses para aumentar o valor da sua aposentadoria ou pensão.</div>
+      <div class="article-card-meta">Leitura: 8 min · Revisão</div>
+      <div class="article-card-footer">
+        <a href="artigo-teses-revisionais.html" class="article-card-read">Ler artigo →</a>
+        <button class="article-card-share" onclick="shareArticle('artigo-teses-revisionais.html','Teses Revisionais — AÇÃOPREV','toast3')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Compartilhar
+        </button>
+      </div>
+      <span class="card-toast" id="toast3">Link copiado!</span>
+    </div>
+
+    <div class="article-card">
+      <span class="article-card-cat">Isenção de IR</span>
+      <div class="article-card-title">Isenção de IR sobre Aposentadoria: Quem Tem Direito e Como Obter</div>
+      <div class="article-card-excerpt">Portadores de doenças graves têm direito à isenção total do Imposto de Renda sobre aposentadoria e pensão. Veja como garantir.</div>
+      <div class="article-card-meta">Leitura: 7 min · Tributário</div>
+      <div class="article-card-footer">
+        <a href="artigo-isencao-ir.html" class="article-card-read">Ler artigo →</a>
+        <button class="article-card-share" onclick="shareArticle('artigo-isencao-ir.html','Isenção de IR — AÇÃOPREV','toast4')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Compartilhar
+        </button>
+      </div>
+      <span class="card-toast" id="toast4">Link copiado!</span>
+    </div>
+
+    <div class="article-card">
+      <span class="article-card-cat">Concessão de Benefícios</span>
+      <div class="article-card-title">Concessão de Benefícios: O Que Fazer Quando o INSS Nega ou Demora</div>
+      <div class="article-card-excerpt">INSS negou seu benefício ou o processo está parado há meses? Entenda seus direitos e os caminhos para garantir a concessão.</div>
+      <div class="article-card-meta">Leitura: 8 min · Concessão</div>
+      <div class="article-card-footer">
+        <a href="artigo-concessao-beneficios.html" class="article-card-read">Ler artigo →</a>
+        <button class="article-card-share" onclick="shareArticle('artigo-concessao-beneficios.html','Concessão de Benefícios — AÇÃOPREV','toast5')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Compartilhar
+        </button>
+      </div>
+      <span class="card-toast" id="toast5">Link copiado!</span>
+    </div>
+
+    <div class="article-card">
+      <span class="article-card-cat">Aposentadoria Especial</span>
+      <div class="article-card-title">Conversão de Tempo Especial: Como Se Aposentar Mais Cedo</div>
+      <div class="article-card-excerpt">Quem trabalhou exposto a ruído, químicos ou calor tem direito a um bônus de tempo: cada ano em condições especiais equivale a mais de um ano de contribuição comum.</div>
+      <div class="article-card-meta">Leitura: 9 min · Aposentadoria Especial</div>
+      <div class="article-card-footer">
+        <a href="artigo-conversao-tempo-especial.html" class="article-card-read">Ler artigo →</a>
+        <button class="article-card-share" onclick="shareArticle('artigo-conversao-tempo-especial.html','Conversão de Tempo Especial — AÇÃOPREV','toast6')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Compartilhar
+        </button>
+      </div>
+      <span class="card-toast" id="toast6">Link copiado!</span>
+    </div>
+
+  </div>
+</section>
+
 <footer>
   <div class="footer-bg"></div>
   <div class="footer-overlay"></div>
@@ -1145,14 +1117,17 @@
   const areaIds = ['area-revisional', 'area-isencao-ir', 'area-auxilio-acidente', 'area-concessao'];
   function route() {
     const h = location.hash;
-    const isArtigos = h === '#artigos';
     const isConsulta = h === '#consulta-online';
     const isParceiros = h === '#parceiros';
     const isArea = areaIds.includes(h.slice(1));
     document.body.classList.toggle('view-consulta', isConsulta);
     document.body.classList.toggle('view-parceiros', isParceiros);
     document.body.classList.toggle('view-area', isArea);
-    document.body.classList.toggle('view-artigos', isArtigos);
+
+  // Artigos
+  const isArtigos = h === '#artigos';
+  document.body.classList.toggle('view-artigos', isArtigos);
+
     document.querySelectorAll('.area-article').forEach(a => {
       a.style.display = (isArea && '#' + a.id === h) ? 'block' : 'none';
     });
@@ -1319,17 +1294,16 @@
     img.setAttribute('draggable', 'false');
   });
 
-  // Article share
   function shareArticle(path, title, toastId) {
     var base = window.location.href.split('#')[0].replace('index.html','');
     var url = base + path;
     if (navigator.share) {
       navigator.share({ title: title, url: url });
     } else {
-      navigator.clipboard.writeText(url).then(function(){
+      navigator.clipboard.writeText(url).then(function() {
         var t = document.getElementById(toastId);
         t.classList.add('show');
-        setTimeout(function(){ t.classList.remove('show'); }, 2500);
+        setTimeout(function() { t.classList.remove('show'); }, 2500);
       });
     }
   }

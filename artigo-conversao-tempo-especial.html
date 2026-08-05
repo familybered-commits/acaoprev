@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversão de Tempo Especial: Como Se Aposentar Mais Cedo — AÇÃOPREV</title>
+<meta name="description" content="Entenda como o tempo trabalhado exposto a ruído, químicos ou calor pode ser convertido em tempo maior de contribuição e antecipar sua aposentadoria.">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark: #0D0D0D;
+  --dark-2: #1A1A1A;
+  --dark-3: #262626;
+  --gold: #C9A84C;
+  --gold-light: #ddbf6e;
+  --text-primary: #F0EAD6;
+  --text-muted: #A09070;
+  --border: rgba(201,168,76,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--dark);color:var(--text-primary);font-family:'Lora',Georgia,serif;line-height:1.75;-webkit-font-smoothing:antialiased;}
+
+/* progress bar */
+.read-progress{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:200;width:0;transition:width .1s linear;}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:100;background:rgba(13,13,13,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:14px 28px;}
+.header-brand{font-family:'Marcellus',serif;font-size:1.1rem;color:var(--gold);text-decoration:none;letter-spacing:.1em;}
+.header-back{font-size:.8rem;color:var(--text-muted);text-decoration:none;transition:color .2s;}
+.header-back:hover{color:var(--gold);}
+
+/* wrap */
+.article-wrap{max-width:720px;margin:0 auto;padding:48px 48px 80px 24px;}
+
+/* hero */
+.article-hero{margin-bottom:40px;}
+.article-category{display:inline-block;font-family:'Marcellus',serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;padding-bottom:6px;border-bottom:1px solid var(--gold);}
+.article-title{font-family:'Marcellus',serif;font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.25;color:var(--text-primary);margin-bottom:20px;}
+.article-title em{font-style:italic;color:var(--gold-light);}
+.article-lead{font-size:1.08rem;color:var(--text-muted);line-height:1.8;margin-bottom:24px;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.78rem;color:var(--text-muted);letter-spacing:.05em;}
+.article-meta-sep{width:3px;height:3px;border-radius:50%;background:var(--gold);opacity:.5;}
+
+/* share bar */
+.share-bar{display:flex;align-items:center;gap:10px;margin-bottom:40px;padding:14px 18px;border:1px solid var(--border);border-radius:8px;flex-wrap:wrap;}
+.share-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-right:4px;}
+.share-btn{display:inline-flex;align-items:center;gap:6px;font-family:'Lora',serif;font-size:.8rem;color:var(--text-primary);background:var(--dark-3);border:1px solid var(--border);border-radius:5px;padding:7px 14px;cursor:pointer;text-decoration:none;transition:border-color .2s,color .2s;}
+.share-btn:hover{border-color:var(--gold);color:var(--gold);}
+.share-toast{font-size:.75rem;color:var(--gold);opacity:0;transition:opacity .3s;}
+.share-toast.show{opacity:1;}
+
+/* sections */
+.article-section{margin-bottom:52px;}
+.article-section h2{font-family:'Marcellus',serif;font-size:1.3rem;color:var(--gold);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.prose p{margin-bottom:16px;font-size:1rem;color:var(--text-primary);text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.prose p:last-child{margin-bottom:0;}
+
+/* callouts */
+.hl-box{background:rgba(201,168,76,.08);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;padding:16px 20px;margin:20px 0;font-size:.93rem;line-height:1.7;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.alert-box{background:rgba(201,100,50,.08);border-left:3px solid #c96432;border-radius:0 6px 6px 0;padding:16px 20px;margin:20px 0;font-size:.93rem;line-height:1.7;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.success-box{background:rgba(60,140,80,.09);border-left:3px solid #3c8c50;border-radius:0 6px 6px 0;padding:16px 20px;margin:20px 0;font-size:.93rem;line-height:1.7;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.pull-quote{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:24px 0;margin:28px 0;text-align:center;}
+.pull-quote p{font-style:italic;font-size:1.05rem;color:var(--text-muted);line-height:1.7;}
+
+/* stats */
+.stat-row{display:flex;gap:16px;margin:24px 0;flex-wrap:wrap;}
+.stat-cell{flex:1;min-width:140px;background:var(--dark-2);border:1px solid var(--border);border-radius:8px;padding:18px 16px;text-align:center;}
+.stat-num{font-family:'Marcellus',serif;font-size:2rem;color:var(--gold);line-height:1;}
+.stat-lbl{font-size:.75rem;color:var(--text-muted);margin-top:6px;line-height:1.4;}
+
+/* table */
+.data-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.88rem;}
+.data-table th{background:var(--dark-2);color:var(--gold);font-family:'Marcellus',serif;font-weight:400;text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);}
+.data-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-primary);vertical-align:top;}
+.data-table tr:hover td{background:var(--dark-2);}
+
+/* flow */
+.flow{display:flex;flex-direction:column;gap:0;margin:20px 0;}
+.flow-step{display:flex;gap:16px;position:relative;padding-bottom:24px;}
+.flow-step:last-child{padding-bottom:0;}
+.flow-step::before{content:'';position:absolute;left:16px;top:36px;bottom:0;width:1px;background:var(--border);}
+.flow-step:last-child::before{display:none;}
+.flow-n{width:33px;height:33px;border-radius:50%;background:var(--dark-3);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Marcellus',serif;font-size:.85rem;color:var(--gold);flex-shrink:0;}
+.flow-body{flex:1;padding-top:6px;}
+.flow-title{font-family:'Marcellus',serif;font-size:1rem;color:var(--text-primary);margin-bottom:6px;}
+.flow-sub{font-size:.88rem;color:var(--text-muted);line-height:1.65;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+
+/* CTA */
+.article-cta{background:var(--dark-2);border:1px solid var(--border);border-radius:12px;padding:36px 32px;margin:52px 0 40px;text-align:center;}
+.article-cta h3{font-family:'Marcellus',serif;font-size:1.3rem;color:var(--gold);margin-bottom:12px;}
+.article-cta p{color:var(--text-muted);font-size:.95rem;line-height:1.7;margin-bottom:24px;}
+.btn-gold{display:inline-block;background:var(--gold);color:var(--dark);font-family:'Marcellus',serif;letter-spacing:.08em;font-size:.9rem;padding:14px 28px;border-radius:5px;text-decoration:none;transition:background .2s;}
+.btn-gold:hover{background:var(--gold-light);}
+
+/* footer */
+.article-footer{text-align:center;padding-top:32px;border-top:1px solid var(--border);font-size:.78rem;color:var(--text-muted);}
+
+/* responsive */
+@media(max-width:600px){
+  .article-wrap{padding:32px 16px 60px;}
+  .stat-row{flex-direction:column;}
+  .share-bar{gap:8px;}
+}
+</style>
+</head>
+<body>
+<div class="read-progress" id="readProgress"></div>
+<header class="site-header">
+  <a href="index.html" class="header-brand">AÇÃOPREV</a>
+  <a href="index.html#artigos" class="header-back">← Todos os Artigos</a>
+</header>
+<div class="article-wrap">
+
+  <div class="article-hero">
+    <div class="article-category">Aposentadoria Especial</div>
+    <h1 class="article-title">Conversão de Tempo Especial: Como Trabalhadores Expostos a Agentes Nocivos <em>se Aposentam Mais Cedo</em></h1>
+    <p class="article-lead">Quem trabalhou exposto a ruído excessivo, produtos químicos, calor, agentes biológicos ou outros agentes nocivos tem direito a um bônus de tempo: cada ano em condições especiais equivale a mais de um ano de contribuição comum. O resultado pode ser uma aposentadoria antecipada em anos — mesmo para quem nunca soube desse direito.</p>
+    <div class="article-meta">
+      <span class="article-meta-item">AÇÃOPREV Advocacia</span>
+      <div class="article-meta-sep"></div>
+      <span class="article-meta-item">Aposentadoria Especial</span>
+      <div class="article-meta-sep"></div>
+      <span class="article-meta-item">Leitura: 9 min</span>
+    </div>
+  </div>
+
+  <div class="share-bar">
+    <span class="share-label">Compartilhar</span>
+    <button class="share-btn" id="shareBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Compartilhar artigo
+    </button>
+    <a class="share-btn" href="https://wa.me/?text=Convers%C3%A3o+de+tempo+especial+para+aposentadoria+antecipada+%E2%80%94+leia+no+site+da+A%C3%87%C3%83OPREV" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.528 5.836L0 24l6.341-1.502A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-4.964-1.344l-.356-.212-3.667.868.937-3.566-.233-.37A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      WhatsApp
+    </a>
+    <span class="share-toast" id="shareToast">Link copiado!</span>
+  </div>
+
+  <div class="article-section">
+    <h2>1. O Que É o Tempo Especial</h2>
+    <div class="prose">
+      <p>A legislação previdenciária brasileira reconhece que determinadas atividades laborais submetem o trabalhador a condições que prejudicam sua saúde de forma mais intensa do que o trabalho comum. Para essas situações, a Lei nº 8.213/91 criou dois institutos: a <strong>aposentadoria especial</strong> — que exige menos tempo de contribuição — e a <strong>conversão do tempo especial em tempo comum</strong>, que permite somar um bônus ao tempo ordinário já acumulado.</p>
+      <p>A lógica é simples: se um ambiente de trabalho é mais desgastante do que a média, o Estado reconhece isso concedendo ao trabalhador um tempo de contribuição maior do que o efetivamente cumprido. Quem trabalhou 15 anos em condições especialmente prejudiciais pode ter esse período convertido em 25 anos de tempo comum.</p>
+    </div>
+    <div class="pull-quote">
+      <p>"A conversão de tempo especial não é um benefício adicional — é o reconhecimento legal de que alguns ambientes de trabalho envelhecem o trabalhador mais rapidamente."</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-cell"><div class="stat-num">1,67×</div><div class="stat-lbl">fator de conversão para atividade especial de 15 anos (homem)</div></div>
+      <div class="stat-cell"><div class="stat-num">1,40×</div><div class="stat-lbl">fator de conversão para atividade especial de 25 anos (homem)</div></div>
+      <div class="stat-cell"><div class="stat-num">1,20×</div><div class="stat-lbl">fator de conversão para atividade especial de 25 anos (mulher)</div></div>
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>2. Aposentadoria Especial × Conversão: Qual a Diferença</h2>
+    <div class="prose">
+      <p>É fundamental entender a distinção entre esses dois institutos, pois cada um tem requisitos e estratégias diferentes:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Instituto</th><th>O Que É</th><th>Melhor Para</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Aposentadoria especial</strong></td><td>Aposentadoria direta para quem trabalhou 15, 20 ou 25 anos integralmente em condições especiais</td><td>Quem passou toda ou a maior parte da carreira em ambiente especial e quer se aposentar apenas com esse tempo</td></tr>
+        <tr><td><strong>Conversão de tempo especial</strong></td><td>Transformação do tempo especial em tempo comum com fator multiplicador, somando ao restante da carreira</td><td>Quem tem períodos mistos — parte em ambiente especial, parte em trabalho comum — e quer uma aposentadoria por tempo de contribuição ou regra de transição</td></tr>
+      </tbody>
+    </table>
+    <div class="hl-box">
+      <strong>Exemplo prático:</strong> um trabalhador com 20 anos de tempo comum e 8 anos em ambiente de ruído acima de 85 dB (qualificado como atividade de 25 anos especiais). Esses 8 anos, convertidos pelo fator 1,40, tornam-se <strong>11 anos e 2 meses de tempo comum</strong>. Somados aos 20 anos regulares, o trabalhador atinge mais de 31 anos de tempo de contribuição — suficiente para várias regras de transição.
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>3. Os Fatores de Conversão</h2>
+    <div class="prose">
+      <p>A tabela de conversão está prevista no Decreto nº 3.048/99 (Regulamento da Previdência Social) e varia conforme o tempo mínimo exigido para a aposentadoria especial da atividade exercida:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Tipo de Atividade Especial</th><th>Fator — Homem (ref. 35 anos)</th><th>Fator — Mulher (ref. 30 anos)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>15 anos</strong> (mais prejudiciais — ex.: radiação, asbesto)</td><td>2,33</td><td>2,00</td></tr>
+        <tr><td><strong>20 anos</strong></td><td>1,75</td><td>1,50</td></tr>
+        <tr><td><strong>25 anos</strong> (menos prejudiciais — ex.: ruído, calor, químicos)</td><td>1,40</td><td>1,20</td></tr>
+      </tbody>
+    </table>
+    <div class="hl-box">
+      <strong>Atenção pós-EC 103/2019:</strong> a Reforma da Previdência não extinguiu a conversão de tempo especial. O STF, no RE 593.727 (Tema 709), garantiu que o tempo especial acumulado antes de novembro de 2019 é protegido e pode ser convertido para fins de acesso a qualquer aposentadoria prevista nas regras de transição.
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>4. Quais Atividades Geram Tempo Especial</h2>
+    <div class="prose">
+      <p>Os agentes nocivos reconhecidos estão listados no Decreto nº 3.048/99 e na legislação complementar. Os mais comuns na prática são:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Agente Nocivo</th><th>Exemplos de Atividades</th><th>Parâmetro</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ruído</strong></td><td>Metalúrgica, serraria, construção civil, indústria têxtil, linhas de produção</td><td>Acima de 85 dB (NR-15)</td></tr>
+        <tr><td><strong>Agentes químicos</strong></td><td>Solventes, tintas, ácidos, poeiras, fumos metálicos, benzeno</td><td>Acima dos limites de tolerância da NR-15</td></tr>
+        <tr><td><strong>Calor</strong></td><td>Fundição, siderurgia, padarias industriais, lavanderias, cozinhas</td><td>Acima dos limites de IBUTG da NR-15</td></tr>
+        <tr><td><strong>Agentes biológicos</strong></td><td>Hospitais, clínicas, laboratórios, frigoríficos, tratamento de esgoto</td><td>Contato habitual com agentes patogênicos</td></tr>
+        <tr><td><strong>Radiação ionizante</strong></td><td>Radiologia, radioterapia, medicina nuclear</td><td>Qualquer nível de exposição</td></tr>
+        <tr><td><strong>Vibração</strong></td><td>Operadores de maquinário pesado, motoristas fora de estrada</td><td>Acima dos limites da NR-9</td></tr>
+        <tr><td><strong>Umidade</strong></td><td>Câmaras frigoríficas, lavanderia, pescadores</td><td>Exposição permanente</td></tr>
+        <tr><td><strong>Eletricidade</strong></td><td>Eletricistas em sistema energizado a céu aberto</td><td>Reconhecimento jurisprudencial</td></tr>
+      </tbody>
+    </table>
+    <div class="alert-box">
+      <strong>O ruído é o agente mais relevante numericamente:</strong> dezenas de milhões de trabalhadores brasileiros foram expostos a níveis prejudiciais de ruído ao longo de suas carreiras — especialmente nas décadas de 1970 a 2000, quando proteção acústica era precária. Muitos têm direito à conversão sem saber.
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>5. Como Provar o Tempo Especial</h2>
+    <div class="prose">
+      <p>A comprovação é o principal ponto crítico. O INSS exige documentação técnica específica, e a ausência de qualquer elemento pode resultar em indeferimento mesmo quando o direito material existe.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-n">I</div>
+        <div class="flow-body">
+          <div class="flow-title">PPP — Perfil Profissiográfico Previdenciário</div>
+          <div class="flow-sub">Documento emitido pelo empregador descrevendo as atividades exercidas, os agentes nocivos presentes e as técnicas de proteção utilizadas. Obrigatório para períodos a partir de 1º de janeiro de 2004. O empregador é obrigado por lei a fornecer o PPP ao trabalhador na rescisão ou mediante solicitação.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">II</div>
+        <div class="flow-body">
+          <div class="flow-title">LTCAT — Laudo Técnico das Condições Ambientais do Trabalho</div>
+          <div class="flow-sub">Elaborado por engenheiro de segurança do trabalho ou médico do trabalho, documenta tecnicamente os agentes nocivos e suas medições. É a base técnica que sustenta o PPP. Para o INSS, o LTCAT precisa ser contemporâneo ao período trabalhado ou conter informação retroativa fundamentada.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">III</div>
+        <div class="flow-body">
+          <div class="flow-title">Formulário SB-40 / DSS-8030 (períodos anteriores a 2004)</div>
+          <div class="flow-sub">Para períodos trabalhados antes de janeiro de 2004, a prova era feita pelo formulário SB-40 (até 1995) ou DSS-8030 (1995–2003). Se não foram guardados, é possível obtê-los junto ao empregador ou buscar reconhecimento judicial.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">IV</div>
+        <div class="flow-body">
+          <div class="flow-title">Enquadramento por categoria (até 1995)</div>
+          <div class="flow-sub">Para períodos anteriores a maio de 1998, determinadas categorias profissionais tinham enquadramento automático como especial pelos Decretos nº 53.831/64 e nº 83.080/79 — sem necessidade de laudo técnico. Eletricistas, por exemplo, tinham presunção de atividade especial por categoria até essa data.</div>
+        </div>
+      </div>
+    </div>
+    <div class="success-box">
+      <strong>Empresa falida ou encerrada:</strong> se o empregador não existe mais, é possível buscar o PPP e o LTCAT junto a sindicatos, ex-colegas (prova testemunhal), processos trabalhistas anteriores ou contratar perito para elaborar laudo retroativo com base em dados do setor. A ausência da empresa não impede o reconhecimento do tempo especial na via judicial.
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>6. EPI Elimina o Tempo Especial?</h2>
+    <div class="prose">
+      <p>Esta é uma das questões mais relevantes — e frequentemente mal compreendidas. O empregador muitas vezes alega que fornecia EPI ao trabalhador, e alguns PPPs indicam "eficácia total" dos EPIs para tentar afastar o enquadramento especial.</p>
+      <p>O Supremo Tribunal Federal resolveu a questão no RE 664.335 (Tema 555): o fornecimento de EPI não elimina o tempo especial quando o agente nocivo for <strong>ruído</strong>. Para ruído, mesmo que o EPI tenha sido fornecido e utilizado, o tempo especial é reconhecido.</p>
+      <p>Para outros agentes, a eficácia comprovada do EPI pode, em tese, afastar o enquadramento — mas a prova da eficácia é ônus do empregador e deve ser técnica e contemporânea, não uma mera declaração no PPP.</p>
+    </div>
+    <div class="pull-quote">
+      <p>"Para o ruído, o STF foi categórico: EPI não elimina o tempo especial. A proteção auditiva atenua a exposição, mas não apaga o dano acumulado ao longo de anos."</p>
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>7. O Impacto da Reforma da Previdência (EC 103/2019)</h2>
+    <div class="prose">
+      <p>A Reforma não extinguiu nem a aposentadoria especial nem a conversão de tempo especial. O que ela alterou foi a base de cálculo e as regras de acesso às aposentadorias por tempo de contribuição — mas o cômputo especial permanece válido.</p>
+      <p>O ponto mais importante para quem já tinha tempo especial acumulado antes da Reforma: o <strong>direito adquirido ao cômputo especial é protegido pela Constituição</strong>. Segundo o STF (RE 593.727, Tema 709), o tempo especial acumulado antes de novembro de 2019 pode ser convertido e somado ao tempo comum para fins de concessão de qualquer aposentadoria prevista nas regras de transição da EC 103/2019.</p>
+    </div>
+    <div class="hl-box">
+      <strong>Na prática:</strong> quem trabalhou em ambiente especial antes de 2019 e tem direito a converter esse tempo não precisa se preocupar com a Reforma — o STF garantiu que esses períodos serão computados com o fator multiplicador independentemente das novas regras.
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>8. Quando a Conversão É Mais Vantajosa que a Aposentadoria Especial Direta</h2>
+    <div class="prose">
+      <p>A decisão entre requerer a aposentadoria especial diretamente ou converter o tempo especial para somar ao tempo comum depende do histórico individual. Algumas situações em que a conversão costuma ser mais vantajosa:</p>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Situação</th><th>Estratégia Indicada</th><th>Motivo</th></tr></thead>
+      <tbody>
+        <tr><td>20 anos especiais + 5 anos comuns</td><td>Aposentadoria especial direta (20 anos)</td><td>Já atingiu o tempo necessário para a especial</td></tr>
+        <tr><td>8 anos especiais + 22 anos comuns</td><td>Conversão do tempo especial</td><td>Não tem tempo suficiente para a especial; a conversão soma anos ao tempo comum</td></tr>
+        <tr><td>25 anos especiais e salários variados</td><td>Comparar as duas opções</td><td>O salário-de-benefício pode diferir; análise individual é necessária</td></tr>
+        <tr><td>Tempo especial de duas ou mais empresas diferentes</td><td>Conversão + soma ao tempo comum</td><td>Cada período especial pode ser convertido individualmente e somado</td></tr>
+      </tbody>
+    </table>
+    <div class="alert-box">
+      <strong>Atenção:</strong> pela aposentadoria especial, o retorno ao ambiente especial após a concessão cancela o benefício. Pela aposentadoria por tempo de contribuição com tempo convertido, essa restrição não existe. Esse fator pode influenciar a escolha para quem pretende continuar trabalhando.
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>9. Como Identificar Se Você Tem Tempo Especial a Converter</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-n">1</div>
+        <div class="flow-body">
+          <div class="flow-title">Acesse o Meu INSS</div>
+          <div class="flow-sub">Em meu.inss.gov.br ou no app Meu INSS, extraia o extrato completo do CNIS com todos os vínculos empregatícios e períodos de contribuição.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">2</div>
+        <div class="flow-body">
+          <div class="flow-title">Identifique os períodos em ambiente potencialmente especial</div>
+          <div class="flow-sub">Procure períodos em que você trabalhou em fábrica, mineração, construção civil, hospitais, frigoríficos, serraria ou qualquer ambiente com ruído, agentes químicos ou biológicos intensos.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">3</div>
+        <div class="flow-body">
+          <div class="flow-title">Solicite o PPP ao empregador</div>
+          <div class="flow-sub">O empregador é obrigado por lei a fornecer o PPP. Se a empresa não existe mais, procure o sindicato da categoria ou ex-colegas que possam ter documentação.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">4</div>
+        <div class="flow-body">
+          <div class="flow-title">Consulte um advogado previdenciário</div>
+          <div class="flow-sub">Com o CNIS e os PPPs disponíveis, um advogado especializado calcula o impacto exato da conversão sobre o tempo total e indica a melhor estratégia — aposentadoria especial direta ou conversão para soma ao tempo comum.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-section">
+    <h2>10. Se o INSS Não Reconhecer o Tempo Especial</h2>
+    <div class="prose">
+      <p>O não reconhecimento pelo INSS é frequente — especialmente em casos de empresas encerradas, PPPs com indicação incorreta de eficácia de EPIs ou períodos anteriores a 2004 com documentação incompleta. Nesses casos, a via judicial é o caminho mais eficaz.</p>
+      <p>Na ação judicial, o juiz nomeia perito técnico para analisar as condições de trabalho descritas — inclusive de forma retroativa, com base em documentação do setor, depoimentos de ex-colegas e laudos de especialistas em higiene ocupacional. A taxa de sucesso em demandas bem fundamentadas é alta, especialmente quando envolve ruído como agente principal.</p>
+    </div>
+    <div class="success-box">
+      <strong>Efeitos retroativos:</strong> quando o INSS nega e a ação judicial reconhece o tempo especial, os efeitos são retroativos à data do requerimento administrativo. Se o trabalhador já teria direito à aposentadoria naquela data, os atrasados desde o pedido são incluídos na sentença.
+    </div>
+  </div>
+
+  <div class="article-cta">
+    <h3>Verifique Seu Histórico com a AÇÃOPREV</h3>
+    <p>Se você trabalhou em ambiente com ruído, produtos químicos, calor, agentes biológicos ou qualquer outro agente nocivo — mesmo que por apenas alguns anos — pode ter tempo especial a converter. A análise do seu CNIS e dos PPPs disponíveis é gratuita e pode revelar anos adicionais de contribuição que mudam completamente o prazo da sua aposentadoria.</p>
+    <a href="index.html#contato" class="btn-gold">Entre em Contato — Análise Gratuita</a>
+  </div>
+
+  <div class="article-footer">
+    <p>AÇÃOPREV Advocacia — Porto Alegre / Canela RS · acaoprev.com</p>
+  </div>
+
+</div>
+<script>
+window.addEventListener('scroll', function() {
+  var d = document.documentElement;
+  var pct = Math.min((d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100, 100);
+  document.getElementById('readProgress').style.width = pct + '%';
+});
+document.getElementById('shareBtn').addEventListener('click', function() {
+  var url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: 'Conversão de Tempo Especial — AÇÃOPREV', url: url });
+  } else {
+    navigator.clipboard.writeText(url).then(function() {
+      var t = document.getElementById('shareToast');
+      t.classList.add('show');
+      setTimeout(function() { t.classList.remove('show'); }, 2500);
+    });
+  }
+});
+</script>
+</body>
+</html>
