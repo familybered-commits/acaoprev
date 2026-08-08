@@ -270,6 +270,42 @@
   /* footer wordmark replaced by logo image */
   .footer-text { font-size: 0.8rem; color: var(--text-muted); text-align: right; line-height: 1.6; }
 
+  /* CASOS SECTION */
+  .casos-tipos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .caso-tipo-card {
+    background: var(--dark-3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .caso-tipo-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-3px);
+  }
+  .caso-tipo-icon { font-size: 1.8rem; margin-bottom: .6rem; }
+  .caso-tipo-nome {
+    font-family: 'Marcellus', serif;
+    font-size: .9rem;
+    letter-spacing: .03em;
+    margin-bottom: .4rem;
+    color: var(--white);
+  }
+  .caso-tipo-desc { font-size: .78rem; color: var(--text-secondary); line-height: 1.55; }
+  @media (max-width: 768px) {
+    .casos-tipos { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 440px) {
+    .casos-tipos { grid-template-columns: 1fr; }
+  }
+
   /* WhatsApp */
   .whatsapp-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 200; box-shadow: 0 4px 20px rgba(37,211,102,0.35); transition: transform 0.25s; }
   .whatsapp-btn:hover { transform: scale(1.1); }
@@ -470,6 +506,7 @@
   <ul class="nav-links">
     <li><a href="#areas">Áreas de Atuação</a></li>
     <li><a href="#quem-somos">Quem Somos</a></li>
+    <li><a href="#casos">Verifique seu Caso</a></li>
     <li><a href="#consulta-online">Avaliação Gratuita</a></li>
     <li><a href="#parceiros">Seja Parceiro</a></li>
     <li><a href="portal-colaboradores.html" class="nav-portal">Portal</a></li>
@@ -643,6 +680,49 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CASOS PREVIDENCIÁRIOS -->
+<section id="casos">
+  <div class="section-label" style="justify-content:center;display:flex;align-items:center;gap:.6rem;font-size:.72rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem">
+    <span style="display:block;width:24px;height:1px;background:var(--gold)"></span>
+    Análise Gratuita
+    <span style="display:block;width:24px;height:1px;background:var(--gold)"></span>
+  </div>
+  <h2 class="section-title" style="text-align:center">Verifique seu <em style="color:var(--gold);font-style:normal">direito previdenciário</em></h2>
+  <p class="section-intro">Milhares de brasileiros têm benefícios previdenciários a que fazem jus e ainda não receberam. Descreva sua situação em minutos — nossa equipe analisa gratuitamente.</p>
+
+  <div class="casos-tipos fade-up">
+    <div class="caso-tipo-card">
+      <div class="caso-tipo-icon">⚖️</div>
+      <div class="caso-tipo-nome">Revisão de Benefício</div>
+      <div class="caso-tipo-desc">Seu benefício foi calculado no teto do INSS? Pode haver direito a revisão.</div>
+    </div>
+    <div class="caso-tipo-card">
+      <div class="caso-tipo-icon">🏥</div>
+      <div class="caso-tipo-nome">Isenção de IR</div>
+      <div class="caso-tipo-desc">Aposentado com doença grave tem direito à isenção de Imposto de Renda.</div>
+    </div>
+    <div class="caso-tipo-card">
+      <div class="caso-tipo-icon">🦺</div>
+      <div class="caso-tipo-nome">Auxílio-Acidente</div>
+      <div class="caso-tipo-desc">Sequelas permanentes de acidente de trabalho geram direito a benefício vitalício.</div>
+    </div>
+    <div class="caso-tipo-card">
+      <div class="caso-tipo-icon">💭</div>
+      <div class="caso-tipo-nome">Outro caso</div>
+      <div class="caso-tipo-desc">Não sabe exatamente? Descreva sua situação e nossa equipe avalia.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:2.5rem" class="fade-up">
+    <a href="https://casos.acaoprev.com" target="_blank" class="btn-primary" style="display:inline-block;text-decoration:none;padding:14px 36px;font-size:.88rem">
+      Verificar meu caso gratuitamente →
+    </a>
+    <p style="margin-top:1rem;font-size:.78rem;color:var(--text-muted)">Retorno em até 24 horas · Sigilo profissional garantido</p>
   </div>
 </section>
 

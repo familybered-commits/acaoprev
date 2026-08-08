@@ -100,6 +100,31 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .tpane{display:none;flex:1;flex-direction:column;overflow:hidden}
 .tpane.on{display:flex}
 
+/* ── CASOS TAB ── */
+.casos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
+.caso-card{background:var(--d3);border:1px solid var(--brd);border-radius:10px;
+  padding:1.1rem 1.1rem 1rem;display:flex;flex-direction:column;gap:.55rem;
+  cursor:pointer;transition:border-color .2s,transform .18s}
+.caso-card:hover{border-color:var(--brds);transform:translateY(-2px)}
+.caso-tag{display:inline-flex;align-items:center;gap:6px;
+  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);
+  border-radius:20px;padding:3px 10px;font-size:.67rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--gold);width:fit-content}
+.caso-relato{font-size:.82rem;color:var(--text);line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.caso-meta{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.2rem}
+.caso-meta-item{font-size:.72rem;color:var(--t2);display:flex;align-items:center;gap:3px}
+.caso-footer{display:flex;align-items:center;justify-content:space-between;
+  margin-top:.4rem;padding-top:.55rem;border-top:1px solid var(--brd)}
+.caso-status{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 8px;border-radius:10px;font-family:'Marcellus',serif}
+.caso-status.novo{background:rgba(93,184,93,.12);color:#5db85d;border:1px solid rgba(93,184,93,.25)}
+.caso-status.em_analise{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid var(--brd)}
+.caso-status.convertido{background:rgba(120,120,212,.12);color:#7878d4;border:1px solid rgba(120,120,212,.25)}
+.caso-status.descartado{background:rgba(150,150,150,.1);color:var(--t3);border:1px solid rgba(150,150,150,.2)}
+.caso-data{font-size:.67rem;color:var(--t3)}
+.caso-origem{font-size:.65rem;color:var(--t3);letter-spacing:.06em}
+
 /* ── LEADS TAB ── */
 .leads-wrap{display:flex;flex-direction:column;flex:1;overflow:hidden}
 .leads-top{padding:10px clamp(1rem,4vw,3rem);border-bottom:1px solid var(--brd);
@@ -522,6 +547,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   <!-- tabs -->
   <div class="tabs">
     <button class="tbtn on" data-tab="leads">Leads</button>
+    <button class="tbtn" data-tab="casos">Casos <span id="casos-badge" style="display:none;background:var(--gold);color:var(--dark);border-radius:10px;font-size:.6rem;padding:1px 6px;margin-left:4px;font-family:'Marcellus',serif"></span></button>
     <button class="tbtn" data-tab="scripts">Scripts</button>
     <button class="tbtn" data-tab="funil">Funil</button>
     <button class="tbtn" data-tab="perfil">Perfil do Lead</button>
@@ -543,6 +569,46 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       </div>
     </div>
     <div class="leads-list" id="leadsList"></div>
+  </div>
+
+  <!-- ─ CASOS ─ -->
+  <div class="tpane" id="tab-casos" style="display:none">
+    <div class="leads-top">
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+        <select class="filter-sel" id="casos-filt-tipo">
+          <option value="">Todos os tipos</option>
+          <option value="ACP dos Tetos">ACP dos Tetos</option>
+          <option value="Isenção de IR">Isenção de IR</option>
+          <option value="Auxílio-Acidente">Auxílio-Acidente</option>
+          <option value="Concessão de Benefício">Concessão de Benefício</option>
+          <option value="Outro / Não sei">Outro / Não sei</option>
+        </select>
+        <select class="filter-sel" id="casos-filt-status">
+          <option value="">Todos os status</option>
+          <option value="novo">Novos</option>
+          <option value="em_analise">Em análise</option>
+          <option value="convertido">Convertidos</option>
+          <option value="descartado">Descartados</option>
+        </select>
+        <select class="filter-sel" id="casos-filt-uf" style="width:80px">
+          <option value="">UF</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+      <div class="leads-top-r">
+        <button class="btn-sm ghost" onclick="reloadCasos()">↺ Atualizar</button>
+        <button class="btn-sm" onclick="openAddCaso()">+ Adicionar caso</button>
+      </div>
+    </div>
+    <div id="casosGrid" style="flex:1;overflow-y:auto;padding:1.2rem clamp(.8rem,3vw,2rem)">
+      <div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem">Carregando casos...</div>
+    </div>
   </div>
 
   <!-- ─ SCRIPTS ─ -->
@@ -840,6 +906,94 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   </div>
 
 </div><!-- /portal -->
+
+<!-- ══ MODAL: CASO DETALHE ══ -->
+<div class="overlay" id="modCasoDetalhe" style="display:none">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-title" id="mcdTipo"></div>
+    <div class="modal-sub" id="mcdMeta" style="margin-bottom:1rem"></div>
+    <div style="background:var(--d3);border-radius:8px;padding:1rem;font-size:.85rem;line-height:1.7;color:var(--text);margin-bottom:1.2rem;max-height:180px;overflow-y:auto" id="mcdRelato"></div>
+    <div class="fld">
+      <label>Status</label>
+      <select id="mcdStatus" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+        <option value="novo">Novo</option>
+        <option value="em_analise">Em análise</option>
+        <option value="convertido">Convertido para lead</option>
+        <option value="descartado">Descartado</option>
+      </select>
+    </div>
+    <div class="fld">
+      <label>Responsável</label>
+      <select id="mcdResponsavel" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+        <option value="">Não atribuído</option>
+        <option value="rafael">Rafael Bered</option>
+        <option value="pedro">Pedro Outeiral</option>
+        <option value="felipe">Felipe Outeiral</option>
+        <option value="tulio">Túlio Lampert</option>
+        <option value="vinicius">Vinícius Rost</option>
+      </select>
+    </div>
+    <div class="fld">
+      <label>Observações internas</label>
+      <textarea id="mcdObs" rows="3" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%;resize:vertical"></textarea>
+    </div>
+    <div class="mbtns">
+      <button class="btn-cancel" onclick="closeCasoDetalhe()">Fechar</button>
+      <button class="btn-go" onclick="saveCasoDetalhe()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: ADD CASO ══ -->
+<div class="overlay" id="modAddCaso" style="display:none">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-title">Registrar caso manualmente</div>
+    <div class="modal-sub">Para casos recebidos por WhatsApp, telefone ou e-mail.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <div class="fld" style="grid-column:1/-1"><label>Nome <span style="color:var(--gold)">*</span></label><input type="text" id="ac-nome" placeholder="Nome do cliente"></div>
+      <div class="fld"><label>WhatsApp</label><input type="tel" id="ac-wa" placeholder="(00) 00000-0000"></div>
+      <div class="fld"><label>Idade</label><input type="number" id="ac-idade" placeholder="Ex: 62" min="18" max="110"></div>
+      <div class="fld"><label>Cidade</label><input type="text" id="ac-cidade" placeholder="Cidade"></div>
+      <div class="fld"><label>UF</label>
+        <select id="ac-uf" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">-</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Tipo de caso <span style="color:var(--gold)">*</span></label>
+        <select id="ac-tipo" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">Selecione...</option>
+          <option>ACP dos Tetos</option>
+          <option>Isenção de IR</option>
+          <option>Auxílio-Acidente</option>
+          <option>Concessão de Benefício</option>
+          <option>Outro / Não sei</option>
+        </select>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Origem</label>
+        <select id="ac-origem" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="whatsapp">WhatsApp</option>
+          <option value="telefone">Telefone</option>
+          <option value="email">E-mail</option>
+          <option value="portal">Portal</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Relato <span style="color:var(--gold)">*</span></label><textarea id="ac-relato" rows="4" placeholder="Descreva a situação do cliente..." style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%;resize:vertical"></textarea></div>
+    </div>
+    <div class="merr" id="ac-err"></div>
+    <div class="mbtns">
+      <button class="btn-cancel" onclick="closeAddCaso()">Cancelar</button>
+      <button class="btn-go" onclick="saveAddCaso()">Registrar caso</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══ MODAL: SENHA ══ -->
 <div class="overlay" id="modPw" style="display:none">
@@ -1176,6 +1330,198 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 
 <script>
 // ═══════════════════════════════════════════════════════════
+// SUPABASE CONFIG
+// Preencha com suas credenciais (Supabase > Settings > API)
+// ═══════════════════════════════════════════════════════════
+const SB_URL  = 'https://vzbqclzgfpcivmzzmiqc.supabase.co';
+const SB_ANON = 'sb_publishable_m3Mv60glgCgnMeMMHdfLHQ_2a1oCJlv'; // ← cole aqui a chave anon
+
+async function sbFetch(path, opts = {}) {
+  const res = await fetch(SB_URL + path, {
+    ...opts,
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SB_ANON,
+      'Authorization': `Bearer ${SB_ANON}`,
+      ...(opts.headers || {}),
+    },
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.status === 204 ? null : res.json();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CASOS — estado
+// ═══════════════════════════════════════════════════════════
+let casosAll  = [];
+let casoAtual = null;
+
+// ═══════════════════════════════════════════════════════════
+// CASOS — carregar e renderizar
+// ═══════════════════════════════════════════════════════════
+async function reloadCasos() {
+  const grid = document.getElementById('casosGrid');
+  if (!grid) return;
+  grid.innerHTML = '<div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem">Carregando...</div>';
+
+  try {
+    const tipo   = document.getElementById('casos-filt-tipo')?.value   || '';
+    const status = document.getElementById('casos-filt-status')?.value || '';
+    const uf     = document.getElementById('casos-filt-uf')?.value     || '';
+
+    let qs = '/rest/v1/casos?order=created_at.desc&limit=100';
+    if (tipo)   qs += `&tipo_caso=eq.${encodeURIComponent(tipo)}`;
+    if (status) qs += `&status=eq.${encodeURIComponent(status)}`;
+    if (uf)     qs += `&uf=eq.${encodeURIComponent(uf)}`;
+
+    casosAll = await sbFetch(qs, { headers: { 'Prefer': 'return=representation' } });
+    renderCasos(casosAll);
+    updateCasosBadge(casosAll.filter(c => c.status === 'novo').length);
+  } catch (e) {
+    console.error(e);
+    grid.innerHTML = `<div style="color:#d9534f;font-size:.82rem;text-align:center;padding:3rem">
+      Erro ao carregar casos.<br><span style="font-size:.73rem;color:var(--t3)">Verifique a chave Supabase no código.</span>
+    </div>`;
+  }
+}
+
+function renderCasos(lista) {
+  const grid = document.getElementById('casosGrid');
+  if (!grid) return;
+  if (!lista || lista.length === 0) {
+    grid.innerHTML = '<div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem">Nenhum caso encontrado.</div>';
+    return;
+  }
+
+  const TIPO_ICON = {
+    'ACP dos Tetos':          '⚖️',
+    'Isenção de IR':          '🏥',
+    'Auxílio-Acidente':       '🦺',
+    'Concessão de Benefício': '📋',
+    'Outro / Não sei':        '💭',
+  };
+  const ORIGEM_LABEL = { portal:'Portal', whatsapp:'WhatsApp', telefone:'Telefone', email:'E-mail', outro:'Outro' };
+  const STATUS_LABEL = { novo:'Novo', em_analise:'Em análise', convertido:'Convertido', descartado:'Descartado' };
+
+  grid.innerHTML = '<div class="casos-grid">' + lista.map(c => {
+    const dt = new Date(c.created_at);
+    const dtStr = dt.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
+    return `<div class="caso-card" onclick='openCasoDetalhe("${c.id}")'>
+      <div class="caso-tag">${TIPO_ICON[c.tipo_caso] || '📁'} ${escH(c.tipo_caso)}</div>
+      <div class="caso-relato">${escH(c.relato)}</div>
+      <div class="caso-meta">
+        <div class="caso-meta-item">👤 ${escH(c.nome)}</div>
+        ${c.idade ? `<div class="caso-meta-item">🎂 ${c.idade} anos</div>` : ''}
+        ${c.cidade ? `<div class="caso-meta-item">📍 ${escH(c.cidade)}${c.uf ? ` - ${c.uf}` : ''}</div>` : ''}
+      </div>
+      <div class="caso-footer">
+        <span class="caso-status ${c.status}">${STATUS_LABEL[c.status] || c.status}</span>
+        <span class="caso-data">${dtStr} · <span class="caso-origem">${ORIGEM_LABEL[c.origem] || c.origem}</span></span>
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function updateCasosBadge(n) {
+  const b = document.getElementById('casos-badge');
+  if (!b) return;
+  if (n > 0) { b.textContent = n; b.style.display = 'inline'; }
+  else b.style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════════════
+// CASOS — detalhe / edição
+// ═══════════════════════════════════════════════════════════
+async function openCasoDetalhe(id) {
+  casoAtual = casosAll.find(c => c.id === id);
+  if (!casoAtual) return;
+  const c = casoAtual;
+  const dt = new Date(c.created_at).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+
+  document.getElementById('mcdTipo').textContent    = c.tipo_caso;
+  document.getElementById('mcdMeta').innerHTML      = `
+    <strong>${escH(c.nome)}</strong>${c.idade ? ` · ${c.idade} anos` : ''}${c.sexo ? ` · ${c.sexo}` : ''}${c.cidade ? ` · ${escH(c.cidade)}${c.uf ? ` - ${c.uf}` : ''}` : ''}
+    ${c.whatsapp ? `<br><a href="https://wa.me/55${c.whatsapp.replace(/\D/g,'')}" target="_blank" style="color:var(--gold);text-decoration:none">📱 ${escH(c.whatsapp)}</a>` : ''}
+    <br><span style="font-size:.7rem;color:var(--t3)">Recebido em ${dt}</span>`;
+  document.getElementById('mcdRelato').textContent  = c.relato;
+  document.getElementById('mcdStatus').value        = c.status;
+  document.getElementById('mcdResponsavel').value   = c.responsavel || '';
+  document.getElementById('mcdObs').value           = c.observacoes || '';
+
+  document.getElementById('modCasoDetalhe').style.display = 'flex';
+}
+
+function closeCasoDetalhe() { document.getElementById('modCasoDetalhe').style.display = 'none'; casoAtual = null; }
+
+async function saveCasoDetalhe() {
+  if (!casoAtual) return;
+  try {
+    await sbFetch(`/rest/v1/casos?id=eq.${casoAtual.id}`, {
+      method: 'PATCH',
+      headers: { 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        status:       document.getElementById('mcdStatus').value,
+        responsavel:  document.getElementById('mcdResponsavel').value || null,
+        observacoes:  document.getElementById('mcdObs').value.trim() || null,
+      }),
+    });
+    closeCasoDetalhe();
+    reloadCasos();
+  } catch(e) {
+    alert('Erro ao salvar: ' + e.message);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// CASOS — adicionar manualmente
+// ═══════════════════════════════════════════════════════════
+function openAddCaso() { document.getElementById('modAddCaso').style.display = 'flex'; }
+function closeAddCaso() { document.getElementById('modAddCaso').style.display = 'none'; }
+
+async function saveAddCaso() {
+  const nome   = document.getElementById('ac-nome').value.trim();
+  const tipo   = document.getElementById('ac-tipo').value;
+  const relato = document.getElementById('ac-relato').value.trim();
+  const errEl  = document.getElementById('ac-err');
+
+  if (!nome || !tipo || !relato) {
+    errEl.textContent = 'Preencha nome, tipo e relato.'; errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+
+  try {
+    await sbFetch('/rest/v1/casos', {
+      method: 'POST',
+      headers: { 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        nome,
+        whatsapp:  document.getElementById('ac-wa').value.trim()    || null,
+        idade:     parseInt(document.getElementById('ac-idade').value) || null,
+        cidade:    document.getElementById('ac-cidade').value.trim() || null,
+        uf:        document.getElementById('ac-uf').value            || null,
+        tipo_caso: tipo,
+        relato,
+        origem:    document.getElementById('ac-origem').value,
+        responsavel: cu ? cu.id : null,
+        status:    'novo',
+      }),
+    });
+    closeAddCaso();
+    // limpa campos
+    ['ac-nome','ac-wa','ac-idade','ac-cidade','ac-relato'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    ['ac-uf','ac-tipo'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    reloadCasos();
+  } catch(e) {
+    errEl.textContent = 'Erro ao salvar: ' + e.message; errEl.style.display = 'block';
+  }
+}
+
+// filtros casos
+['casos-filt-tipo','casos-filt-status','casos-filt-uf'].forEach(id => {
+  document.getElementById(id)?.addEventListener('change', reloadCasos);
+});
+
+// ═══════════════════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════════════════
 const DEFAULT_PIN = '1234';
@@ -1296,16 +1642,17 @@ function savePw(){
 // ═══════════════════════════════════════════════════════════
 function activateTab(name){
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
-  ['leads','scripts','funil','perfil','operacao'].forEach(t=>{
+  ['leads','casos','scripts','funil','perfil','operacao'].forEach(t=>{
     const el=document.getElementById('tab-'+t);
     if(!el) return;
     const on=t===name;
     el.classList.toggle('on',on);
     el.style.display=on?'flex':'none';
   });
-  if(name==='funil')  renderFunil();
-  if(name==='perfil') renderPerfilCards();
+  if(name==='funil')    renderFunil();
+  if(name==='perfil')   renderPerfilCards();
   if(name==='operacao') opInit();
+  if(name==='casos')    reloadCasos();
 }
 
 // ═══════════════════════════════════════════════════════════
