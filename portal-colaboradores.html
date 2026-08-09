@@ -534,6 +534,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
         <div id="loginCasosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px"></div>
         <div id="loginCasosMsg" style="font-size:.82rem;color:var(--t3);text-align:center;padding:1rem 0"></div>
       </div>
+
+      <!-- Clientes na tela de entrada -->
+      <div style="margin-top:2.5rem;text-align:left">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem">
+          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Clientes Cadastrados</div>
+          <div style="flex:1;height:1px;background:var(--brd)"></div>
+          <input id="loginCliBusca" type="text" placeholder="Buscar nome ou CPF..." style="background:var(--d3);border:1px solid var(--brd);border-radius:6px;padding:5px 10px;color:var(--text);font-family:'Lora',serif;font-size:.75rem;outline:none;width:180px">
+          <button onclick="openAddCliente()" style="background:var(--gold);border:none;border-radius:6px;color:var(--dark);padding:5px 12px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Marcellus',serif;white-space:nowrap">+ Novo</button>
+          <span id="loginCliBadge" style="font-size:.67rem;color:var(--t2)"></span>
+        </div>
+        <div id="loginClientesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px"></div>
+        <div id="loginClientesMsg" style="font-size:.82rem;color:var(--t3);text-align:center;padding:1rem 0"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -563,6 +576,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   <div class="tabs">
     <button class="tbtn on" data-tab="leads">Leads</button>
     <button class="tbtn" data-tab="casos">Casos <span id="casos-badge" style="display:none;background:var(--gold);color:var(--dark);border-radius:10px;font-size:.6rem;padding:1px 6px;margin-left:4px;font-family:'Marcellus',serif"></span></button>
+    <button class="tbtn" data-tab="clientes">Clientes <span id="clientes-badge" style="display:none;background:var(--gold);color:var(--dark);border-radius:10px;font-size:.6rem;padding:1px 6px;margin-left:4px;font-family:'Marcellus',serif"></span></button>
     <button class="tbtn" data-tab="scripts">Scripts</button>
     <button class="tbtn" data-tab="funil">Funil</button>
     <button class="tbtn" data-tab="perfil">Perfil do Lead</button>
@@ -623,6 +637,32 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     </div>
     <div id="casosGrid" style="flex:1;overflow-y:auto;padding:1.2rem clamp(.8rem,3vw,2rem)">
       <div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem">Carregando casos...</div>
+    </div>
+  </div>
+
+  <!-- ─ CLIENTES ─ -->
+  <div class="tpane" id="tab-clientes" style="display:none">
+    <div class="leads-top">
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+        <select class="filter-sel" id="cli-filt-status">
+          <option value="">Todos os status</option>
+          <option value="ativo">Ativos</option>
+          <option value="aguardando_docs">Aguardando docs</option>
+          <option value="aguardando_decisao">Aguardando decisão</option>
+          <option value="encerrado">Encerrados</option>
+        </select>
+        <select class="filter-sel" id="cli-filt-resp">
+          <option value="">Todos os advogados</option>
+        </select>
+        <input class="filter-sel" id="cli-busca" type="text" placeholder="Buscar por nome ou CPF..." style="width:200px">
+      </div>
+      <div class="leads-top-r">
+        <button class="btn-sm ghost" onclick="reloadClientes()">↺ Atualizar</button>
+        <button class="btn-sm" onclick="openAddCliente()">+ Novo Cliente</button>
+      </div>
+    </div>
+    <div id="clientesGrid" style="flex:1;overflow-y:auto;padding:1.2rem clamp(.8rem,3vw,2rem)">
+      <div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem">Carregando clientes...</div>
     </div>
   </div>
 
@@ -1006,6 +1046,135 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <div class="mbtns">
       <button class="btn-cancel" onclick="closeAddCaso()">Cancelar</button>
       <button class="btn-go" onclick="saveAddCaso()">Registrar caso</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: CLIENTE DETALHE ══ -->
+<div class="overlay" id="modCliDetalhe" style="display:none">
+  <div class="modal" style="max-width:620px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem">
+      <div class="modal-title" id="cliDetNome" style="margin:0"></div>
+      <a id="cliDetDrive" href="#" target="_blank" style="display:none;background:var(--gold);color:var(--dark);border:none;border-radius:6px;padding:6px 14px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Marcellus',serif;text-decoration:none;white-space:nowrap">📁 Google Drive</a>
+    </div>
+    <div class="modal-sub" id="cliDetMeta" style="margin-bottom:1rem"></div>
+
+    <!-- campos editáveis em grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:.8rem">
+      <div class="fld"><label>CPF</label><input type="text" id="cliCpf" placeholder="000.000.000-00"></div>
+      <div class="fld"><label>Data de nascimento</label><input type="date" id="cliNasc"></div>
+      <div class="fld"><label>WhatsApp</label><input type="tel" id="cliWa" placeholder="(00) 00000-0000"></div>
+      <div class="fld"><label>E-mail</label><input type="email" id="cliEmail" placeholder="email@exemplo.com"></div>
+      <div class="fld"><label>Cidade</label><input type="text" id="cliCidade" placeholder="Cidade"></div>
+      <div class="fld"><label>UF</label>
+        <select id="cliUf" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">-</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+      <div class="fld"><label>Nº do Benefício (NB)</label><input type="text" id="cliNb" placeholder="Ex: 123.456.789-0"></div>
+      <div class="fld"><label>Competência inicial</label><input type="text" id="cliComp" placeholder="Ex: Jan/2018"></div>
+      <div class="fld" style="grid-column:1/-1"><label>Tipo de benefício</label>
+        <select id="cliTipo" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">Selecione...</option>
+          <option>Aposentadoria por Idade</option><option>Aposentadoria por Tempo de Contribuição</option>
+          <option>Aposentadoria por Invalidez</option><option>Pensão por Morte</option>
+          <option>Auxílio-Doença</option><option>Auxílio-Acidente</option>
+          <option>BPC/LOAS</option><option>ACP dos Tetos</option><option>Isenção de IR</option><option>Outro</option>
+        </select>
+      </div>
+      <div class="fld"><label>Nº do processo</label><input type="text" id="cliProc" placeholder="Ex: 5001234-12.2023.4.04.7107"></div>
+      <div class="fld"><label>Fase processual</label>
+        <select id="cliFase" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">-</option>
+          <option>Administrativo</option><option>Judicial 1º grau</option>
+          <option>Recursal (TRF)</option><option>STJ / STF</option>
+          <option>Execução</option><option>Encerrado</option>
+        </select>
+      </div>
+      <div class="fld"><label>Vara / Tribunal</label><input type="text" id="cliVara" placeholder="Ex: 1ª Vara Federal Caxias do Sul"></div>
+      <div class="fld"><label>Advogado responsável</label>
+        <select id="cliResp" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">Não atribuído</option>
+        </select>
+      </div>
+      <div class="fld"><label>Status</label>
+        <select id="cliStatus" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="ativo">Ativo</option>
+          <option value="aguardando_docs">Aguardando docs</option>
+          <option value="aguardando_decisao">Aguardando decisão</option>
+          <option value="encerrado">Encerrado</option>
+        </select>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Link Google Drive</label>
+        <div style="display:flex;gap:6px">
+          <input type="url" id="cliDrive" placeholder="https://drive.google.com/drive/folders/..." style="flex:1">
+          <button onclick="abrirDrive()" style="background:var(--d4);border:1px solid var(--brd);border-radius:6px;padding:8px 12px;color:var(--t2);cursor:pointer;white-space:nowrap;font-size:.8rem">📁 Abrir</button>
+        </div>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Observações</label><textarea id="cliObs" rows="3" placeholder="Notas internas sobre o cliente..."></textarea></div>
+    </div>
+    <div class="merr" id="cliDetErr"></div>
+    <div class="mbtns" style="justify-content:space-between">
+      <button onclick="deleteCliente()" style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:6px;color:#d47878;font-size:.77rem;padding:7px 14px;cursor:pointer;font-family:'Lora',serif">🗑 Deletar cliente</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn-cancel" onclick="closeCliDetalhe()">Cancelar</button>
+        <button class="btn-go" onclick="saveCliDetalhe()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: ADD CLIENTE ══ -->
+<div class="overlay" id="modAddCliente" style="display:none">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-title">Novo Cliente</div>
+    <div class="modal-sub">Preencha os dados básicos. Os demais campos podem ser editados depois.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <div class="fld" style="grid-column:1/-1"><label>Nome completo <span style="color:var(--gold)">*</span></label><input type="text" id="ncNome" placeholder="Nome do cliente"></div>
+      <div class="fld"><label>CPF</label><input type="text" id="ncCpf" placeholder="000.000.000-00"></div>
+      <div class="fld"><label>Data de nascimento</label><input type="date" id="ncNasc"></div>
+      <div class="fld"><label>WhatsApp</label><input type="tel" id="ncWa" placeholder="(00) 00000-0000"></div>
+      <div class="fld"><label>E-mail</label><input type="email" id="ncEmail" placeholder="email@exemplo.com"></div>
+      <div class="fld"><label>Cidade</label><input type="text" id="ncCidade" placeholder="Cidade"></div>
+      <div class="fld"><label>UF</label>
+        <select id="ncUf" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">-</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Tipo de benefício</label>
+        <select id="ncTipo" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">Selecione...</option>
+          <option>Aposentadoria por Idade</option><option>Aposentadoria por Tempo de Contribuição</option>
+          <option>Aposentadoria por Invalidez</option><option>Pensão por Morte</option>
+          <option>Auxílio-Doença</option><option>Auxílio-Acidente</option>
+          <option>BPC/LOAS</option><option>ACP dos Tetos</option><option>Isenção de IR</option><option>Outro</option>
+        </select>
+      </div>
+      <div class="fld"><label>Advogado responsável</label>
+        <select id="ncResp" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">Não atribuído</option>
+        </select>
+      </div>
+      <div class="fld"><label>Link Google Drive</label><input type="url" id="ncDrive" placeholder="https://drive.google.com/..."></div>
+    </div>
+    <div class="merr" id="nc-err"></div>
+    <div class="mbtns">
+      <button class="btn-cancel" onclick="closeAddCliente()">Cancelar</button>
+      <button class="btn-go" onclick="saveAddCliente()">Cadastrar</button>
     </div>
   </div>
 </div>
@@ -1445,6 +1614,184 @@ function renderCasos(lista) {
   }).join('') + '</div>';
 }
 
+// ═══════════════════════════════════════════════════════════
+// CLIENTES
+// ═══════════════════════════════════════════════════════════
+let clientesAll = [];
+let clienteAtual = null;
+
+const CLI_STATUS = { ativo:'Ativo', aguardando_docs:'Aguardando docs', aguardando_decisao:'Aguardando decisão', encerrado:'Encerrado' };
+const CLI_STATUS_CLS = { ativo:'convertido', aguardando_docs:'em_analise', aguardando_decisao:'novo', encerrado:'descartado' };
+
+function populateRespSelects() {
+  const opts = '<option value="">Não atribuído</option>' + USERS.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  ['cliResp','ncResp','cli-filt-resp'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = id==='cli-filt-resp'
+      ? '<option value="">Todos os advogados</option>'+USERS.map(u=>`<option value="${u.id}">${u.name}</option>`).join('')
+      : opts;
+  });
+}
+
+async function reloadClientes() {
+  const grid = document.getElementById('clientesGrid');
+  if(!grid) return;
+  grid.innerHTML = '<div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem">Carregando...</div>';
+  try {
+    clientesAll = await sbFetch('/rest/v1/clientes?order=created_at.desc&limit=200') || [];
+    renderClientes();
+    const b = document.getElementById('clientes-badge');
+    if(b){ if(clientesAll.length){ b.textContent=clientesAll.length; b.style.display='inline'; } else b.style.display='none'; }
+  } catch(e) {
+    grid.innerHTML = '<div style="color:#d47878;font-size:.82rem;text-align:center;padding:3rem">Erro ao carregar. Verifique o Supabase.</div>';
+  }
+}
+
+function renderClientes() {
+  const grid = document.getElementById('clientesGrid');
+  if(!grid) return;
+  const filtStatus = document.getElementById('cli-filt-status')?.value || '';
+  const filtResp   = document.getElementById('cli-filt-resp')?.value  || '';
+  const busca      = (document.getElementById('cli-busca')?.value || '').toLowerCase();
+  let lista = clientesAll.filter(c =>
+    (!filtStatus || c.status === filtStatus) &&
+    (!filtResp   || c.responsavel === filtResp) &&
+    (!busca      || c.nome.toLowerCase().includes(busca) || (c.cpf||'').includes(busca))
+  );
+  if(!lista.length) {
+    grid.innerHTML = '<div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem">Nenhum cliente encontrado.</div>';
+    return;
+  }
+  grid.innerHTML = '<div class="casos-grid">' + lista.map(c => {
+    const adv = c.responsavel ? USERS.find(u=>u.id===c.responsavel) : null;
+    const advBadge = adv ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-family:'Marcellus',serif;font-size:.55rem;border:1.5px solid ${adv.color};color:${adv.color};vertical-align:middle;margin-right:3px" title="${adv.name}">${adv.initials}</span>` : '';
+    const stCls = CLI_STATUS_CLS[c.status] || 'novo';
+    return `<div class="caso-card" onclick='openCliDetalhe("${c.id}")' style="cursor:pointer">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:.4rem">
+        <div style="font-family:'Marcellus',serif;font-size:.92rem;color:var(--text);line-height:1.3">${escH(c.nome)}</div>
+        <span class="caso-status ${stCls}" style="white-space:nowrap;flex-shrink:0">${CLI_STATUS[c.status]||c.status}</span>
+      </div>
+      ${c.cpf ? `<div style="font-size:.75rem;color:var(--t3);margin-bottom:.3rem">CPF: ${escH(c.cpf)}</div>` : ''}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.35rem">
+        ${c.tipo_beneficio ? `<span class="caso-tag">${escH(c.tipo_beneficio)}</span>` : ''}
+        ${c.cidade ? `<span class="caso-tag">${escH(c.cidade)}${c.uf?'/'+c.uf:''}</span>` : ''}
+      </div>
+      ${c.whatsapp ? `<div style="font-size:.77rem;color:var(--t2);margin-bottom:.2rem">📱 ${escH(c.whatsapp)}</div>` : ''}
+      ${c.nb ? `<div style="font-size:.75rem;color:var(--t3);margin-bottom:.2rem">NB: ${escH(c.nb)}</div>` : ''}
+      ${c.numero_processo ? `<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">Proc.: ${escH(c.numero_processo)}</div>` : ''}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;padding-top:.45rem;border-top:1px solid var(--brd)">
+        <div>${advBadge}<span style="font-size:.7rem;color:var(--t3)">${c.fase_processual||''}</span></div>
+        ${c.drive_link ? `<a href="${escH(c.drive_link)}" target="_blank" onclick="event.stopPropagation()" style="font-size:.7rem;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:2px 7px">📁 Drive</a>` : ''}
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function openCliDetalhe(id) {
+  clienteAtual = clientesAll.find(c=>c.id===id);
+  if(!clienteAtual) return;
+  const c = clienteAtual;
+  document.getElementById('cliDetNome').textContent = c.nome;
+  document.getElementById('cliDetMeta').innerHTML =
+    `${c.cpf?'CPF: '+c.cpf+' · ':''}${c.cidade?c.cidade+(c.uf?' - '+c.uf:''):''}`;
+  // Drive button
+  const drBtn = document.getElementById('cliDetDrive');
+  if(c.drive_link){ drBtn.href=c.drive_link; drBtn.style.display='inline-block'; }
+  else drBtn.style.display='none';
+  // Preenche campos
+  document.getElementById('cliCpf').value    = c.cpf||'';
+  document.getElementById('cliNasc').value   = c.data_nascimento||'';
+  document.getElementById('cliWa').value     = c.whatsapp||'';
+  document.getElementById('cliEmail').value  = c.email||'';
+  document.getElementById('cliCidade').value = c.cidade||'';
+  document.getElementById('cliUf').value     = c.uf||'';
+  document.getElementById('cliNb').value     = c.nb||'';
+  document.getElementById('cliComp').value   = c.competencia_inicial||'';
+  document.getElementById('cliTipo').value   = c.tipo_beneficio||'';
+  document.getElementById('cliProc').value   = c.numero_processo||'';
+  document.getElementById('cliFase').value   = c.fase_processual||'';
+  document.getElementById('cliVara').value   = c.vara_tribunal||'';
+  document.getElementById('cliResp').value   = c.responsavel||'';
+  document.getElementById('cliStatus').value = c.status||'ativo';
+  document.getElementById('cliDrive').value  = c.drive_link||'';
+  document.getElementById('cliObs').value    = c.observacoes||'';
+  document.getElementById('cliDetErr').textContent = '';
+  document.getElementById('modCliDetalhe').style.display = 'flex';
+}
+
+function closeCliDetalhe() { document.getElementById('modCliDetalhe').style.display='none'; clienteAtual=null; }
+
+function abrirDrive() {
+  const url = document.getElementById('cliDrive').value.trim();
+  if(url) window.open(url,'_blank'); else alert('Insira o link do Google Drive antes de abrir.');
+}
+
+async function saveCliDetalhe() {
+  if(!clienteAtual) return;
+  const body = {
+    cpf: document.getElementById('cliCpf').value.trim()||null,
+    data_nascimento: document.getElementById('cliNasc').value||null,
+    whatsapp: document.getElementById('cliWa').value.trim()||null,
+    email: document.getElementById('cliEmail').value.trim()||null,
+    cidade: document.getElementById('cliCidade').value.trim()||null,
+    uf: document.getElementById('cliUf').value||null,
+    nb: document.getElementById('cliNb').value.trim()||null,
+    competencia_inicial: document.getElementById('cliComp').value.trim()||null,
+    tipo_beneficio: document.getElementById('cliTipo').value||null,
+    numero_processo: document.getElementById('cliProc').value.trim()||null,
+    fase_processual: document.getElementById('cliFase').value||null,
+    vara_tribunal: document.getElementById('cliVara').value.trim()||null,
+    responsavel: document.getElementById('cliResp').value||null,
+    status: document.getElementById('cliStatus').value,
+    drive_link: document.getElementById('cliDrive').value.trim()||null,
+    observacoes: document.getElementById('cliObs').value.trim()||null,
+  };
+  try {
+    await sbFetch(`/rest/v1/clientes?id=eq.${clienteAtual.id}`, { method:'PATCH', headers:{'Prefer':'return=minimal'}, body:JSON.stringify(body) });
+    closeCliDetalhe(); reloadClientes(); loadLoginClientes();
+  } catch(e) { document.getElementById('cliDetErr').textContent = 'Erro ao salvar. Tente novamente.'; }
+}
+
+async function deleteCliente() {
+  if(!clienteAtual) return;
+  if(!confirm(`Deletar o cliente "${clienteAtual.nome}" permanentemente?`)) return;
+  try {
+    await sbFetch(`/rest/v1/clientes?id=eq.${clienteAtual.id}`, { method:'DELETE' });
+    closeCliDetalhe(); reloadClientes(); loadLoginClientes();
+  } catch(e) { alert('Erro ao deletar.'); }
+}
+
+function openAddCliente() {
+  ['ncNome','ncCpf','ncWa','ncEmail','ncCidade','ncDrive'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['ncNasc','ncUf','ncTipo','ncResp'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('nc-err').textContent='';
+  document.getElementById('modAddCliente').style.display='flex';
+}
+
+function closeAddCliente() { document.getElementById('modAddCliente').style.display='none'; }
+
+async function saveAddCliente() {
+  const nome = document.getElementById('ncNome').value.trim();
+  if(!nome){ document.getElementById('nc-err').textContent='Nome é obrigatório.'; return; }
+  const body = {
+    nome,
+    cpf: document.getElementById('ncCpf').value.trim()||null,
+    data_nascimento: document.getElementById('ncNasc').value||null,
+    whatsapp: document.getElementById('ncWa').value.trim()||null,
+    email: document.getElementById('ncEmail').value.trim()||null,
+    cidade: document.getElementById('ncCidade').value.trim()||null,
+    uf: document.getElementById('ncUf').value||null,
+    tipo_beneficio: document.getElementById('ncTipo').value||null,
+    responsavel: document.getElementById('ncResp').value||null,
+    drive_link: document.getElementById('ncDrive').value.trim()||null,
+    status: 'ativo',
+  };
+  try {
+    await sbFetch('/rest/v1/clientes', { method:'POST', headers:{'Prefer':'return=minimal'}, body:JSON.stringify(body) });
+    closeAddCliente(); reloadClientes(); loadLoginClientes();
+  } catch(e) { document.getElementById('nc-err').textContent='Erro ao cadastrar. Tente novamente.'; }
+}
+
 function updateCasosBadge(n) {
   const b = document.getElementById('casos-badge');
   if (!b) return;
@@ -1543,6 +1890,11 @@ async function saveAddCaso() {
 ['casos-filt-tipo','casos-filt-status','casos-filt-uf'].forEach(id => {
   document.getElementById(id)?.addEventListener('change', reloadCasos);
 });
+['cli-filt-status','cli-filt-resp'].forEach(id => {
+  document.getElementById(id)?.addEventListener('change', renderClientes);
+});
+document.getElementById('cli-busca')?.addEventListener('input', renderClientes);
+document.getElementById('loginCliBusca')?.addEventListener('input', renderLoginClientes);
 
 // ═══════════════════════════════════════════════════════════
 // CONFIG
@@ -1598,9 +1950,10 @@ function doTeamLogin(){
     document.getElementById('pinblk').style.display='none';
     document.getElementById('loginSub').textContent='Selecione seu perfil para entrar';
     document.getElementById('ugridWrap').style.display='block';
-    // Expande lbox e carrega casos
+    // Expande lbox e carrega casos + clientes
     document.querySelector('.lbox').style.maxWidth='960px';
     loadLoginCasos();
+    loadLoginClientes();
   } else {
     document.getElementById('perr').textContent='Senha incorreta. Tente novamente.';
     document.getElementById('pinIn').value='';
@@ -1654,6 +2007,54 @@ async function loadLoginCasos(){
   }
 }
 
+async function loadLoginClientes(){
+  const grid  = document.getElementById('loginClientesGrid');
+  const msg   = document.getElementById('loginClientesMsg');
+  const badge = document.getElementById('loginCliBadge');
+  if(!grid) return;
+  msg.textContent='Carregando...';
+  try {
+    clientesAll = await sbFetch('/rest/v1/clientes?order=created_at.desc&limit=200') || [];
+    msg.textContent='';
+    badge.textContent = clientesAll.length + ' clientes';
+    renderLoginClientes();
+  } catch(e){ msg.textContent='Erro ao carregar clientes.'; }
+}
+
+function renderLoginClientes(){
+  const grid  = document.getElementById('loginClientesGrid');
+  if(!grid) return;
+  const busca = (document.getElementById('loginCliBusca')?.value||'').toLowerCase();
+  const lista = busca
+    ? clientesAll.filter(c => c.nome.toLowerCase().includes(busca)||(c.cpf||'').includes(busca))
+    : clientesAll;
+  if(!lista.length){ grid.innerHTML=''; return; }
+  const SL = CLI_STATUS || {ativo:'Ativo',aguardando_docs:'Aguardando docs',aguardando_decisao:'Aguardando decisão',encerrado:'Encerrado'};
+  const SC = CLI_STATUS_CLS || {ativo:'convertido',aguardando_docs:'em_analise',aguardando_decisao:'novo',encerrado:'descartado'};
+  grid.innerHTML = lista.map(c=>{
+    const adv = c.responsavel ? USERS.find(u=>u.id===c.responsavel) : null;
+    const advBadge = adv ? `<div style="width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'Marcellus',serif;font-size:.58rem;border:1.5px solid ${adv.color};color:${adv.color};flex-shrink:0" title="${adv.name}">${adv.initials}</div>` : '';
+    return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;cursor:pointer" onclick='openCliDetalhe("${c.id}")'>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.3rem">
+        <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text);line-height:1.3">${c.nome}</div>
+        <span class="caso-status ${SC[c.status]||'novo'}" style="white-space:nowrap;flex-shrink:0">${SL[c.status]||c.status}</span>
+      </div>
+      ${c.cpf?`<div style="font-size:.73rem;color:var(--t3);margin-bottom:.25rem">CPF: ${c.cpf}</div>`:''}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.3rem">
+        ${c.tipo_beneficio?`<span class="caso-tag">${c.tipo_beneficio}</span>`:''}
+        ${c.cidade?`<span class="caso-tag">${c.cidade}${c.uf?'/'+c.uf:''}</span>`:''}
+      </div>
+      ${c.whatsapp?`<div style="font-size:.77rem;color:var(--t2);margin-bottom:.2rem">📱 ${c.whatsapp}</div>`:''}
+      ${c.nb?`<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">NB: ${c.nb}</div>`:''}
+      ${c.numero_processo?`<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">Proc.: ${c.numero_processo}</div>`:''}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.45rem;padding-top:.4rem;border-top:1px solid var(--brd)">
+        <div style="display:flex;align-items:center;gap:5px">${advBadge}<span style="font-size:.7rem;color:var(--t3)">${c.fase_processual||''}</span></div>
+        ${c.drive_link?`<a href="${c.drive_link}" target="_blank" onclick="event.stopPropagation()" style="font-size:.7rem;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:2px 7px">📁 Drive</a>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function openLoginCasoDetalhe(id){
   // Reutiliza o modal de detalhe do portal mesmo na tela de entrada
   openCasoDetalhe(id);
@@ -1688,6 +2089,7 @@ function enterPortal(){
   document.getElementById('pnm').textContent=cu.name;
   document.getElementById('prl').textContent=cu.role;
   updateStats(); renderLeads(); renderFunil(); renderAtiv(); renderPerfilCards();
+  populateRespSelects();
   activateTab('casos');
 }
 function logout(){
@@ -1703,6 +2105,9 @@ function logout(){
   document.getElementById('loginCasosGrid').innerHTML='';
   document.getElementById('loginCasosMsg').textContent='';
   document.getElementById('loginCasosBadge').textContent='';
+  document.getElementById('loginClientesGrid').innerHTML='';
+  document.getElementById('loginClientesMsg').textContent='';
+  document.getElementById('loginCliBadge').textContent='';
   document.querySelector('.lbox').style.maxWidth='';
 }
 
@@ -1741,17 +2146,18 @@ function savePw(){
 // ═══════════════════════════════════════════════════════════
 function activateTab(name){
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
-  ['leads','casos','scripts','funil','perfil','operacao'].forEach(t=>{
+  ['leads','casos','clientes','scripts','funil','perfil','operacao'].forEach(t=>{
     const el=document.getElementById('tab-'+t);
     if(!el) return;
     const on=t===name;
     el.classList.toggle('on',on);
     el.style.display=on?'flex':'none';
   });
-  if(name==='funil')    renderFunil();
-  if(name==='perfil')   renderPerfilCards();
-  if(name==='operacao') opInit();
-  if(name==='casos')    reloadCasos();
+  if(name==='funil')     renderFunil();
+  if(name==='perfil')    renderPerfilCards();
+  if(name==='operacao')  opInit();
+  if(name==='casos')     reloadCasos();
+  if(name==='clientes')  reloadClientes();
 }
 
 // ═══════════════════════════════════════════════════════════
