@@ -1619,6 +1619,8 @@ async function loadLoginCasos(){
     const data = await sbFetch('/rest/v1/casos?order=created_at.desc&limit=50');
     msg.textContent='';
     if(!data||!data.length){ msg.textContent='Nenhum caso encontrado.'; return; }
+    // Armazena para que openCasoDetalhe funcione a partir da tela de entrada
+    casosAll = data;
     badge.textContent=data.length+' casos';
     const SL={'novo':'Novo','em_analise':'Em análise','convertido':'Convertido','descartado':'Descartado'};
     grid.innerHTML = data.map(c=>{
@@ -1626,7 +1628,8 @@ async function loadLoginCasos(){
       const emAnd = c.status==='em_analise';
       const conc  = c.status==='convertido'||c.status==='descartado';
       const cardStyle = emAnd ? 'border-color:var(--gold);background:rgba(201,168,76,.06)' : '';
-      return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;${cardStyle}">
+      return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;cursor:pointer;${cardStyle}"
+        onclick='openLoginCasoDetalhe("${c.id}")'>
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.35rem">
           <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text);line-height:1.3">${c.nome}</div>
           <span class="caso-status ${c.status}" style="white-space:nowrap;flex-shrink:0">${SL[c.status]||c.status}</span>
@@ -1639,13 +1642,20 @@ async function loadLoginCasos(){
         <div style="font-size:.72rem;color:var(--t3)">${dt}${c.responsavel?' · '+c.responsavel:''}</div>
         ${c.relato?`<div style="margin-top:.4rem;font-size:.79rem;color:var(--t2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${c.relato}</div>`:''}
         ${conc?`<div style="margin-top:.5rem;text-align:right">
-          <button onclick='deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑 Deletar</button>
+          <button onclick='event.stopPropagation();deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑 Deletar</button>
         </div>`:''}
       </div>`;
     }).join('');
   } catch(e){
     msg.textContent='Erro ao carregar casos.';
   }
+}
+
+function openLoginCasoDetalhe(id){
+  // Reutiliza o modal de detalhe do portal mesmo na tela de entrada
+  openCasoDetalhe(id);
+  // Após salvar, recarrega a grade da tela de entrada
+  window._loginCasoOnSave = () => loadLoginCasos();
 }
 
 async function deleteCaso(id){
