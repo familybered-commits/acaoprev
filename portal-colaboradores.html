@@ -1418,14 +1418,21 @@ function renderCasos(lista) {
   const ORIGEM_LABEL = { portal:'Portal', whatsapp:'WhatsApp', telefone:'Telefone', email:'E-mail', outro:'Outro' };
   const STATUS_LABEL = { novo:'Novo', em_analise:'Em análise', convertido:'Convertido', descartado:'Descartado' };
 
+  const emAndamento = c => c.status === 'em_analise';
+  const concluido   = c => c.status === 'convertido' || c.status === 'descartado';
+
   grid.innerHTML = '<div class="casos-grid">' + lista.map(c => {
     const dt = new Date(c.created_at);
     const dtStr = dt.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
-    return `<div class="caso-card" onclick='openCasoDetalhe("${c.id}")'>
+    const cardStyle = emAndamento(c)
+      ? 'border-color:var(--gold);background:rgba(201,168,76,.06)'
+      : '';
+    return `<div class="caso-card" onclick='openCasoDetalhe("${c.id}")' style="${cardStyle}">
       <div class="caso-tag">${TIPO_ICON[c.tipo_caso] || '📁'} ${escH(c.tipo_caso)}</div>
       <div class="caso-relato">${escH(c.relato)}</div>
       <div class="caso-meta">
         <div class="caso-meta-item">👤 ${escH(c.nome)}</div>
+        ${c.whatsapp ? `<div class="caso-meta-item">📱 ${escH(c.whatsapp)}</div>` : ''}
         ${c.idade ? `<div class="caso-meta-item">🎂 ${c.idade} anos</div>` : ''}
         ${c.cidade ? `<div class="caso-meta-item">📍 ${escH(c.cidade)}${c.uf ? ` - ${c.uf}` : ''}</div>` : ''}
       </div>
@@ -1433,6 +1440,9 @@ function renderCasos(lista) {
         <span class="caso-status ${c.status}">${STATUS_LABEL[c.status] || c.status}</span>
         <span class="caso-data">${dtStr} · <span class="caso-origem">${ORIGEM_LABEL[c.origem] || c.origem}</span></span>
       </div>
+      ${concluido(c) ? `<div style="margin-top:.55rem;text-align:right">
+        <button onclick='event.stopPropagation();deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑 Deletar</button>
+      </div>` : ''}
     </div>`;
   }).join('') + '</div>';
 }
@@ -1610,24 +1620,43 @@ async function loadLoginCasos(){
     msg.textContent='';
     if(!data||!data.length){ msg.textContent='Nenhum caso encontrado.'; return; }
     badge.textContent=data.length+' casos';
-    const STATUS_LABEL={'novo':'Novo','em_analise':'Em análise','convertido':'Convertido','descartado':'Descartado'};
+    const SL={'novo':'Novo','em_analise':'Em análise','convertido':'Convertido','descartado':'Descartado'};
     grid.innerHTML = data.map(c=>{
       const dt = new Date(c.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
-      return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem">
+      const emAnd = c.status==='em_analise';
+      const conc  = c.status==='convertido'||c.status==='descartado';
+      const cardStyle = emAnd ? 'border-color:var(--gold);background:rgba(201,168,76,.06)' : '';
+      return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;${cardStyle}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.35rem">
           <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text);line-height:1.3">${c.nome}</div>
-          <span class="caso-status ${c.status}" style="white-space:nowrap;flex-shrink:0">${STATUS_LABEL[c.status]||c.status}</span>
+          <span class="caso-status ${c.status}" style="white-space:nowrap;flex-shrink:0">${SL[c.status]||c.status}</span>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.3rem">
           <span class="caso-tag">${c.tipo_caso}</span>
           ${c.cidade?`<span class="caso-tag">${c.cidade}/${c.uf}</span>`:''}
         </div>
+        ${c.whatsapp?`<div style="font-size:.77rem;color:var(--t2);margin-bottom:.25rem">📱 ${c.whatsapp}</div>`:''}
         <div style="font-size:.72rem;color:var(--t3)">${dt}${c.responsavel?' · '+c.responsavel:''}</div>
         ${c.relato?`<div style="margin-top:.4rem;font-size:.79rem;color:var(--t2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${c.relato}</div>`:''}
+        ${conc?`<div style="margin-top:.5rem;text-align:right">
+          <button onclick='deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑 Deletar</button>
+        </div>`:''}
       </div>`;
     }).join('');
   } catch(e){
     msg.textContent='Erro ao carregar casos.';
+  }
+}
+
+async function deleteCaso(id){
+  if(!confirm('Deletar este caso permanentemente? Esta ação não pode ser desfeita.')) return;
+  try {
+    await sbFetch(`/rest/v1/casos?id=eq.${id}`, { method:'DELETE' });
+    // Atualiza as duas visões
+    if(document.getElementById('loginCasosGrid')) loadLoginCasos();
+    if(typeof reloadCasos === 'function') reloadCasos();
+  } catch(e){
+    alert('Erro ao deletar. Adicione a política no Supabase:\nCREATE POLICY "public_delete" ON casos FOR DELETE TO anon USING (true);');
   }
 }
 function selUser(id){
