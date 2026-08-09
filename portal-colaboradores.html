@@ -508,16 +508,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   <div class="lbox">
     <div class="lbrow">Área Restrita</div>
     <h1 class="ltitle">Portal do Colaborador</h1>
-    <p class="lsub">Selecione seu perfil e insira sua senha de acesso</p>
-    <div class="ugrid" id="ugrid"></div>
-    <div class="pin-blk" id="pinblk">
-      <div class="pin-lbl">Senha de acesso</div>
+    <p class="lsub" id="loginSub">Digite a senha do escritório para acessar</p>
+
+    <!-- Passo 1: senha do escritório -->
+    <div class="pin-blk" id="pinblk" style="display:flex">
+      <div class="pin-lbl">Senha do escritório</div>
       <div class="pin-row">
-        <input class="pin-in" type="password" id="pinIn" maxlength="20" placeholder="······">
-        <button class="btn-go" id="btnEnter">Entrar</button>
+        <input class="pin-in" type="password" id="pinIn" maxlength="30" placeholder="······">
+        <button class="btn-go" id="btnEnter" onclick="doTeamLogin()">Entrar</button>
       </div>
       <div class="perr" id="perr"></div>
-      <span class="lnk" id="lnkFirst">Primeiro acesso / Esqueci minha senha</span>
+    </div>
+
+    <!-- Passo 2: seleção de perfil (sem senha individual) -->
+    <div id="ugridWrap" style="display:none">
+      <div class="ugrid" id="ugrid"></div>
     </div>
   </div>
 </div>
@@ -533,7 +538,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     </div>
     <div class="psep"></div>
     <button class="ibtn outlined" id="btnTutorial">? Tutorial</button>
-    <button class="ibtn outlined" id="btnChPw">Alterar senha</button>
     <button class="ibtn" id="btnLogout">Sair</button>
   </div>
 
@@ -1524,7 +1528,7 @@ async function saveAddCaso() {
 // ═══════════════════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════════════════
-const DEFAULT_PIN = '1234';
+const TEAM_PASSWORD = 'acaoprev2025'; // ← altere aqui para mudar a senha do escritório
 const USERS = [
   {id:'rafael',   name:'Rafael Bered',    initials:'RB', role:'Advogado Principal',  color:'#C9A84C'},
   {id:'pedro',    name:'Pedro Outeiral',  initials:'PO', role:'Advogado Sênior',     color:'#7878d4'},
@@ -1557,8 +1561,6 @@ const getLeads = () => lsG(lk('leads')) || [];
 const setLeads = v => { lsS(lk('leads'),v); updateStats(); renderLeads(); renderFunil(); renderPerfilCards(); };
 const getAtiv  = () => lsG(lk('ativ'))  || [];
 const addAtiv  = (txt) => { const a=getAtiv(); a.unshift({txt,ts:Date.now()}); if(a.length>40)a.pop(); lsS(lk('ativ'),a); renderAtiv(); };
-const getUserPw = id => lsG(pk(id)) || DEFAULT_PIN;
-const setUserPw = (id,pw) => lsS(pk(id), pw);
 
 // ═══════════════════════════════════════════════════════════
 // LOGIN
@@ -1570,20 +1572,22 @@ function renderLoginGrid(){
       <div class="un">${u.name}</div><div class="ur">${u.role}</div>
     </div>`).join('');
 }
-function selUser(id){
-  selU = USERS.find(u=>u.id===id);
-  document.querySelectorAll('.ucard').forEach(c=>c.classList.toggle('sel',c.dataset.id===id));
-  const pb=document.getElementById('pinblk');
-  pb.style.display='flex';
-  document.getElementById('pinIn').value='';
-  document.getElementById('perr').textContent='';
-  document.getElementById('pinIn').focus();
-}
-function doLogin(){
+function doTeamLogin(){
   const pin=document.getElementById('pinIn').value.trim();
-  if(!pin){ document.getElementById('perr').textContent='Digite sua senha.'; return; }
-  if(pin===getUserPw(selU.id)){ cu=selU; enterPortal(); }
-  else document.getElementById('perr').textContent='Senha incorreta. Tente novamente.';
+  if(!pin){ document.getElementById('perr').textContent='Digite a senha do escritório.'; return; }
+  if(pin===TEAM_PASSWORD){
+    document.getElementById('pinblk').style.display='none';
+    document.getElementById('loginSub').textContent='Selecione seu perfil para entrar';
+    document.getElementById('ugridWrap').style.display='block';
+  } else {
+    document.getElementById('perr').textContent='Senha incorreta. Tente novamente.';
+    document.getElementById('pinIn').value='';
+    document.getElementById('pinIn').focus();
+  }
+}
+function selUser(id){
+  cu = USERS.find(u=>u.id===id);
+  enterPortal();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1603,8 +1607,12 @@ function logout(){
   cu=null; selU=null;
   document.getElementById('s-portal').classList.remove('on');
   document.getElementById('s-login').classList.add('on');
-  document.getElementById('pinblk').style.display='none';
-  document.querySelectorAll('.ucard').forEach(c=>c.classList.remove('sel'));
+  // Volta para o passo 1 (senha do escritório)
+  document.getElementById('pinblk').style.display='flex';
+  document.getElementById('pinIn').value='';
+  document.getElementById('perr').textContent='';
+  document.getElementById('loginSub').textContent='Digite a senha do escritório para acessar';
+  document.getElementById('ugridWrap').style.display='none';
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1989,14 +1997,8 @@ const escH = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt
 // ═══════════════════════════════════════════════════════════
 // EVENTOS
 // ═══════════════════════════════════════════════════════════
-document.getElementById('btnEnter').onclick = doLogin;
-document.getElementById('pinIn').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
-document.getElementById('lnkFirst').onclick = () => { if(!selU){ alert('Selecione seu perfil primeiro.'); return; } openPwModal('first'); };
-document.getElementById('btnChPw').onclick = () => openPwModal('change');
-document.getElementById('btnPwCancel').onclick = closePwModal;
-document.getElementById('btnPwSave').onclick = savePw;
-document.getElementById('mpwN').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('mpwC').focus(); });
-document.getElementById('mpwC').addEventListener('keydown',e=>{ if(e.key==='Enter') savePw(); });
+document.getElementById('btnEnter').onclick = doTeamLogin;
+document.getElementById('pinIn').addEventListener('keydown',e=>{ if(e.key==='Enter') doTeamLogin(); });
 document.getElementById('btnLogout').onclick = logout;
 document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>activateTab(b.dataset.tab)));
 document.getElementById('filt').addEventListener('change', renderLeads);
