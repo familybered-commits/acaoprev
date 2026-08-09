@@ -1794,7 +1794,7 @@ async function saveAddCliente() {
   try {
     await sbFetch('/rest/v1/clientes', { method:'POST', headers:{'Prefer':'return=minimal'}, body:JSON.stringify(body) });
     closeAddCliente(); reloadClientes(); loadLoginClientes();
-  } catch(e) { document.getElementById('nc-err').textContent='Erro ao cadastrar. Tente novamente.'; }
+  } catch(e) { document.getElementById('nc-err').textContent='Erro: ' + (e.message||e); }
 }
 
 function updateCasosBadge(n) {
