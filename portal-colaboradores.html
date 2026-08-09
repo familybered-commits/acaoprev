@@ -523,6 +523,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <!-- Passo 2: seleção de perfil (sem senha individual) -->
     <div id="ugridWrap" style="display:none">
       <div class="ugrid" id="ugrid"></div>
+
+      <!-- Casos recentes na tela de entrada -->
+      <div style="margin-top:2rem;text-align:left">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem">
+          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Casos Recentes</div>
+          <div style="flex:1;height:1px;background:var(--brd)"></div>
+          <span id="loginCasosBadge" style="font-size:.67rem;color:var(--t2)"></span>
+        </div>
+        <div id="loginCasosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px"></div>
+        <div id="loginCasosMsg" style="font-size:.82rem;color:var(--t3);text-align:center;padding:1rem 0"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -1528,7 +1539,7 @@ async function saveAddCaso() {
 // ═══════════════════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════════════════
-const TEAM_PASSWORD = 'acaoprev2025'; // ← altere aqui para mudar a senha do escritório
+const TEAM_PASSWORD = 'acaoprev2026'; // ← altere aqui para mudar a senha do escritório
 const USERS = [
   {id:'rafael',   name:'Rafael Bered',    initials:'RB', role:'Advogado Principal',  color:'#C9A84C'},
   {id:'pedro',    name:'Pedro Outeiral',  initials:'PO', role:'Advogado Sênior',     color:'#7878d4'},
@@ -1579,10 +1590,44 @@ function doTeamLogin(){
     document.getElementById('pinblk').style.display='none';
     document.getElementById('loginSub').textContent='Selecione seu perfil para entrar';
     document.getElementById('ugridWrap').style.display='block';
+    // Expande lbox e carrega casos
+    document.querySelector('.lbox').style.maxWidth='960px';
+    loadLoginCasos();
   } else {
     document.getElementById('perr').textContent='Senha incorreta. Tente novamente.';
     document.getElementById('pinIn').value='';
     document.getElementById('pinIn').focus();
+  }
+}
+
+async function loadLoginCasos(){
+  const msg = document.getElementById('loginCasosMsg');
+  const grid = document.getElementById('loginCasosGrid');
+  const badge = document.getElementById('loginCasosBadge');
+  msg.textContent='Carregando...';
+  try {
+    const data = await sbFetch('/rest/v1/casos?order=created_at.desc&limit=50');
+    msg.textContent='';
+    if(!data||!data.length){ msg.textContent='Nenhum caso encontrado.'; return; }
+    badge.textContent=data.length+' casos';
+    const STATUS_LABEL={'novo':'Novo','em_analise':'Em análise','convertido':'Convertido','descartado':'Descartado'};
+    grid.innerHTML = data.map(c=>{
+      const dt = new Date(c.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+      return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.35rem">
+          <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text);line-height:1.3">${c.nome}</div>
+          <span class="caso-status ${c.status}" style="white-space:nowrap;flex-shrink:0">${STATUS_LABEL[c.status]||c.status}</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.3rem">
+          <span class="caso-tag">${c.tipo_caso}</span>
+          ${c.cidade?`<span class="caso-tag">${c.cidade}/${c.uf}</span>`:''}
+        </div>
+        <div style="font-size:.72rem;color:var(--t3)">${dt}${c.responsavel?' · '+c.responsavel:''}</div>
+        ${c.relato?`<div style="margin-top:.4rem;font-size:.79rem;color:var(--t2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${c.relato}</div>`:''}
+      </div>`;
+    }).join('');
+  } catch(e){
+    msg.textContent='Erro ao carregar casos.';
   }
 }
 function selUser(id){
@@ -1601,7 +1646,7 @@ function enterPortal(){
   document.getElementById('pnm').textContent=cu.name;
   document.getElementById('prl').textContent=cu.role;
   updateStats(); renderLeads(); renderFunil(); renderAtiv(); renderPerfilCards();
-  activateTab('leads');
+  activateTab('casos');
 }
 function logout(){
   cu=null; selU=null;
@@ -1613,6 +1658,10 @@ function logout(){
   document.getElementById('perr').textContent='';
   document.getElementById('loginSub').textContent='Digite a senha do escritório para acessar';
   document.getElementById('ugridWrap').style.display='none';
+  document.getElementById('loginCasosGrid').innerHTML='';
+  document.getElementById('loginCasosMsg').textContent='';
+  document.getElementById('loginCasosBadge').textContent='';
+  document.querySelector('.lbox').style.maxWidth='';
 }
 
 // ═══════════════════════════════════════════════════════════
