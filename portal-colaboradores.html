@@ -276,7 +276,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.76);display:flex;
   align-items:center;justify-content:center;z-index:300;padding:1rem}
 .modal{background:var(--d2);border:1px solid var(--brds);border-radius:12px;
-  padding:1.4rem;width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px}
+  padding:1.4rem;width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px;
+  max-height:88vh;overflow-y:auto}
 .modal-title{font-family:'Marcellus',serif;font-size:.99rem;color:var(--gold);letter-spacing:.07em}
 .modal-sub{font-size:.77rem;color:var(--t2);line-height:1.6}
 .fld{display:flex;flex-direction:column;gap:3px}
@@ -1053,9 +1054,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 <!-- ══ MODAL: CLIENTE DETALHE ══ -->
 <div class="overlay" id="modCliDetalhe" style="display:none">
   <div class="modal" style="max-width:620px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem">
-      <div class="modal-title" id="cliDetNome" style="margin:0"></div>
-      <a id="cliDetDrive" href="#" target="_blank" style="display:none;background:var(--gold);color:var(--dark);border:none;border-radius:6px;padding:6px 14px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Marcellus',serif;text-decoration:none;white-space:nowrap">📁 Google Drive</a>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;gap:8px">
+      <div class="modal-title" id="cliDetNome" style="margin:0;flex:1"></div>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        <a id="cliDetDrive" href="#" target="_blank" style="display:none;background:var(--gold);color:var(--dark);border:none;border-radius:6px;padding:6px 12px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Marcellus',serif;text-decoration:none;white-space:nowrap">📁 Drive</a>
+        <button onclick="deleteCliente()" style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:6px;color:#d47878;font-size:.72rem;padding:6px 12px;cursor:pointer;font-family:'Lora',serif;white-space:nowrap">🗑 Deletar</button>
+        <button onclick="closeCliDetalhe()" style="background:none;border:1px solid var(--brd);border-radius:6px;color:var(--t3);font-size:1rem;padding:4px 10px;cursor:pointer;line-height:1">✕</button>
+      </div>
     </div>
     <div class="modal-sub" id="cliDetMeta" style="margin-bottom:1rem"></div>
 
