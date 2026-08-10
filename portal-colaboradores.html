@@ -655,7 +655,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
         <select class="filter-sel" id="cli-filt-resp">
           <option value="">Todos os advogados</option>
         </select>
-        <input class="filter-sel" id="cli-busca" type="text" placeholder="Buscar por nome ou CPF..." style="width:200px">
+        <select class="filter-sel" id="cli-filt-tipo">
+          <option value="">Todas as matérias</option>
+          <option>Aposentadoria por Idade</option>
+          <option>Aposentadoria por Tempo de Contribuição</option>
+          <option>Aposentadoria por Invalidez</option>
+          <option>Pensão por Morte</option>
+          <option>Auxílio-Doença</option>
+          <option>Auxílio-Acidente</option>
+          <option>BPC/LOAS</option>
+          <option>ACP dos Tetos</option>
+          <option>Isenção de IR</option>
+          <option>Outro</option>
+        </select>
+        <input class="filter-sel" id="cli-busca" type="text" placeholder="Buscar por nome ou CPF..." style="width:190px">
+        <button id="btn-meus-cli" class="btn-sm ghost" onclick="filtrarMeusClientes()" style="white-space:nowrap">👤 Meus clientes</button>
+        <button class="btn-sm ghost" onclick="limparFiltrosClientes()" style="white-space:nowrap;opacity:.6;font-size:.73rem">✕ Limpar</button>
       </div>
       <div class="leads-top-r">
         <button class="btn-sm ghost" onclick="reloadClientes()">↺ Atualizar</button>
@@ -1684,10 +1699,12 @@ function renderClientes() {
   if(!grid) return;
   const filtStatus = document.getElementById('cli-filt-status')?.value || '';
   const filtResp   = document.getElementById('cli-filt-resp')?.value  || '';
+  const filtTipo   = document.getElementById('cli-filt-tipo')?.value  || '';
   const busca      = (document.getElementById('cli-busca')?.value || '').toLowerCase();
   let lista = clientesAll.filter(c =>
     (!filtStatus || c.status === filtStatus) &&
     (!filtResp   || (c.responsavel||'').split(',').includes(filtResp)) &&
+    (!filtTipo   || c.tipo_beneficio === filtTipo) &&
     (!busca      || c.nome.toLowerCase().includes(busca) || (c.cpf||'').includes(busca))
   );
   if(!lista.length) {
@@ -1922,9 +1939,36 @@ async function saveAddCaso() {
 ['casos-filt-tipo','casos-filt-status','casos-filt-uf'].forEach(id => {
   document.getElementById(id)?.addEventListener('change', reloadCasos);
 });
-['cli-filt-status','cli-filt-resp'].forEach(id => {
-  document.getElementById(id)?.addEventListener('change', renderClientes);
+['cli-filt-status','cli-filt-resp','cli-filt-tipo'].forEach(id => {
+  document.getElementById(id)?.addEventListener('change', () => {
+    // se mudar filtro manualmente, remove destaque do botão Meus clientes
+    const btn = document.getElementById('btn-meus-cli');
+    if(btn && id==='cli-filt-resp'){ btn.style.borderColor=''; btn.style.color=''; }
+    renderClientes();
+  });
 });
+
+function filtrarMeusClientes() {
+  if(!cu) return;
+  document.getElementById('cli-filt-resp').value = cu.id;
+  document.getElementById('cli-filt-status').value = '';
+  document.getElementById('cli-filt-tipo').value = '';
+  document.getElementById('cli-busca').value = '';
+  renderClientes();
+  // Destaca o botão
+  const btn = document.getElementById('btn-meus-cli');
+  if(btn){ btn.style.borderColor='var(--gold)'; btn.style.color='var(--gold)'; }
+}
+
+function limparFiltrosClientes() {
+  ['cli-filt-status','cli-filt-resp','cli-filt-tipo'].forEach(id=>{
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  const b = document.getElementById('cli-busca'); if(b) b.value='';
+  const btn = document.getElementById('btn-meus-cli');
+  if(btn){ btn.style.borderColor=''; btn.style.color=''; }
+  renderClientes();
+}
 document.getElementById('cli-busca')?.addEventListener('input', renderClientes);
 document.getElementById('loginCliBusca')?.addEventListener('input', renderLoginClientes);
 
