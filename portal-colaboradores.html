@@ -1104,10 +1104,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
         </select>
       </div>
       <div class="fld"><label>Vara / Tribunal</label><input type="text" id="cliVara" placeholder="Ex: 1ª Vara Federal Caxias do Sul"></div>
-      <div class="fld"><label>Advogado responsável</label>
-        <select id="cliResp" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
-          <option value="">Não atribuído</option>
-        </select>
+      <div class="fld" style="grid-column:1/-1"><label>Advogado(s) responsável(is)</label>
+        <div id="cliRespBoxes" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 10px"></div>
       </div>
       <div class="fld"><label>Status</label>
         <select id="cliStatus" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
@@ -1169,10 +1167,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
           <option>BPC/LOAS</option><option>ACP dos Tetos</option><option>Isenção de IR</option><option>Outro</option>
         </select>
       </div>
-      <div class="fld"><label>Advogado responsável</label>
-        <select id="ncResp" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
-          <option value="">Não atribuído</option>
-        </select>
+      <div class="fld" style="grid-column:1/-1"><label>Advogado(s) responsável(is)</label>
+        <div id="ncRespBoxes" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 10px"></div>
       </div>
       <div class="fld"><label>Link Google Drive</label><input type="url" id="ncDrive" placeholder="https://drive.google.com/..."></div>
     </div>
@@ -1599,8 +1595,7 @@ function renderCasos(lista) {
     const dtStr = dt.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
     const emAnd = c.status === 'em_analise';
     const cardStyle = emAnd ? 'border-color:var(--gold);background:rgba(201,168,76,.06)' : '';
-    const adv = c.responsavel ? USERS.find(u => u.id === c.responsavel) : null;
-    const advBadge = adv ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-family:'Marcellus',serif;font-size:.55rem;border:1.5px solid ${adv.color};color:${adv.color};vertical-align:middle;margin-right:3px" title="${adv.name}">${adv.initials}</span>` : '';
+    const advBadge = makeAdvBadges(c.responsavel);
     return `<div class="caso-card" onclick='openCasoDetalhe("${c.id}")' style="${cardStyle}">
       <div class="caso-tag">${TIPO_ICON[c.tipo_caso] || '📁'} ${escH(c.tipo_caso)}</div>
       <div class="caso-relato">${escH(c.relato)}</div>
@@ -1631,13 +1626,43 @@ const CLI_STATUS = { ativo:'Ativo', aguardando_docs:'Aguardando docs', aguardand
 const CLI_STATUS_CLS = { ativo:'convertido', aguardando_docs:'em_analise', aguardando_decisao:'novo', encerrado:'descartado' };
 
 function populateRespSelects() {
-  const opts = '<option value="">Não atribuído</option>' + USERS.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
-  ['cliResp','ncResp','cli-filt-resp'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.innerHTML = id==='cli-filt-resp'
-      ? '<option value="">Todos os advogados</option>'+USERS.map(u=>`<option value="${u.id}">${u.name}</option>`).join('')
-      : opts;
+  // Checkboxes para cliRespBoxes e ncRespBoxes
+  ['cliRespBoxes','ncRespBoxes'].forEach(cid => {
+    const el = document.getElementById(cid);
+    if(!el) return;
+    el.innerHTML = USERS.map(u=>`
+      <label style="display:flex;align-items:center;gap:7px;cursor:pointer;padding:4px 5px;border-radius:5px;transition:background .15s" onmouseover="this.style.background='rgba(201,168,76,.07)'" onmouseout="this.style.background='transparent'">
+        <input type="checkbox" value="${u.id}" style="accent-color:${u.color};width:14px;height:14px;cursor:pointer;flex-shrink:0">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-family:'Marcellus',serif;font-size:.58rem;border:1.5px solid ${u.color};color:${u.color};flex-shrink:0">${u.initials}</span>
+        <span style="font-size:.81rem;color:var(--text)">${u.name}</span>
+      </label>
+    `).join('');
   });
+  // Select do filtro de clientes
+  const filtEl = document.getElementById('cli-filt-resp');
+  if(filtEl) filtEl.innerHTML = '<option value="">Todos os advogados</option>'+USERS.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+}
+
+// Helpers para checkboxes de responsável
+function getCheckedResps(containerId) {
+  const vals = [...document.querySelectorAll(`#${containerId} input[type=checkbox]:checked`)].map(b=>b.value).filter(Boolean);
+  return vals.length ? vals.join(',') : null;
+}
+function setCheckedResps(containerId, val) {
+  const ids = val ? val.split(',') : [];
+  document.querySelectorAll(`#${containerId} input[type=checkbox]`).forEach(cb=>{ cb.checked = ids.includes(cb.value); });
+}
+function clearCheckedResps(containerId) {
+  document.querySelectorAll(`#${containerId} input[type=checkbox]`).forEach(cb=>{ cb.checked=false; });
+}
+// Helper: múltiplas bolinhas de advogado
+function makeAdvBadges(responsavel, sz=20, fs='.55rem') {
+  if(!responsavel) return '';
+  return responsavel.split(',').map(id=>{
+    const adv = USERS.find(u=>u.id===id);
+    if(!adv) return '';
+    return `<span style="display:inline-flex;align-items:center;justify-content:center;width:${sz}px;height:${sz}px;border-radius:50%;font-family:'Marcellus',serif;font-size:${fs};border:1.5px solid ${adv.color};color:${adv.color};vertical-align:middle;margin-right:2px" title="${adv.name}">${adv.initials}</span>`;
+  }).join('');
 }
 
 async function reloadClientes() {
@@ -1662,7 +1687,7 @@ function renderClientes() {
   const busca      = (document.getElementById('cli-busca')?.value || '').toLowerCase();
   let lista = clientesAll.filter(c =>
     (!filtStatus || c.status === filtStatus) &&
-    (!filtResp   || c.responsavel === filtResp) &&
+    (!filtResp   || (c.responsavel||'').split(',').includes(filtResp)) &&
     (!busca      || c.nome.toLowerCase().includes(busca) || (c.cpf||'').includes(busca))
   );
   if(!lista.length) {
@@ -1670,8 +1695,7 @@ function renderClientes() {
     return;
   }
   grid.innerHTML = '<div class="casos-grid">' + lista.map(c => {
-    const adv = c.responsavel ? USERS.find(u=>u.id===c.responsavel) : null;
-    const advBadge = adv ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-family:'Marcellus',serif;font-size:.55rem;border:1.5px solid ${adv.color};color:${adv.color};vertical-align:middle;margin-right:3px" title="${adv.name}">${adv.initials}</span>` : '';
+    const advBadge = makeAdvBadges(c.responsavel);
     const stCls = CLI_STATUS_CLS[c.status] || 'novo';
     return `<div class="caso-card" onclick='openCliDetalhe("${c.id}")' style="cursor:pointer">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:.4rem">
@@ -1718,7 +1742,7 @@ function openCliDetalhe(id) {
   document.getElementById('cliProc').value   = c.numero_processo||'';
   document.getElementById('cliFase').value   = c.fase_processual||'';
   document.getElementById('cliVara').value   = c.vara_tribunal||'';
-  document.getElementById('cliResp').value   = c.responsavel||'';
+  setCheckedResps('cliRespBoxes', c.responsavel||null);
   document.getElementById('cliStatus').value = c.status||'ativo';
   document.getElementById('cliDrive').value  = c.drive_link||'';
   document.getElementById('cliObs').value    = c.observacoes||'';
@@ -1748,7 +1772,7 @@ async function saveCliDetalhe() {
     numero_processo: document.getElementById('cliProc').value.trim()||null,
     fase_processual: document.getElementById('cliFase').value||null,
     vara_tribunal: document.getElementById('cliVara').value.trim()||null,
-    responsavel: document.getElementById('cliResp').value||null,
+    responsavel: getCheckedResps('cliRespBoxes'),
     status: document.getElementById('cliStatus').value,
     drive_link: document.getElementById('cliDrive').value.trim()||null,
     observacoes: document.getElementById('cliObs').value.trim()||null,
@@ -1770,7 +1794,8 @@ async function deleteCliente() {
 
 function openAddCliente() {
   ['ncNome','ncCpf','ncWa','ncEmail','ncCidade','ncDrive'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  ['ncNasc','ncUf','ncTipo','ncResp'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['ncNasc','ncUf','ncTipo'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  clearCheckedResps('ncRespBoxes');
   document.getElementById('nc-err').textContent='';
   document.getElementById('modAddCliente').style.display='flex';
 }
@@ -1789,7 +1814,7 @@ async function saveAddCliente() {
     cidade: document.getElementById('ncCidade').value.trim()||null,
     uf: document.getElementById('ncUf').value||null,
     tipo_beneficio: document.getElementById('ncTipo').value||null,
-    responsavel: document.getElementById('ncResp').value||null,
+    responsavel: getCheckedResps('ncRespBoxes'),
     drive_link: document.getElementById('ncDrive').value.trim()||null,
     status: 'ativo',
   };
@@ -1959,6 +1984,7 @@ function doTeamLogin(){
     document.getElementById('ugridWrap').style.display='block';
     // Expande lbox e carrega casos + clientes
     document.querySelector('.lbox').style.maxWidth='960px';
+    populateRespSelects();
     loadLoginCasos();
     loadLoginClientes();
   } else {
@@ -1985,9 +2011,7 @@ async function loadLoginCasos(){
       const dt = new Date(c.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
       const emAnd = c.status==='em_analise';
       const cardStyle = emAnd ? 'border-color:var(--gold);background:rgba(201,168,76,.06)' : '';
-      // Bolinha do advogado responsável
-      const adv = c.responsavel ? USERS.find(u=>u.id===c.responsavel) : null;
-      const advBadge = adv ? `<div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Marcellus',serif;font-size:.62rem;border:1.5px solid ${adv.color};color:${adv.color};flex-shrink:0;title='${adv.name}'">${adv.initials}</div>` : '';
+      const advBadge = makeAdvBadges(c.responsavel, 24, '.62rem');
       return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;cursor:pointer;${cardStyle}"
         onclick='openLoginCasoDetalhe("${c.id}")'>
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.35rem">
@@ -2039,8 +2063,7 @@ function renderLoginClientes(){
   const SL = CLI_STATUS || {ativo:'Ativo',aguardando_docs:'Aguardando docs',aguardando_decisao:'Aguardando decisão',encerrado:'Encerrado'};
   const SC = CLI_STATUS_CLS || {ativo:'convertido',aguardando_docs:'em_analise',aguardando_decisao:'novo',encerrado:'descartado'};
   grid.innerHTML = lista.map(c=>{
-    const adv = c.responsavel ? USERS.find(u=>u.id===c.responsavel) : null;
-    const advBadge = adv ? `<div style="width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'Marcellus',serif;font-size:.58rem;border:1.5px solid ${adv.color};color:${adv.color};flex-shrink:0" title="${adv.name}">${adv.initials}</div>` : '';
+    const advBadge = makeAdvBadges(c.responsavel, 22, '.58rem');
     return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;cursor:pointer" onclick='openCliDetalhe("${c.id}")'>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.3rem">
         <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text);line-height:1.3">${c.nome}</div>
