@@ -562,6 +562,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       <div><div class="pname" id="pnm"></div><div class="prole" id="prl"></div></div>
     </div>
     <div class="psep"></div>
+    <button class="ibtn outlined" id="btnAreaGeral" onclick="backToTeamArea()" style="gap:5px">← Área geral</button>
     <button class="ibtn outlined" id="btnTutorial">? Tutorial</button>
     <button class="ibtn" id="btnLogout">Sair</button>
   </div>
@@ -2183,6 +2184,21 @@ function logout(){
   document.getElementById('loginClientesMsg').textContent='';
   document.getElementById('loginCliBadge').textContent='';
   document.querySelector('.lbox').style.maxWidth='';
+}
+
+// Volta para a tela de seleção de perfil sem pedir senha novamente
+function backToTeamArea(){
+  cu = null;
+  document.getElementById('s-portal').classList.remove('on');
+  document.getElementById('s-login').classList.add('on');
+  // Mantém ugridWrap visível (senha já foi validada) e recarrega dados
+  document.getElementById('pinblk').style.display='none';
+  document.getElementById('ugridWrap').style.display='block';
+  document.getElementById('loginSub').textContent='Selecione seu perfil para entrar';
+  document.querySelector('.lbox').style.maxWidth='960px';
+  // Atualiza casos e clientes na tela geral
+  loadLoginCasos();
+  loadLoginClientes();
 }
 
 // ═══════════════════════════════════════════════════════════
