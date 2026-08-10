@@ -258,6 +258,31 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .pf-step{font-size:.69rem;color:var(--gold);margin-top:4px}
 .perfil-detail{background:var(--d3);border:1px solid var(--brd);border-radius:10px;padding:14px;display:none}
 .perfil-detail.on{display:block}
+/* ── FINANCEIRO ─────────────────────────── */
+.fin-wrap{display:flex;flex-direction:column;flex:1;overflow:hidden}
+.fin-top{display:flex;align-items:center;justify-content:space-between;padding:.8rem clamp(.8rem,3vw,2rem);border-bottom:1px solid var(--brd);flex-wrap:wrap;gap:.6rem}
+.fin-nav{display:flex;align-items:center;gap:.5rem}
+.fin-period{font-family:'Marcellus',serif;font-size:.95rem;color:var(--text);min-width:150px;text-align:center}
+.fin-arrow{background:none;border:1px solid var(--brd);border-radius:5px;color:var(--t2);cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .2s}
+.fin-arrow:hover{border-color:var(--gold);color:var(--gold)}
+.fin-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;padding:.8rem clamp(.8rem,3vw,2rem);border-bottom:1px solid var(--brd)}
+.fin-scard{background:var(--d3);border:1px solid var(--brd);border-radius:8px;padding:.75rem 1rem}
+.fin-scard-label{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:.35rem}
+.fin-scard-val{font-family:'Marcellus',serif;font-size:1rem;color:var(--text)}
+.fin-scard-val.verde{color:#5db85d}.fin-scard-val.vermelho{color:#d47878}
+.fin-ftabs{display:flex;gap:0;border-bottom:1px solid var(--brd);padding:0 clamp(.8rem,3vw,2rem);background:var(--d2)}
+.fin-ftab{background:none;border:none;border-bottom:2px solid transparent;padding:.55rem 1.1rem;font-family:'Lora',serif;font-size:.78rem;color:var(--t2);cursor:pointer;transition:all .2s;margin-bottom:-1px}
+.fin-ftab.on{border-bottom-color:var(--gold);color:var(--gold)}
+.fin-table-wrap{flex:1;overflow-y:auto;padding:.8rem clamp(.8rem,3vw,2rem)}
+.fin-table{width:100%;border-collapse:collapse;min-width:640px}
+.fin-table th{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--brd);white-space:nowrap}
+.fin-table td{padding:.55rem .7rem;border-bottom:1px solid rgba(255,255,255,.04);font-size:.81rem;color:var(--text);vertical-align:middle}
+.fin-table tr:hover td{background:rgba(201,168,76,.04)}
+.fin-saldo-row td{font-size:.72rem;color:var(--t3);text-align:right;padding:.4rem .7rem;background:rgba(0,0,0,.15);font-style:italic}
+.fin-tipo{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:bold}
+.fin-tipo.e{border:1.5px solid #5db85d;color:#5db85d}.fin-tipo.s{border:1.5px solid #d47878;color:#d47878}
+.fin-cat{font-size:.63rem;letter-spacing:.06em;padding:2px 7px;border-radius:3px;text-transform:uppercase;background:rgba(201,168,76,.15);color:var(--gold);white-space:nowrap}
+.fin-chk{width:15px;height:15px;accent-color:var(--gold);cursor:pointer}
 .pd-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px}
 .pd-name{font-family:'Marcellus',serif;font-size:1rem;color:var(--text)}
 .pd-meta{font-size:.77rem;color:var(--t2);margin-top:3px}
@@ -583,6 +608,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <button class="tbtn" data-tab="funil">Funil</button>
     <button class="tbtn" data-tab="perfil">Perfil do Lead</button>
     <button class="tbtn" data-tab="operacao">Operação</button>
+    <button class="tbtn" data-tab="financeiro" id="tab-btn-financeiro" style="display:none">💰 Financeiro</button>
   </div>
 
   <!-- ─ LEADS ─ -->
@@ -977,7 +1003,100 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     </div>
   </div>
 
+  <!-- ─ FINANCEIRO ─ -->
+  <div class="tpane" id="tab-financeiro" style="display:none">
+    <div class="fin-wrap">
+      <!-- cabeçalho período + botões -->
+      <div class="fin-top">
+        <div class="fin-nav">
+          <button class="fin-arrow" onclick="finPrevMonth()">‹</button>
+          <div class="fin-period" id="finPeriod">—</div>
+          <button class="fin-arrow" onclick="finNextMonth()">›</button>
+        </div>
+        <div style="display:flex;gap:.6rem;align-items:center">
+          <button class="btn-sm ghost" onclick="openFinConfig()" title="Ajustar saldo inicial de referência">⚙ Saldo inicial</button>
+          <button class="btn-sm" onclick="openAddLancamento()">+ Lançamento</button>
+        </div>
+      </div>
+      <!-- cards de resumo -->
+      <div class="fin-summary">
+        <div class="fin-scard"><div class="fin-scard-label">Saldo anterior</div><div class="fin-scard-val" id="finSaldoAnt">R$ 0,00</div></div>
+        <div class="fin-scard"><div class="fin-scard-label">Entradas</div><div class="fin-scard-val verde" id="finEntradas">R$ 0,00</div></div>
+        <div class="fin-scard"><div class="fin-scard-label">Saídas</div><div class="fin-scard-val vermelho" id="finSaidas">R$ 0,00</div></div>
+        <div class="fin-scard"><div class="fin-scard-label">Saldo atual</div><div class="fin-scard-val" id="finSaldoAtual">R$ 0,00</div></div>
+      </div>
+      <!-- filtro tabs -->
+      <div class="fin-ftabs">
+        <button class="fin-ftab on" data-ftab="todos" onclick="setFinFiltro('todos')">Todos</button>
+        <button class="fin-ftab" data-ftab="a_receber" onclick="setFinFiltro('a_receber')">A pagar / A receber</button>
+        <button class="fin-ftab" data-ftab="pagos" onclick="setFinFiltro('pagos')">Pagos e recebidos</button>
+      </div>
+      <!-- tabela -->
+      <div class="fin-table-wrap">
+        <div style="overflow-x:auto">
+          <table class="fin-table">
+            <thead>
+              <tr>
+                <th style="width:100px">Data</th>
+                <th style="width:34px">Tipo</th>
+                <th>Recebido de / Pago para</th>
+                <th>Descrição</th>
+                <th style="width:115px">Categoria</th>
+                <th style="width:100px;text-align:right">Valor</th>
+                <th style="width:48px;text-align:center">Pago</th>
+                <th style="width:34px"></th>
+              </tr>
+            </thead>
+            <tbody id="finTbody"></tbody>
+          </table>
+        </div>
+        <div id="finEmpty" style="text-align:center;color:var(--t3);font-size:.82rem;padding:2.5rem;display:none">Nenhum lançamento neste período.</div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /portal -->
+
+<!-- ══ MODAL: LANCAMENTO ══ -->
+<div class="overlay" id="modLancamento" style="display:none">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-title" id="lancTitulo">Novo Lançamento</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <div class="fld"><label>Data <span style="color:var(--gold)">*</span></label><input type="date" id="lancData"></div>
+      <div class="fld"><label>Tipo <span style="color:var(--gold)">*</span></label>
+        <select id="lancTipo" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="entrada">↗ Entrada (a receber)</option>
+          <option value="saida">↘ Saída (a pagar)</option>
+        </select>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Recebido de / Pago para</label><input type="text" id="lancCliente" placeholder="Nome do cliente ou fornecedor"></div>
+      <div class="fld" style="grid-column:1/-1"><label>Descrição <span style="color:var(--gold)">*</span></label><input type="text" id="lancDesc" placeholder="Ex: 3ª parcela – Honorários Contratuais"></div>
+      <div class="fld"><label>Categoria</label>
+        <select id="lancCat" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="HONORÁRIOS">Honorários</option>
+          <option value="SUCUMBÊNCIA">Sucumbência</option>
+          <option value="CUSTAS">Custas processuais</option>
+          <option value="DESPESAS">Despesas escritório</option>
+          <option value="SALÁRIOS">Salários</option>
+          <option value="OUTROS">Outros</option>
+        </select>
+      </div>
+      <div class="fld"><label>Valor (R$) <span style="color:var(--gold)">*</span></label><input type="number" id="lancValor" step="0.01" min="0.01" placeholder="0,00"></div>
+      <div class="fld" style="grid-column:1/-1;display:flex;align-items:center;gap:9px;padding:4px 0">
+        <input type="checkbox" id="lancPago" style="accent-color:var(--gold);width:15px;height:15px;cursor:pointer">
+        <label for="lancPago" style="font-size:.83rem;color:var(--text);cursor:pointer">Marcar como pago / recebido</label>
+      </div>
+    </div>
+    <div class="merr" id="lanc-err"></div>
+    <div class="mbtns" style="justify-content:space-between">
+      <button id="lancDel" onclick="deleteLancamento()" style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:6px;color:#d47878;font-size:.77rem;padding:7px 14px;cursor:pointer;font-family:'Lora',serif;display:none">🗑 Excluir</button>
+      <div style="display:flex;gap:8px;margin-left:auto">
+        <button class="btn-cancel" onclick="closeLancamento()">Cancelar</button>
+        <button class="btn-go" onclick="saveLancamento()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ══ MODAL: CASO DETALHE ══ -->
 <div class="overlay" id="modCasoDetalhe" style="display:none">
@@ -2165,6 +2284,10 @@ function enterPortal(){
   document.getElementById('prl').textContent=cu.role;
   updateStats(); renderLeads(); renderFunil(); renderAtiv(); renderPerfilCards();
   populateRespSelects();
+  // Aba Financeiro só visível para Vinícius (Gerente Financeiro)
+  const finBtn = document.getElementById('tab-btn-financeiro');
+  if(finBtn) finBtn.style.display = cu.id === 'vinicius' ? '' : 'none';
+  if(cu.id === 'vinicius') initFin();
   activateTab('casos');
 }
 function logout(){
@@ -2236,18 +2359,19 @@ function savePw(){
 // ═══════════════════════════════════════════════════════════
 function activateTab(name){
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
-  ['leads','casos','clientes','scripts','funil','perfil','operacao'].forEach(t=>{
+  ['leads','casos','clientes','scripts','funil','perfil','operacao','financeiro'].forEach(t=>{
     const el=document.getElementById('tab-'+t);
     if(!el) return;
     const on=t===name;
     el.classList.toggle('on',on);
     el.style.display=on?'flex':'none';
   });
-  if(name==='funil')     renderFunil();
-  if(name==='perfil')    renderPerfilCards();
-  if(name==='operacao')  opInit();
-  if(name==='casos')     reloadCasos();
-  if(name==='clientes')  reloadClientes();
+  if(name==='funil')      renderFunil();
+  if(name==='perfil')     renderPerfilCards();
+  if(name==='operacao')   opInit();
+  if(name==='casos')      reloadCasos();
+  if(name==='clientes')   reloadClientes();
+  if(name==='financeiro') renderFin();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2780,6 +2904,194 @@ document.getElementById('btnTutorial').onclick = openTutorial;
 document.getElementById('btnTutClose').onclick = closeTutorial;
 document.getElementById('modTutorial').addEventListener('click', e=>{ if(e.target===document.getElementById('modTutorial')) closeTutorial(); });
 renderLoginGrid();
+
+// ═══════════════════════════════════════════════════════════
+// FINANCEIRO — Gestão de Lançamentos (Vinícius)
+// ═══════════════════════════════════════════════════════════
+const FIN_KEY       = 'acaoprev_lancamentos';
+const FIN_SALDO_KEY = 'acaoprev_saldo_inicial';
+
+// Dados pré-carregados do Astrea (agosto/2026)
+const FIN_SEED = [
+  { id:'fin-1', data:'2026-08-10', tipo:'entrada', cliente:'ALISON SILVA DE OLIVEIRA', descricao:'7ª parcela - Honorários Contratuais - 7/12', categoria:'HONORÁRIOS', valor:475.50, pago:false },
+  { id:'fin-2', data:'2026-08-10', tipo:'entrada', cliente:'THIAGO AMARO SIMOES',       descricao:'12ª parcela - Honorários Contratuais - 12/12', categoria:'HONORÁRIOS', valor:403.50, pago:false },
+  { id:'fin-3', data:'2026-08-20', tipo:'entrada', cliente:'GLAUBER CAVALCANTI DA SILVA', descricao:'3ª parcela - Honorários contratuais e sucumbência', categoria:'HONORÁRIOS', valor:450.00, pago:false },
+  { id:'fin-4', data:'2026-08-25', tipo:'entrada', cliente:'ALCIVAN RABELO VIEIRA',     descricao:'3ª parcela - Honorários Contratuais - 3/6', categoria:'HONORÁRIOS', valor:1179.96, pago:false },
+];
+
+let finData        = [];
+let finSaldoInicial = 216564.25; // Saldo anterior de Agosto/2026 conforme Astrea
+let finAno          = 2026;
+let finMes          = 8;
+let finFiltro       = 'todos';
+let lancamentoAtual = null;
+
+const FIN_MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+function initFin() {
+  const stored = localStorage.getItem(FIN_KEY);
+  finData = stored ? JSON.parse(stored) : FIN_SEED.map(l=>({...l}));
+  if(!stored) localStorage.setItem(FIN_KEY, JSON.stringify(finData));
+  const s = localStorage.getItem(FIN_SALDO_KEY);
+  if(s) finSaldoInicial = parseFloat(s);
+  // Ir para mês atual se houver dados, senão ficar em ago/2026
+  const hoje = new Date();
+  if(finData.some(l=>{ const d=new Date(l.data+'T00:00:00'); return d.getFullYear()===hoje.getFullYear()&&d.getMonth()+1===hoje.getMonth()+1; })){
+    finAno=hoje.getFullYear(); finMes=hoje.getMonth()+1;
+  }
+  renderFin();
+}
+
+function finSalvar() { localStorage.setItem(FIN_KEY, JSON.stringify(finData)); }
+
+function finPrevMonth(){ finMes--; if(finMes<1){finMes=12;finAno--;} renderFin(); }
+function finNextMonth(){ finMes++; if(finMes>12){finMes=1;finAno++;} renderFin(); }
+
+function setFinFiltro(f){
+  finFiltro=f;
+  document.querySelectorAll('.fin-ftab').forEach(t=>t.classList.toggle('on',t.dataset.ftab===f));
+  renderFin();
+}
+
+function fmtBRL(v){ return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+function renderFin(){
+  document.getElementById('finPeriod').textContent = FIN_MESES[finMes-1]+' de '+finAno;
+
+  // Saldo acumulado até o mês anterior
+  const anterior = finData.filter(l=>{ const d=new Date(l.data+'T00:00:00'); return d.getFullYear()<finAno||(d.getFullYear()===finAno&&d.getMonth()+1<finMes); });
+  const saldoAnt = finSaldoInicial + anterior.reduce((s,l)=>s+(l.tipo==='entrada'?l.valor:-l.valor),0);
+
+  // Lançamentos do mês
+  let lista = finData.filter(l=>{ const d=new Date(l.data+'T00:00:00'); return d.getFullYear()===finAno&&d.getMonth()+1===finMes; }).sort((a,b)=>a.data.localeCompare(b.data));
+
+  const entradas = lista.filter(l=>l.tipo==='entrada').reduce((s,l)=>s+l.valor,0);
+  const saidas   = lista.filter(l=>l.tipo==='saida').reduce((s,l)=>s+l.valor,0);
+  const saldoAt  = saldoAnt + entradas - saidas;
+
+  document.getElementById('finSaldoAnt').textContent  = fmtBRL(saldoAnt);
+  document.getElementById('finEntradas').textContent  = fmtBRL(entradas);
+  document.getElementById('finSaidas').textContent    = fmtBRL(saidas);
+  document.getElementById('finSaldoAtual').textContent= fmtBRL(saldoAt);
+
+  if(finFiltro==='a_receber') lista = lista.filter(l=>!l.pago);
+  if(finFiltro==='pagos')     lista = lista.filter(l=>l.pago);
+
+  const tbody = document.getElementById('finTbody');
+  const empty = document.getElementById('finEmpty');
+  if(!lista.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  // Agrupa por dia
+  const porDia={};
+  lista.forEach(l=>{ if(!porDia[l.data]) porDia[l.data]=[]; porDia[l.data].push(l); });
+
+  let saldoCorrido = saldoAnt;
+  let html = `<tr class="fin-saldo-row"><td colspan="8">Saldo anterior de ${fmtBRL(saldoAnt)}</td></tr>`;
+
+  Object.keys(porDia).sort().forEach(dia=>{
+    porDia[dia].forEach(l=>{
+      const dtFmt = new Date(l.data+'T00:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+      const icone = l.tipo==='entrada'
+        ? `<span class="fin-tipo e" title="Entrada">↗</span>`
+        : `<span class="fin-tipo s" title="Saída">↘</span>`;
+      const valStyle = l.tipo==='entrada'?'color:#5db85d':'color:#d47878';
+      saldoCorrido += l.tipo==='entrada'?l.valor:-l.valor;
+      const pagoAttr = l.pago?'checked':'';
+      html+=`<tr>
+        <td>${dtFmt}</td>
+        <td>${icone}</td>
+        <td style="color:var(--t2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escH(l.cliente||'—')}</td>
+        <td style="color:var(--t2)">${escH(l.descricao)}</td>
+        <td><span class="fin-cat">${escH(l.categoria)}</span></td>
+        <td style="text-align:right;font-family:'Marcellus',serif;${valStyle}">${fmtBRL(l.valor)}</td>
+        <td style="text-align:center"><input type="checkbox" class="fin-chk" ${pagoAttr} onchange="togglePago('${l.id}',this.checked)"></td>
+        <td><button onclick="openEditLancamento('${l.id}')" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:.8rem;padding:2px 5px" title="Editar">✏</button></td>
+      </tr>`;
+    });
+    const diaFmt = new Date(dia+'T00:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+    html+=`<tr class="fin-saldo-row"><td colspan="8">Saldo do dia ${diaFmt} ${fmtBRL(saldoCorrido)}</td></tr>`;
+  });
+
+  html+=`<tr class="fin-saldo-row"><td colspan="5" style="text-align:left;padding-top:.9rem;color:var(--t2)">Total de entradas no período</td><td colspan="3" style="text-align:right;padding-top:.9rem;color:#5db85d">${fmtBRL(entradas)}</td></tr>`;
+  html+=`<tr class="fin-saldo-row"><td colspan="5" style="text-align:left;color:var(--t2)">Total de saídas no período</td><td colspan="3" style="text-align:right;color:#d47878">${fmtBRL(saidas)}</td></tr>`;
+  tbody.innerHTML=html;
+}
+
+function togglePago(id,checked){
+  const l=finData.find(x=>x.id===id);
+  if(l){ l.pago=checked; finSalvar(); renderFin(); }
+}
+
+function openAddLancamento(){
+  lancamentoAtual=null;
+  document.getElementById('lancTitulo').textContent='Novo Lançamento';
+  const hoje=new Date(); const dd=String(hoje.getDate()).padStart(2,'0'); const mm=String(finMes).padStart(2,'0');
+  document.getElementById('lancData').value=`${finAno}-${mm}-${dd}`;
+  document.getElementById('lancTipo').value='entrada';
+  document.getElementById('lancCliente').value='';
+  document.getElementById('lancDesc').value='';
+  document.getElementById('lancCat').value='HONORÁRIOS';
+  document.getElementById('lancValor').value='';
+  document.getElementById('lancPago').checked=false;
+  document.getElementById('lancDel').style.display='none';
+  document.getElementById('lanc-err').textContent='';
+  document.getElementById('modLancamento').style.display='flex';
+}
+
+function openEditLancamento(id){
+  lancamentoAtual=finData.find(x=>x.id===id);
+  if(!lancamentoAtual) return;
+  const l=lancamentoAtual;
+  document.getElementById('lancTitulo').textContent='Editar Lançamento';
+  document.getElementById('lancData').value=l.data;
+  document.getElementById('lancTipo').value=l.tipo;
+  document.getElementById('lancCliente').value=l.cliente||'';
+  document.getElementById('lancDesc').value=l.descricao;
+  document.getElementById('lancCat').value=l.categoria;
+  document.getElementById('lancValor').value=l.valor;
+  document.getElementById('lancPago').checked=l.pago;
+  document.getElementById('lancDel').style.display='inline-block';
+  document.getElementById('lanc-err').textContent='';
+  document.getElementById('modLancamento').style.display='flex';
+}
+
+function closeLancamento(){ document.getElementById('modLancamento').style.display='none'; lancamentoAtual=null; }
+
+function saveLancamento(){
+  const data  = document.getElementById('lancData').value;
+  const desc  = document.getElementById('lancDesc').value.trim();
+  const valor = parseFloat(document.getElementById('lancValor').value);
+  if(!data||!desc||isNaN(valor)||valor<=0){
+    document.getElementById('lanc-err').textContent='Preencha data, descrição e valor.'; return;
+  }
+  const body={
+    data, tipo:document.getElementById('lancTipo').value,
+    cliente:document.getElementById('lancCliente').value.trim(),
+    descricao:desc, categoria:document.getElementById('lancCat').value,
+    valor, pago:document.getElementById('lancPago').checked,
+  };
+  if(lancamentoAtual){ Object.assign(lancamentoAtual,body); }
+  else { finData.push({id:'fin-'+Date.now(),...body}); }
+  finSalvar(); closeLancamento();
+  // Ajusta mês exibido para o do lançamento
+  const d=new Date(body.data+'T00:00:00'); finAno=d.getFullYear(); finMes=d.getMonth()+1;
+  renderFin();
+}
+
+function deleteLancamento(){
+  if(!lancamentoAtual||!confirm('Excluir este lançamento permanentemente?')) return;
+  finData=finData.filter(x=>x.id!==lancamentoAtual.id);
+  finSalvar(); closeLancamento(); renderFin();
+}
+
+function openFinConfig(){
+  const atual=finSaldoInicial.toFixed(2).replace('.',',');
+  const novo=prompt(`Saldo inicial de referência (base para cálculos antes de todos os lançamentos):\nAtual: R$ ${atual}`, atual);
+  if(novo===null) return;
+  const val=parseFloat(novo.replace(',','.'));
+  if(!isNaN(val)){ finSaldoInicial=val; localStorage.setItem(FIN_SALDO_KEY,val); renderFin(); }
+}
 </script>
 </body>
 </html>
