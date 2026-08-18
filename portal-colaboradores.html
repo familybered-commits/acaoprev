@@ -607,32 +607,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <div id="ugridWrap" style="display:none">
       <div class="ugrid" id="ugrid"></div>
 
-      <!-- Casos recentes na tela de entrada -->
+      <!-- ✦ CLIENTES EM POTENCIAL — topo da área geral ✦ -->
       <div style="margin-top:2rem;text-align:left">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem">
-          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Casos Recentes</div>
-          <div style="flex:1;height:1px;background:var(--brd)"></div>
-          <span id="loginCasosBadge" style="font-size:.67rem;color:var(--t2)"></span>
-        </div>
-        <div id="loginCasosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px"></div>
-        <div id="loginCasosMsg" style="font-size:.82rem;color:var(--t3);text-align:center;padding:1rem 0"></div>
-      </div>
-
-      <!-- Clientes na tela de entrada -->
-      <div style="margin-top:2.5rem;text-align:left">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem">
-          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Clientes Cadastrados</div>
-          <div style="flex:1;height:1px;background:var(--brd)"></div>
-          <input id="loginCliBusca" type="text" placeholder="Buscar nome ou CPF..." style="background:var(--d3);border:1px solid var(--brd);border-radius:6px;padding:5px 10px;color:var(--text);font-family:'Lora',serif;font-size:.75rem;outline:none;width:180px">
-          <button onclick="openAddCliente()" style="background:var(--gold);border:none;border-radius:6px;color:var(--dark);padding:5px 12px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Marcellus',serif;white-space:nowrap">+ Novo</button>
-          <span id="loginCliBadge" style="font-size:.67rem;color:var(--t2)"></span>
-        </div>
-        <div id="loginClientesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px"></div>
-        <div id="loginClientesMsg" style="font-size:.82rem;color:var(--t3);text-align:center;padding:1rem 0"></div>
-      </div>
-
-      <!-- ✦ CLIENTES EM POTENCIAL — área geral ✦ -->
-      <div style="margin-top:3rem;text-align:left">
         <!-- cabeçalho da seção -->
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap">
           <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--pot)">💎 Clientes em Potencial</div>
@@ -653,7 +629,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
           </select>
           <button onclick="openAddPotencial()" style="background:var(--pot);border:none;border-radius:6px;color:var(--dark);padding:5px 12px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Marcellus',serif;white-space:nowrap">+ Novo</button>
         </div>
-
         <!-- banner de resumo -->
         <div class="pot-banner" style="margin-bottom:1rem">
           <div class="pot-banner-icon">💎</div>
@@ -667,11 +642,34 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
             <div class="pot-stat"><div class="pot-stat-n" id="potProntos">0</div><div class="pot-stat-l">Docs prontos</div></div>
           </div>
         </div>
-
         <!-- grid de cartões -->
         <div class="pot-grid" id="potGrid">
           <div style="color:var(--t3);font-size:.82rem;text-align:center;padding:2rem;grid-column:1/-1">Carregando...</div>
         </div>
+      </div>
+
+      <!-- Casos recentes na tela de entrada -->
+      <div style="margin-top:2.5rem;text-align:left">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem">
+          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Casos Recentes</div>
+          <div style="flex:1;height:1px;background:var(--brd)"></div>
+          <span id="loginCasosBadge" style="font-size:.67rem;color:var(--t2)"></span>
+        </div>
+        <div id="loginCasosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px"></div>
+        <div id="loginCasosMsg" style="font-size:.82rem;color:var(--t3);text-align:center;padding:1rem 0"></div>
+      </div>
+
+      <!-- Clientes na tela de entrada -->
+      <div style="margin-top:2.5rem;text-align:left">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem">
+          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Clientes Cadastrados</div>
+          <div style="flex:1;height:1px;background:var(--brd)"></div>
+          <input id="loginCliBusca" type="text" placeholder="Buscar nome ou CPF..." style="background:var(--d3);border:1px solid var(--brd);border-radius:6px;padding:5px 10px;color:var(--text);font-family:'Lora',serif;font-size:.75rem;outline:none;width:180px">
+          <button onclick="openAddCliente()" style="background:var(--gold);border:none;border-radius:6px;color:var(--dark);padding:5px 12px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Marcellus',serif;white-space:nowrap">+ Novo</button>
+          <span id="loginCliBadge" style="font-size:.67rem;color:var(--t2)"></span>
+        </div>
+        <div id="loginClientesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px"></div>
+        <div id="loginClientesMsg" style="font-size:.82rem;color:var(--t3);text-align:center;padding:1rem 0"></div>
       </div>
 
     </div>
