@@ -630,6 +630,50 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
         <div id="loginClientesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px"></div>
         <div id="loginClientesMsg" style="font-size:.82rem;color:var(--t3);text-align:center;padding:1rem 0"></div>
       </div>
+
+      <!-- ✦ CLIENTES EM POTENCIAL — área geral ✦ -->
+      <div style="margin-top:3rem;text-align:left">
+        <!-- cabeçalho da seção -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap">
+          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--pot)">💎 Clientes em Potencial</div>
+          <div style="flex:1;height:1px;background:var(--pot-brd)"></div>
+          <select id="geral-pot-filt-tese" onchange="renderPotenciais()" style="background:var(--d3);border:1px solid var(--pot-brd);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Lora',serif;font-size:.73rem;outline:none">
+            <option value="">Todas as teses</option>
+            <option value="ACP dos Tetos">ACP dos Tetos</option>
+            <option value="Isenção de IR">Isenção de IR</option>
+            <option value="Auxílio-Acidente">Auxílio-Acidente</option>
+            <option value="Concessão de Benefício">Concessão de Benefício</option>
+            <option value="Outro">Outro</option>
+          </select>
+          <select id="geral-pot-filt-status" onchange="renderPotenciais()" style="background:var(--d3);border:1px solid var(--pot-brd);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Lora',serif;font-size:.73rem;outline:none">
+            <option value="">Todos os status</option>
+            <option value="pronto">Docs prontos</option>
+            <option value="pendente">Docs pendentes</option>
+            <option value="em_analise">Em análise</option>
+          </select>
+          <button onclick="openAddPotencial()" style="background:var(--pot);border:none;border-radius:6px;color:var(--dark);padding:5px 12px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Marcellus',serif;white-space:nowrap">+ Novo</button>
+        </div>
+
+        <!-- banner de resumo -->
+        <div class="pot-banner" style="margin-bottom:1rem">
+          <div class="pot-banner-icon">💎</div>
+          <div class="pot-banner-info">
+            <div class="pot-banner-title">Ações Identificadas — Aguardando Captação</div>
+            <div class="pot-banner-sub">Pessoas com documentação no Google Drive e ação jurídica já definida. Ainda não foram captadas como clientes.</div>
+          </div>
+          <div class="pot-banner-stats">
+            <div class="pot-stat"><div class="pot-stat-n" id="potQtd">0</div><div class="pot-stat-l">Potenciais</div></div>
+            <div class="pot-stat"><div class="pot-stat-n" id="potTotalVal">R$ 0</div><div class="pot-stat-l">Pretensão total</div></div>
+            <div class="pot-stat"><div class="pot-stat-n" id="potProntos">0</div><div class="pot-stat-l">Docs prontos</div></div>
+          </div>
+        </div>
+
+        <!-- grid de cartões -->
+        <div class="pot-grid" id="potGrid">
+          <div style="color:var(--t3);font-size:.82rem;text-align:center;padding:2rem;grid-column:1/-1">Carregando...</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -666,7 +710,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <button class="tbtn" data-tab="perfil">Perfil do Lead</button>
     <button class="tbtn" data-tab="operacao">Operação</button>
     <button class="tbtn" data-tab="financeiro" id="tab-btn-financeiro" style="display:none">💰 Financeiro</button>
-    <button class="tbtn" data-tab="potenciais" id="tab-btn-potenciais" style="color:var(--pot)">💎 Potenciais</button>
   </div>
 
   <!-- ─ LEADS ─ -->
@@ -1114,62 +1157,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
   </div>
 
 
-  <!-- ─ POTENCIAIS ─ -->
-  <div class="tpane" id="tab-potenciais" style="display:none">
-    <div class="pot-wrap">
-
-      <!-- Banner de destaque -->
-      <div class="pot-banner">
-        <div class="pot-banner-icon">💎</div>
-        <div class="pot-banner-info">
-          <div class="pot-banner-title">Clientes em Potencial — Ações Identificadas</div>
-          <div class="pot-banner-sub">Pessoas com documentação extraída de outro processo e guardada no Google Drive. A ação jurídica já foi identificada — falta apenas a captação.</div>
-        </div>
-        <div class="pot-banner-stats">
-          <div class="pot-stat">
-            <div class="pot-stat-n" id="potQtd">0</div>
-            <div class="pot-stat-l">Potenciais</div>
-          </div>
-          <div class="pot-stat">
-            <div class="pot-stat-n" id="potTotalVal">R$ 0</div>
-            <div class="pot-stat-l">Pretensão total</div>
-          </div>
-          <div class="pot-stat">
-            <div class="pot-stat-n" id="potProntos">0</div>
-            <div class="pot-stat-l">Docs prontos</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Filtros + ação -->
-      <div class="pot-top">
-        <select class="filter-sel" id="pot-filt-tese" onchange="renderPotenciais()">
-          <option value="">Todas as teses</option>
-          <option value="ACP dos Tetos">ACP dos Tetos</option>
-          <option value="Isenção de IR">Isenção de IR</option>
-          <option value="Auxílio-Acidente">Auxílio-Acidente</option>
-          <option value="Concessão de Benefício">Concessão de Benefício</option>
-          <option value="Outro">Outro</option>
-        </select>
-        <select class="filter-sel" id="pot-filt-status" onchange="renderPotenciais()">
-          <option value="">Todos os status</option>
-          <option value="pronto">Docs prontos</option>
-          <option value="pendente">Docs pendentes</option>
-          <option value="em_analise">Em análise</option>
-        </select>
-        <div class="pot-top-r">
-          <button class="btn-sm ghost" onclick="renderPotenciais()">↺ Atualizar</button>
-          <button class="btn-sm" style="background:var(--pot);color:var(--dark)" onclick="openAddPotencial()">+ Novo potencial</button>
-        </div>
-      </div>
-
-      <!-- Grid de cartões -->
-      <div class="pot-grid" id="potGrid">
-        <div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem;grid-column:1/-1">Carregando...</div>
-      </div>
-
-    </div>
-  </div>
 
 </div><!-- /portal -->
 
@@ -1935,8 +1922,9 @@ function potFmtVal(n) {
 
 function renderPotenciais() {
   const todos = getPotenciais();
-  const filtTese   = document.getElementById('pot-filt-tese')?.value   || '';
-  const filtStatus = document.getElementById('pot-filt-status')?.value || '';
+  // lê filtros da área geral (prefixo geral-) ou do portal (sem prefixo), o que estiver disponível
+  const filtTese   = (document.getElementById('geral-pot-filt-tese')   || document.getElementById('pot-filt-tese'))?.value   || '';
+  const filtStatus = (document.getElementById('geral-pot-filt-status') || document.getElementById('pot-filt-status'))?.value || '';
   const lista = todos.filter(p =>
     (!filtTese   || p.tese   === filtTese) &&
     (!filtStatus || p.status === filtStatus)
@@ -2549,6 +2537,7 @@ function doTeamLogin(){
     populateRespSelects();
     loadLoginCasos();
     loadLoginClientes();
+    renderPotenciais();
   } else {
     document.getElementById('perr').textContent='Senha incorreta. Tente novamente.';
     document.getElementById('pinIn').value='';
@@ -2717,9 +2706,10 @@ function backToTeamArea(){
   document.getElementById('ugridWrap').style.display='block';
   document.getElementById('loginSub').textContent='Selecione seu perfil para entrar';
   document.querySelector('.lbox').style.maxWidth='960px';
-  // Atualiza casos e clientes na tela geral
+  // Atualiza casos, clientes e potenciais na tela geral
   loadLoginCasos();
   loadLoginClientes();
+  renderPotenciais();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2757,14 +2747,9 @@ function savePw(){
 // ═══════════════════════════════════════════════════════════
 function activateTab(name){
   document.querySelectorAll('.tbtn').forEach(b=>{
-    const isPot = b.dataset.tab === 'potenciais';
     b.classList.toggle('on', b.dataset.tab === name);
-    if(isPot){
-      if(b.dataset.tab === name){ b.style.color='var(--pot-l)'; b.style.borderBottomColor='var(--pot)'; }
-      else { b.style.color='var(--pot)'; b.style.borderBottomColor='transparent'; }
-    }
   });
-  ['leads','casos','clientes','scripts','funil','perfil','operacao','financeiro','potenciais'].forEach(t=>{
+  ['leads','casos','clientes','scripts','funil','perfil','operacao','financeiro'].forEach(t=>{
     const el=document.getElementById('tab-'+t);
     if(!el) return;
     const on=t===name;
@@ -2777,7 +2762,6 @@ function activateTab(name){
   if(name==='casos')      reloadCasos();
   if(name==='clientes')   reloadClientes();
   if(name==='financeiro') renderFin();
-  if(name==='potenciais') renderPotenciais();
 }
 
 // ═══════════════════════════════════════════════════════════
