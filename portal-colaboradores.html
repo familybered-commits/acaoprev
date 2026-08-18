@@ -520,6 +520,63 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .op-file-btn.ghost{background:none;border:1px solid var(--brd);color:var(--t2)}
 .op-file-btn.ghost:hover{border-color:var(--gold);color:var(--gold);opacity:1}
 
+/* ══════════════ POTENCIAIS ══════════════ */
+:root{--pot:#2dd4bf;--pot-l:#5eead4;--pot-brd:rgba(45,212,191,.22);--pot-brds:rgba(45,212,191,.44)}
+#tab-btn-potenciais{color:var(--pot)!important}
+#tab-btn-potenciais:hover{color:var(--pot-l)!important}
+#tab-btn-potenciais.on{color:var(--pot-l)!important;border-bottom-color:var(--pot)!important}
+.pot-wrap{display:flex;flex-direction:column;flex:1;overflow-y:auto;padding:14px clamp(1rem,4vw,2rem);gap:14px}
+.pot-wrap::-webkit-scrollbar{width:3px}
+.pot-wrap::-webkit-scrollbar-thumb{background:var(--pot-brd);border-radius:2px}
+.pot-banner{background:linear-gradient(135deg,rgba(45,212,191,.11) 0%,rgba(45,212,191,.03) 100%);
+  border:1px solid var(--pot-brd);border-radius:12px;padding:1rem 1.4rem;
+  display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
+.pot-banner-icon{font-size:2rem;line-height:1;flex-shrink:0}
+.pot-banner-info{flex:1;min-width:160px}
+.pot-banner-title{font-family:'Marcellus',serif;font-size:1rem;color:var(--pot-l);margin-bottom:.25rem}
+.pot-banner-sub{font-size:.79rem;color:var(--t2);line-height:1.55}
+.pot-banner-stats{display:flex;gap:1.4rem;flex-shrink:0;flex-wrap:wrap}
+.pot-stat{text-align:center}
+.pot-stat-n{font-family:'Marcellus',serif;font-size:1.55rem;color:var(--pot);line-height:1}
+.pot-stat-l{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--t2);margin-top:3px}
+.pot-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pot-top-r{display:flex;gap:7px;margin-left:auto}
+.pot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.pot-card{background:linear-gradient(160deg,rgba(45,212,191,.07) 0%,rgba(45,212,191,.02) 100%);
+  border:1.5px solid var(--pot-brd);border-radius:12px;padding:1.1rem 1.1rem .95rem;
+  display:flex;flex-direction:column;gap:.6rem;position:relative;
+  transition:border-color .2s,transform .18s,box-shadow .18s}
+.pot-card:hover{border-color:var(--pot-brds);transform:translateY(-3px);box-shadow:0 8px 28px rgba(45,212,191,.12)}
+.pot-card-pulse{position:absolute;top:13px;right:13px;width:8px;height:8px;border-radius:50%;
+  background:var(--pot);box-shadow:0 0 0 0 rgba(45,212,191,.5);animation:potPulse 2.2s infinite}
+@keyframes potPulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,.5)}70%{box-shadow:0 0 0 9px rgba(45,212,191,0)}100%{box-shadow:0 0 0 0 rgba(45,212,191,0)}}
+.pot-card-name{font-family:'Marcellus',serif;font-size:.97rem;color:var(--text);line-height:1.25;padding-right:22px}
+.pot-card-tese{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(45,212,191,.1);border:1px solid var(--pot-brd);
+  border-radius:20px;padding:3px 10px;font-size:.67rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--pot);width:fit-content;margin-top:1px}
+.pot-card-val{display:flex;align-items:baseline;gap:6px}
+.pot-card-val-num{font-family:'Marcellus',serif;font-size:1.25rem;color:var(--pot-l)}
+.pot-card-val-l{font-size:.69rem;color:var(--t2);letter-spacing:.05em}
+.pot-card-meta{font-size:.73rem;color:var(--t2);display:flex;gap:.7rem;flex-wrap:wrap}
+.pot-card-obs{font-size:.78rem;color:var(--t2);line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pot-card-footer{display:flex;align-items:center;justify-content:space-between;
+  gap:.5rem;margin-top:.3rem;padding-top:.5rem;border-top:1px solid var(--pot-brd);flex-wrap:wrap}
+.pot-card-status{font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:10px;font-family:'Marcellus',serif;white-space:nowrap}
+.pot-s-pronto{background:rgba(45,212,191,.12);color:var(--pot);border:1px solid var(--pot-brd)}
+.pot-s-pendente{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid var(--brd)}
+.pot-s-em_analise{background:rgba(120,120,212,.12);color:#7878d4;border:1px solid rgba(120,120,212,.25)}
+.pot-card-actions{display:flex;gap:5px;flex-wrap:wrap}
+.pot-act-btn{background:none;border:1px solid var(--pot-brd);border-radius:5px;
+  padding:4px 9px;font-size:.69rem;color:var(--pot);cursor:pointer;font-family:'Lora',serif;
+  transition:all .18s;text-decoration:none;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.pot-act-btn:hover{background:rgba(45,212,191,.1);border-color:var(--pot)}
+.pot-act-btn.prim{background:rgba(45,212,191,.15);border-color:var(--pot-brds)}
+.pot-act-btn.danger{border-color:rgba(212,120,120,.3);color:#d47878}
+.pot-act-btn.danger:hover{background:rgba(212,120,120,.08);border-color:#d47878}
+
 </style>
 </head>
 <body>
@@ -609,6 +666,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <button class="tbtn" data-tab="perfil">Perfil do Lead</button>
     <button class="tbtn" data-tab="operacao">Operação</button>
     <button class="tbtn" data-tab="financeiro" id="tab-btn-financeiro" style="display:none">💰 Financeiro</button>
+    <button class="tbtn" data-tab="potenciais" id="tab-btn-potenciais" style="color:var(--pot)">💎 Potenciais</button>
   </div>
 
   <!-- ─ LEADS ─ -->
@@ -1055,7 +1113,128 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     </div>
   </div>
 
+
+  <!-- ─ POTENCIAIS ─ -->
+  <div class="tpane" id="tab-potenciais" style="display:none">
+    <div class="pot-wrap">
+
+      <!-- Banner de destaque -->
+      <div class="pot-banner">
+        <div class="pot-banner-icon">💎</div>
+        <div class="pot-banner-info">
+          <div class="pot-banner-title">Clientes em Potencial — Ações Identificadas</div>
+          <div class="pot-banner-sub">Pessoas com documentação extraída de outro processo e guardada no Google Drive. A ação jurídica já foi identificada — falta apenas a captação.</div>
+        </div>
+        <div class="pot-banner-stats">
+          <div class="pot-stat">
+            <div class="pot-stat-n" id="potQtd">0</div>
+            <div class="pot-stat-l">Potenciais</div>
+          </div>
+          <div class="pot-stat">
+            <div class="pot-stat-n" id="potTotalVal">R$ 0</div>
+            <div class="pot-stat-l">Pretensão total</div>
+          </div>
+          <div class="pot-stat">
+            <div class="pot-stat-n" id="potProntos">0</div>
+            <div class="pot-stat-l">Docs prontos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros + ação -->
+      <div class="pot-top">
+        <select class="filter-sel" id="pot-filt-tese" onchange="renderPotenciais()">
+          <option value="">Todas as teses</option>
+          <option value="ACP dos Tetos">ACP dos Tetos</option>
+          <option value="Isenção de IR">Isenção de IR</option>
+          <option value="Auxílio-Acidente">Auxílio-Acidente</option>
+          <option value="Concessão de Benefício">Concessão de Benefício</option>
+          <option value="Outro">Outro</option>
+        </select>
+        <select class="filter-sel" id="pot-filt-status" onchange="renderPotenciais()">
+          <option value="">Todos os status</option>
+          <option value="pronto">Docs prontos</option>
+          <option value="pendente">Docs pendentes</option>
+          <option value="em_analise">Em análise</option>
+        </select>
+        <div class="pot-top-r">
+          <button class="btn-sm ghost" onclick="renderPotenciais()">↺ Atualizar</button>
+          <button class="btn-sm" style="background:var(--pot);color:var(--dark)" onclick="openAddPotencial()">+ Novo potencial</button>
+        </div>
+      </div>
+
+      <!-- Grid de cartões -->
+      <div class="pot-grid" id="potGrid">
+        <div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem;grid-column:1/-1">Carregando...</div>
+      </div>
+
+    </div>
+  </div>
+
 </div><!-- /portal -->
+
+<!-- ══ MODAL: ADD/EDIT POTENCIAL ══ -->
+<div class="overlay" id="modPotencial" style="display:none">
+  <div class="modal" style="max-width:560px;border-color:var(--pot-brd)">
+    <div class="modal-title" id="potModTitulo" style="color:var(--pot)">Novo Cliente em Potencial</div>
+    <div class="modal-sub">Preencha os dados do potencial cliente e o link para os documentos no Google Drive.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <div class="fld" style="grid-column:1/-1"><label>Nome completo <span style="color:var(--pot)">*</span></label><input type="text" id="potNome" placeholder="Nome do potencial cliente"></div>
+      <div class="fld"><label>CPF</label><input type="text" id="potCpf" placeholder="000.000.000-00"></div>
+      <div class="fld"><label>WhatsApp</label><input type="tel" id="potWa" placeholder="(00) 00000-0000"></div>
+      <div class="fld"><label>Cidade</label><input type="text" id="potCidade" placeholder="Cidade"></div>
+      <div class="fld"><label>UF</label>
+        <select id="potUf" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">-</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Tese / Ação proposta <span style="color:var(--pot)">*</span></label>
+        <select id="potTese" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">Selecione a ação...</option>
+          <option>ACP dos Tetos</option>
+          <option>Isenção de IR</option>
+          <option>Auxílio-Acidente</option>
+          <option>Concessão de Benefício</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="fld"><label>Pretensão econômica (R$) <span style="color:var(--pot)">*</span></label>
+        <input type="number" id="potPretensao" step="100" min="0" placeholder="Ex: 50000"></div>
+      <div class="fld"><label>Status dos documentos</label>
+        <select id="potStatus" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="pronto">✅ Docs prontos</option>
+          <option value="pendente">⏳ Docs pendentes</option>
+          <option value="em_analise">🔍 Em análise</option>
+        </select>
+      </div>
+      <div class="fld" style="grid-column:1/-1">
+        <label>Link Google Drive (documentos) <span style="color:var(--pot)">*</span></label>
+        <div style="display:flex;gap:6px">
+          <input type="url" id="potDrive" placeholder="https://drive.google.com/drive/folders/..." style="flex:1">
+          <button onclick="if(document.getElementById('potDrive').value)window.open(document.getElementById('potDrive').value,'_blank')" style="background:var(--d4);border:1px solid var(--brd);border-radius:6px;padding:8px 12px;color:var(--t2);cursor:pointer;white-space:nowrap;font-size:.8rem">📁 Testar</button>
+        </div>
+      </div>
+      <div class="fld" style="grid-column:1/-1"><label>Observações / Fundamento da ação</label>
+        <textarea id="potObs" rows="3" placeholder="Ex: CNIS aponta recolhimentos acima do teto entre 1994-1999. Documentos extraídos do processo nº 5001234. Potencial revisão de R$ 150k..." style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%;resize:vertical"></textarea>
+      </div>
+    </div>
+    <div class="merr" id="pot-err"></div>
+    <div class="mbtns" style="justify-content:space-between">
+      <button id="potDelBtn" onclick="deletePotencial()" style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:6px;color:#d47878;font-size:.77rem;padding:7px 14px;cursor:pointer;font-family:'Lora',serif;display:none">🗑 Excluir</button>
+      <div style="display:flex;gap:8px;margin-left:auto">
+        <button class="btn-cancel" onclick="closeModPotencial()">Cancelar</button>
+        <button class="btn-save" style="background:var(--pot)" onclick="savePotencial()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ══ MODAL: LANCAMENTO ══ -->
 <div class="overlay" id="modLancamento" style="display:none">
@@ -1670,6 +1849,225 @@ async function sbFetch(path, opts = {}) {
   if (res.status === 204) return null;
   const txt = await res.text();
   return txt ? JSON.parse(txt) : null;
+}
+
+// ═══════════════════════════════════════════════════════════
+// POTENCIAIS — dados em localStorage
+// ═══════════════════════════════════════════════════════════
+const POT_KEY = 'acaoprev_potenciais_v1';
+
+// Dados de exemplo pré-carregados (somente se localStorage estiver vazio)
+const POT_EXEMPLOS = [
+  {
+    id: 'ex-1',
+    nome: 'José Antônio Ferreira',
+    cpf: '012.345.678-90',
+    whatsapp: '(54) 99123-4567',
+    cidade: 'Caxias do Sul',
+    uf: 'RS',
+    tese: 'ACP dos Tetos',
+    pretensao: 182000,
+    status: 'pronto',
+    drive_link: 'https://drive.google.com',
+    obs: 'CNIS extraído do processo nº 5001234. Recolhimentos acima do teto entre 1994–1999. Revisão de benefício com potencial de R$ 182 mil em atrasados.',
+    created_at: new Date(Date.now() - 7 * 86400000).toISOString()
+  },
+  {
+    id: 'ex-2',
+    nome: 'Maria Helena dos Santos',
+    cpf: '234.567.890-12',
+    whatsapp: '(51) 98765-4321',
+    cidade: 'Porto Alegre',
+    uf: 'RS',
+    tese: 'Isenção de IR',
+    pretensao: 48000,
+    status: 'pronto',
+    drive_link: 'https://drive.google.com',
+    obs: 'Laudos médicos comprovando doença grave (neoplasia maligna) extraídos do processo de benefício. Faz jus à isenção de IR sobre a aposentadoria há 4 anos.',
+    created_at: new Date(Date.now() - 5 * 86400000).toISOString()
+  },
+  {
+    id: 'ex-3',
+    nome: 'Carlos Eduardo Machado',
+    cpf: '345.678.901-23',
+    whatsapp: '(54) 97654-3210',
+    cidade: 'Bento Gonçalves',
+    uf: 'RS',
+    tese: 'Auxílio-Acidente',
+    pretensao: 72000,
+    status: 'pendente',
+    drive_link: 'https://drive.google.com',
+    obs: 'Acidente de trabalho em 2021 documentado no processo judicial. Redução de capacidade laboral comprovada. Falta CAT para completar documentação.',
+    created_at: new Date(Date.now() - 3 * 86400000).toISOString()
+  },
+  {
+    id: 'ex-4',
+    nome: 'Ana Lúcia Pereira',
+    cpf: '456.789.012-34',
+    whatsapp: '(54) 96543-2109',
+    cidade: 'Farroupilha',
+    uf: 'RS',
+    tese: 'ACP dos Tetos',
+    pretensao: 215000,
+    status: 'em_analise',
+    drive_link: 'https://drive.google.com',
+    obs: 'Extraído do processo de ACP coletiva. CNIS demonstra contribuições acima do teto entre 1991–2003. Alto potencial de atrasados.',
+    created_at: new Date(Date.now() - 1 * 86400000).toISOString()
+  }
+];
+
+function getPotenciais() {
+  try {
+    const raw = localStorage.getItem(POT_KEY);
+    if (raw) return JSON.parse(raw);
+    // Primeira vez: carrega exemplos
+    localStorage.setItem(POT_KEY, JSON.stringify(POT_EXEMPLOS));
+    return POT_EXEMPLOS;
+  } catch(e) { return []; }
+}
+function setPotenciais(arr) {
+  try { localStorage.setItem(POT_KEY, JSON.stringify(arr)); } catch(e) {}
+}
+function potFmtVal(n) {
+  if (!n && n !== 0) return '—';
+  return 'R$ ' + Number(n).toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+
+function renderPotenciais() {
+  const todos = getPotenciais();
+  const filtTese   = document.getElementById('pot-filt-tese')?.value   || '';
+  const filtStatus = document.getElementById('pot-filt-status')?.value || '';
+  const lista = todos.filter(p =>
+    (!filtTese   || p.tese   === filtTese) &&
+    (!filtStatus || p.status === filtStatus)
+  );
+
+  // Atualizar banner
+  const total = todos.reduce((s, p) => s + (Number(p.pretensao) || 0), 0);
+  const prontos = todos.filter(p => p.status === 'pronto').length;
+  document.getElementById('potQtd').textContent = todos.length;
+  document.getElementById('potTotalVal').textContent = potFmtVal(total);
+  document.getElementById('potProntos').textContent = prontos;
+
+  const grid = document.getElementById('potGrid');
+  if (!grid) return;
+  if (!lista.length) {
+    grid.innerHTML = '<div style="color:var(--t3);font-size:.82rem;text-align:center;padding:3rem;grid-column:1/-1">Nenhum cliente em potencial encontrado.</div>';
+    return;
+  }
+
+  const STATUS_LABEL = { pronto:'Docs prontos', pendente:'Docs pendentes', em_analise:'Em análise' };
+  const STATUS_CLS   = { pronto:'pot-s-pronto', pendente:'pot-s-pendente', em_analise:'pot-s-em_analise' };
+  const TESE_ICON    = { 'ACP dos Tetos':'⚖️', 'Isenção de IR':'🏥', 'Auxílio-Acidente':'🦺', 'Concessão de Benefício':'📋', 'Outro':'📁' };
+
+  grid.innerHTML = lista.map(p => {
+    const stCls = STATUS_CLS[p.status] || 'pot-s-pendente';
+    const stLbl = STATUS_LABEL[p.status] || p.status;
+    const icon  = TESE_ICON[p.tese] || '📁';
+    const meta  = [p.cidade && p.uf ? `📍 ${p.cidade} - ${p.uf}` : (p.cidade || ''), p.cpf ? `CPF: ${p.cpf}` : '', p.whatsapp ? `📱 ${p.whatsapp}` : ''].filter(Boolean);
+    return `<div class="pot-card">
+      <div class="pot-card-pulse"></div>
+      <div class="pot-card-name">${escH(p.nome)}</div>
+      <div class="pot-card-tese">${icon} ${escH(p.tese)}</div>
+      <div class="pot-card-val">
+        <span class="pot-card-val-num">${potFmtVal(p.pretensao)}</span>
+        <span class="pot-card-val-l">pretensão econômica estimada</span>
+      </div>
+      ${meta.length ? `<div class="pot-card-meta">${meta.map(m=>`<span>${m}</span>`).join('')}</div>` : ''}
+      ${p.obs ? `<div class="pot-card-obs">${escH(p.obs)}</div>` : ''}
+      <div class="pot-card-footer">
+        <span class="pot-card-status ${stCls}">${stLbl}</span>
+        <div class="pot-card-actions">
+          ${p.drive_link ? `<a class="pot-act-btn prim" href="${escH(p.drive_link)}" target="_blank">📁 Ver docs</a>` : '<span class="pot-act-btn" style="opacity:.4;cursor:default">📁 Sem link</span>'}
+          <button class="pot-act-btn" onclick="openEditPotencial('${p.id}')">✏ Editar</button>
+          <button class="pot-act-btn danger" onclick="deletePotencial('${p.id}')">🗑</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let potEditId = null;
+function openAddPotencial() {
+  potEditId = null;
+  document.getElementById('potModTitulo').textContent = 'Novo Cliente em Potencial';
+  document.getElementById('potDelBtn').style.display = 'none';
+  ['potNome','potCpf','potWa','potCidade','potUf','potTese','potPretensao','potStatus','potDrive','potObs'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = id === 'potStatus' ? 'pronto' : '';
+  });
+  document.getElementById('pot-err').textContent = '';
+  document.getElementById('modPotencial').style.display = 'flex';
+}
+function openEditPotencial(id) {
+  const p = getPotenciais().find(x => x.id === id);
+  if (!p) return;
+  potEditId = id;
+  document.getElementById('potModTitulo').textContent = 'Editar Cliente em Potencial';
+  document.getElementById('potDelBtn').style.display = 'block';
+  document.getElementById('potNome').value        = p.nome || '';
+  document.getElementById('potCpf').value         = p.cpf || '';
+  document.getElementById('potWa').value          = p.whatsapp || '';
+  document.getElementById('potCidade').value      = p.cidade || '';
+  document.getElementById('potUf').value          = p.uf || '';
+  document.getElementById('potTese').value        = p.tese || '';
+  document.getElementById('potPretensao').value   = p.pretensao || '';
+  document.getElementById('potStatus').value      = p.status || 'pronto';
+  document.getElementById('potDrive').value       = p.drive_link || '';
+  document.getElementById('potObs').value         = p.obs || '';
+  document.getElementById('pot-err').textContent  = '';
+  document.getElementById('modPotencial').style.display = 'flex';
+}
+function closeModPotencial() {
+  document.getElementById('modPotencial').style.display = 'none';
+}
+function savePotencial() {
+  const nome = document.getElementById('potNome').value.trim();
+  const tese = document.getElementById('potTese').value;
+  const pretensao = parseFloat(document.getElementById('potPretensao').value) || 0;
+  const drive = document.getElementById('potDrive').value.trim();
+  const err = document.getElementById('pot-err');
+  if (!nome) { err.textContent = 'Informe o nome do potencial cliente.'; return; }
+  if (!tese) { err.textContent = 'Selecione a tese / ação proposta.'; return; }
+  if (!drive) { err.textContent = 'Informe o link do Google Drive com os documentos.'; return; }
+  err.textContent = '';
+  const todos = getPotenciais();
+  if (potEditId) {
+    const idx = todos.findIndex(x => x.id === potEditId);
+    if (idx >= 0) {
+      todos[idx] = { ...todos[idx],
+        nome, cpf: document.getElementById('potCpf').value.trim(),
+        whatsapp: document.getElementById('potWa').value.trim(),
+        cidade: document.getElementById('potCidade').value.trim(),
+        uf: document.getElementById('potUf').value,
+        tese, pretensao, status: document.getElementById('potStatus').value,
+        drive_link: drive, obs: document.getElementById('potObs').value.trim()
+      };
+    }
+  } else {
+    todos.unshift({
+      id: 'pot-' + Date.now(),
+      nome, cpf: document.getElementById('potCpf').value.trim(),
+      whatsapp: document.getElementById('potWa').value.trim(),
+      cidade: document.getElementById('potCidade').value.trim(),
+      uf: document.getElementById('potUf').value,
+      tese, pretensao, status: document.getElementById('potStatus').value,
+      drive_link: drive, obs: document.getElementById('potObs').value.trim(),
+      created_at: new Date().toISOString()
+    });
+  }
+  setPotenciais(todos);
+  closeModPotencial();
+  renderPotenciais();
+}
+function deletePotencial(id) {
+  const delId = id || potEditId;
+  if (!delId) return;
+  if (!confirm('Remover este cliente em potencial?')) return;
+  const todos = getPotenciais().filter(x => x.id !== delId);
+  setPotenciais(todos);
+  closeModPotencial();
+  renderPotenciais();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2358,8 +2756,15 @@ function savePw(){
 // TABS
 // ═══════════════════════════════════════════════════════════
 function activateTab(name){
-  document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
-  ['leads','casos','clientes','scripts','funil','perfil','operacao','financeiro'].forEach(t=>{
+  document.querySelectorAll('.tbtn').forEach(b=>{
+    const isPot = b.dataset.tab === 'potenciais';
+    b.classList.toggle('on', b.dataset.tab === name);
+    if(isPot){
+      if(b.dataset.tab === name){ b.style.color='var(--pot-l)'; b.style.borderBottomColor='var(--pot)'; }
+      else { b.style.color='var(--pot)'; b.style.borderBottomColor='transparent'; }
+    }
+  });
+  ['leads','casos','clientes','scripts','funil','perfil','operacao','financeiro','potenciais'].forEach(t=>{
     const el=document.getElementById('tab-'+t);
     if(!el) return;
     const on=t===name;
@@ -2372,6 +2777,7 @@ function activateTab(name){
   if(name==='casos')      reloadCasos();
   if(name==='clientes')   reloadClientes();
   if(name==='financeiro') renderFin();
+  if(name==='potenciais') renderPotenciais();
 }
 
 // ═══════════════════════════════════════════════════════════
