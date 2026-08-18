@@ -520,6 +520,31 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 .op-file-btn.ghost{background:none;border:1px solid var(--brd);color:var(--t2)}
 .op-file-btn.ghost:hover{border-color:var(--gold);color:var(--gold);opacity:1}
 
+/* ══════════════ TELEFONES MÚLTIPLOS ══════════════ */
+.tel-blk{display:flex;flex-direction:column;gap:5px}
+.tel-row{display:flex;gap:5px;align-items:center}
+.tel-lbl-sel{background:var(--d3);border:1px solid var(--brds);border-radius:6px;
+  padding:6px 8px;color:var(--text);font-family:'Lora',serif;font-size:.8rem;
+  width:120px;outline:none;flex-shrink:0;cursor:pointer;transition:border-color .2s}
+.tel-lbl-sel:focus{border-color:var(--gold)}
+.tel-lbl-sel option{background:var(--d3)}
+.tel-num-in{background:var(--d3);border:1px solid var(--brds);border-radius:6px;
+  padding:6px 10px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;
+  outline:none;flex:1;transition:border-color .2s;min-width:0}
+.tel-num-in:focus{border-color:var(--gold)}
+.tel-wa-btn{background:none;border:1px solid rgba(93,184,93,.35);border-radius:5px;
+  padding:5px 8px;color:#5db85d;cursor:pointer;font-size:.82rem;flex-shrink:0;
+  text-decoration:none;display:inline-flex;align-items:center;transition:all .18s;line-height:1}
+.tel-wa-btn:hover{background:rgba(93,184,93,.1);border-color:#5db85d}
+.tel-del-btn{background:none;border:1px solid rgba(212,120,120,.3);border-radius:5px;
+  padding:5px 8px;color:#d47878;cursor:pointer;font-size:.82rem;flex-shrink:0;
+  transition:all .18s;line-height:1}
+.tel-del-btn:hover{background:rgba(212,120,120,.1);border-color:#d47878}
+.tel-add-btn{background:none;border:1px dashed var(--brd);border-radius:6px;
+  padding:6px 12px;color:var(--t2);cursor:pointer;font-size:.77rem;font-family:'Lora',serif;
+  transition:all .18s;width:100%;margin-top:2px;text-align:center}
+.tel-add-btn:hover{border-color:var(--gold);color:var(--gold)}
+
 /* ══════════════ POTENCIAIS ══════════════ */
 :root{--pot:#2dd4bf;--pot-l:#5eead4;--pot-brd:rgba(45,212,191,.22);--pot-brds:rgba(45,212,191,.44)}
 #tab-btn-potenciais{color:var(--pot)!important}
@@ -1367,7 +1392,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:.8rem">
       <div class="fld"><label>CPF</label><input type="text" id="cliCpf" placeholder="000.000.000-00"></div>
       <div class="fld"><label>Data de nascimento</label><input type="date" id="cliNasc"></div>
-      <div class="fld"><label>WhatsApp</label><input type="tel" id="cliWa" placeholder="(00) 00000-0000"></div>
+      <div class="fld" style="grid-column:1/-1"><label>Telefones</label>
+        <div class="tel-blk" id="cliTelBlk"></div>
+        <button type="button" class="tel-add-btn" onclick="addTelRow('cliTelBlk','Celular','')">+ Adicionar telefone</button>
+      </div>
       <div class="fld"><label>E-mail</label><input type="email" id="cliEmail" placeholder="email@exemplo.com"></div>
       <div class="fld"><label>Cidade</label><input type="text" id="cliCidade" placeholder="Cidade"></div>
       <div class="fld"><label>UF</label>
@@ -1442,7 +1470,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       <div class="fld" style="grid-column:1/-1"><label>Nome completo <span style="color:var(--gold)">*</span></label><input type="text" id="ncNome" placeholder="Nome do cliente"></div>
       <div class="fld"><label>CPF</label><input type="text" id="ncCpf" placeholder="000.000.000-00"></div>
       <div class="fld"><label>Data de nascimento</label><input type="date" id="ncNasc"></div>
-      <div class="fld"><label>WhatsApp</label><input type="tel" id="ncWa" placeholder="(00) 00000-0000"></div>
+      <div class="fld" style="grid-column:1/-1"><label>Telefones</label>
+        <div class="tel-blk" id="ncTelBlk"></div>
+        <button type="button" class="tel-add-btn" onclick="addTelRow('ncTelBlk','Celular','')">+ Adicionar telefone</button>
+      </div>
       <div class="fld"><label>E-mail</label><input type="email" id="ncEmail" placeholder="email@exemplo.com"></div>
       <div class="fld"><label>Cidade</label><input type="text" id="ncCidade" placeholder="Cidade"></div>
       <div class="fld"><label>UF</label>
@@ -2228,7 +2259,7 @@ function renderClientes() {
         ${c.tipo_beneficio ? `<span class="caso-tag">${escH(c.tipo_beneficio)}</span>` : ''}
         ${c.cidade ? `<span class="caso-tag">${escH(c.cidade)}${c.uf?'/'+c.uf:''}</span>` : ''}
       </div>
-      ${c.whatsapp ? `<div style="font-size:.77rem;color:var(--t2);margin-bottom:.2rem">📱 ${escH(c.whatsapp)}</div>` : ''}
+      ${c.whatsapp ? fmtTels(c.whatsapp) : ''}
       ${c.nb ? `<div style="font-size:.75rem;color:var(--t3);margin-bottom:.2rem">NB: ${escH(c.nb)}</div>` : ''}
       ${c.numero_processo ? `<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">Proc.: ${escH(c.numero_processo)}</div>` : ''}
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;padding-top:.45rem;border-top:1px solid var(--brd)">
@@ -2238,6 +2269,68 @@ function renderClientes() {
     </div>`;
   }).join('') + '</div>';
 }
+
+/* ── TELEFONES MÚLTIPLOS ───────────────────────────────── */
+function parseTelefones(raw) {
+  if(!raw) return [];
+  const s = raw.trim();
+  if(!s.includes('|') && !s.includes(':')) return [{lbl:'WhatsApp', num:s}];
+  return s.split('|').map(p=>{
+    p = p.trim();
+    const ci = p.indexOf(':');
+    if(ci>-1) return {lbl:p.slice(0,ci).trim(), num:p.slice(ci+1).trim()};
+    return {lbl:'Outro', num:p};
+  }).filter(t=>t.num);
+}
+function serializeTelefones(tels) {
+  if(!tels||!tels.length) return '';
+  return tels.filter(t=>t.num.trim()).map(t=>`${t.lbl}: ${t.num.trim()}`).join(' | ');
+}
+function getTelefones(containerId) {
+  const blk = document.getElementById(containerId);
+  if(!blk) return [];
+  return Array.from(blk.querySelectorAll('.tel-row')).map(row=>({
+    lbl: row.querySelector('.tel-lbl-sel').value,
+    num: row.querySelector('.tel-num-in').value.trim()
+  })).filter(t=>t.num);
+}
+function addTelRow(containerId, lbl, num) {
+  const blk = document.getElementById(containerId);
+  if(!blk) return;
+  const LBLS = ['WhatsApp','Celular','Fixo','Trabalho','Recado','Outro'];
+  const row = document.createElement('div');
+  row.className = 'tel-row';
+  row.innerHTML =
+    `<select class="tel-lbl-sel">${LBLS.map(l=>`<option${l===lbl?' selected':''}>${l}</option>`).join('')}</select>`+
+    `<input type="tel" class="tel-num-in" value="${escH(num||'')}" placeholder="(00) 00000-0000">`+
+    `<a class="tel-wa-btn" href="https://wa.me/55${(num||'').replace(/\D/g,'')}" target="_blank" title="Abrir no WhatsApp">💬</a>`+
+    `<button type="button" class="tel-del-btn" onclick="this.closest('.tel-row').remove()" title="Remover">✕</button>`;
+  blk.appendChild(row);
+  const inp = row.querySelector('.tel-num-in');
+  const wa  = row.querySelector('.tel-wa-btn');
+  inp.addEventListener('input',()=>{ wa.href='https://wa.me/55'+inp.value.replace(/\D/g,''); });
+}
+function renderTelRows(containerId, tels) {
+  const blk = document.getElementById(containerId);
+  if(!blk) return;
+  blk.innerHTML = '';
+  if(tels&&tels.length) tels.forEach(t=>addTelRow(containerId,t.lbl,t.num));
+  else addTelRow(containerId,'WhatsApp','');
+}
+// Renders all stored phones as HTML rows for cards/lists
+function fmtTels(raw) {
+  const tels = parseTelefones(raw);
+  if(!tels.length) return '';
+  return tels.map(t=>{
+    const digits = t.num.replace(/\D/g,'');
+    const isWa = t.lbl==='WhatsApp'||t.lbl==='Celular';
+    const inner = isWa
+      ? `<a href="https://wa.me/55${digits}" target="_blank" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none">${escH(t.lbl)}: ${escH(t.num)}</a>`
+      : `${escH(t.lbl)}: ${escH(t.num)}`;
+    return `<div style="font-size:.77rem;color:var(--t2);margin-bottom:.1rem">📱 ${inner}</div>`;
+  }).join('');
+}
+/* ── FIM TELEFONES ─────────────────────────────────────── */
 
 function openCliDetalhe(id) {
   clienteAtual = clientesAll.find(c=>c.id===id);
@@ -2253,7 +2346,7 @@ function openCliDetalhe(id) {
   // Preenche campos
   document.getElementById('cliCpf').value    = c.cpf||'';
   document.getElementById('cliNasc').value   = c.data_nascimento||'';
-  document.getElementById('cliWa').value     = c.whatsapp||'';
+  renderTelRows('cliTelBlk', parseTelefones(c.whatsapp));
   document.getElementById('cliEmail').value  = c.email||'';
   document.getElementById('cliCidade').value = c.cidade||'';
   document.getElementById('cliUf').value     = c.uf||'';
@@ -2283,7 +2376,7 @@ async function saveCliDetalhe() {
   const body = {
     cpf: document.getElementById('cliCpf').value.trim()||null,
     data_nascimento: document.getElementById('cliNasc').value||null,
-    whatsapp: document.getElementById('cliWa').value.trim()||null,
+    whatsapp: serializeTelefones(getTelefones('cliTelBlk'))||null,
     email: document.getElementById('cliEmail').value.trim()||null,
     cidade: document.getElementById('cliCidade').value.trim()||null,
     uf: document.getElementById('cliUf').value||null,
@@ -2314,8 +2407,9 @@ async function deleteCliente() {
 }
 
 function openAddCliente() {
-  ['ncNome','ncCpf','ncWa','ncEmail','ncCidade','ncDrive'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['ncNome','ncCpf','ncEmail','ncCidade','ncDrive'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   ['ncNasc','ncUf','ncTipo'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  renderTelRows('ncTelBlk',[]);
   clearCheckedResps('ncRespBoxes');
   document.getElementById('nc-err').textContent='';
   document.getElementById('modAddCliente').style.display='flex';
@@ -2330,7 +2424,7 @@ async function saveAddCliente() {
     nome,
     cpf: document.getElementById('ncCpf').value.trim()||null,
     data_nascimento: document.getElementById('ncNasc').value||null,
-    whatsapp: document.getElementById('ncWa').value.trim()||null,
+    whatsapp: serializeTelefones(getTelefones('ncTelBlk'))||null,
     email: document.getElementById('ncEmail').value.trim()||null,
     cidade: document.getElementById('ncCidade').value.trim()||null,
     uf: document.getElementById('ncUf').value||null,
@@ -2623,7 +2717,7 @@ function renderLoginClientes(){
         ${c.tipo_beneficio?`<span class="caso-tag">${c.tipo_beneficio}</span>`:''}
         ${c.cidade?`<span class="caso-tag">${c.cidade}${c.uf?'/'+c.uf:''}</span>`:''}
       </div>
-      ${c.whatsapp?`<div style="font-size:.77rem;color:var(--t2);margin-bottom:.2rem">📱 ${c.whatsapp}</div>`:''}
+      ${c.whatsapp?fmtTels(c.whatsapp):''}
       ${c.nb?`<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">NB: ${c.nb}</div>`:''}
       ${c.numero_processo?`<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">Proc.: ${c.numero_processo}</div>`:''}
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.45rem;padding-top:.4rem;border-top:1px solid var(--brd)">
