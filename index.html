@@ -307,6 +307,82 @@
     .casos-tipos { grid-template-columns: 1fr; }
   }
 
+  /* TRANSPARÊNCIA PROCESSUAL */
+  #transparencia {
+    background: var(--dark-2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  #transparencia .section-label { justify-content: center; }
+  #transparencia .section-label::before { display: none; }
+  .counter-block { margin: 0 auto 3rem; }
+  .counter-number {
+    font-family: 'Marcellus', serif;
+    font-size: clamp(5rem, 12vw, 9rem);
+    font-weight: 400;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+  .counter-caption {
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 0.9rem;
+  }
+  .counter-breakdown {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    margin-top: 2.25rem;
+  }
+  .breakdown-item { padding: 1.1rem 2.5rem; position: relative; }
+  .breakdown-item:not(:last-child)::after {
+    content: ''; position: absolute; right: 0; top: 15%; height: 70%;
+    width: 1px; background: var(--border);
+  }
+  .breakdown-item .bd-number {
+    font-family: 'Marcellus', serif; font-size: 1.8rem;
+    color: var(--white); line-height: 1;
+  }
+  .breakdown-item .bd-label {
+    font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-muted); margin-top: 5px;
+  }
+  .transp-text {
+    font-size: 0.95rem; color: var(--text-secondary);
+    max-width: 560px; margin: 2.5rem auto 0; line-height: 1.8;
+  }
+  .oab-pills {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    justify-content: center; margin-top: 1.25rem;
+  }
+  .oab-pill {
+    display: inline-block; font-size: 0.7rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-muted);
+    border: 1px solid var(--border); padding: 5px 14px;
+    border-radius: 2px; text-decoration: none;
+    transition: border-color 0.25s, color 0.25s;
+  }
+  .oab-pill:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-trf4 {
+    display: inline-flex; align-items: center; gap: 8px;
+    text-decoration: none; color: var(--gold);
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; padding: 13px 34px;
+    border: 1px solid var(--border-strong); border-radius: 2px;
+    transition: border-color 0.25s, background 0.25s, color 0.25s;
+    margin-top: 2.25rem;
+  }
+  .btn-trf4:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+  @media (max-width: 500px) {
+    .counter-breakdown { flex-direction: column; }
+    .breakdown-item:not(:last-child)::after { display: none; }
+    .breakdown-item { border-bottom: 1px solid var(--border); }
+    .breakdown-item:last-child { border-bottom: none; }
+  }
+
   /* WhatsApp */
   .whatsapp-btn { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 200; box-shadow: 0 4px 20px rgba(37,211,102,0.35); transition: transform 0.25s; }
   .whatsapp-btn:hover { transform: scale(1.1); }
@@ -350,6 +426,7 @@
   body[class*="view-"] section.hero,
   body[class*="view-"] #areas,
   body[class*="view-"] #quem-somos,
+  body[class*="view-"] #transparencia,
   body[class*="view-"] #parceiros-cta,
   body[class*="view-"] #contato { display: none; }
   /* Artigos das áreas de atuação */
@@ -438,6 +515,7 @@
   body.view-artigos section.hero,
   body.view-artigos #areas,
   body.view-artigos #quem-somos,
+  body.view-artigos #transparencia,
   body.view-artigos #parceiros-cta,
   body.view-artigos #contato { display: none; }
   #artigos-page { display: none; padding: clamp(7rem,12vh,9rem) clamp(1.5rem,8vw,8rem) 5rem; max-width: 1100px; margin: 0 auto; }
@@ -508,6 +586,7 @@
     <li><a href="#areas">Áreas de Atuação</a></li>
     <li><a href="#quem-somos">Quem Somos</a></li>
     <li><a href="#casos">Casos</a></li>
+    <li><a href="#transparencia">Transparência</a></li>
     <li><a href="#consulta-online">Avaliação Gratuita</a></li>
     <li><a href="#parceiros">Seja Parceiro</a></li>
     <li><a href="portal-colaboradores.html" class="nav-portal">Portal</a></li>
@@ -537,6 +616,7 @@
 <div class="highlight-bar">
   <div class="highlight-item"><div class="number">25+</div><div class="desc">Anos de Experiência</div></div>
   <div class="highlight-item"><div class="number">5</div><div class="desc">Profissionais</div></div>
+  <div class="highlight-item"><div class="number" id="bar-processos">–</div><div class="desc">Processos Distribuídos</div></div>
   <div class="highlight-item"><div class="number">4</div><div class="desc">Áreas Especializadas</div></div>
   <div class="highlight-item"><div class="number">UFRGS</div><div class="desc">Mestrado em Economia</div></div>
 </div>
@@ -724,6 +804,49 @@
       Verificar meu caso gratuitamente →
     </a>
     <p style="margin-top:1rem;font-size:.78rem;color:var(--text-muted)">Retorno em até 24 horas · Sigilo profissional garantido</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- TRANSPARÊNCIA PROCESSUAL -->
+<section id="transparencia">
+  <div class="fade-up">
+    <div class="section-label">Transparência</div>
+    <h2 class="section-title">Nossa Trajetória em Números</h2>
+    <p class="section-intro">Resultados construídos ao longo de 25 anos — verificáveis publicamente no portal da Justiça Federal do TRF4.</p>
+  </div>
+
+  <div class="counter-block fade-up">
+    <div class="counter-number" id="processos-counter">0</div>
+    <div class="counter-caption">Processos distribuídos ao longo da nossa história</div>
+  </div>
+
+  <div class="fade-up">
+    <p class="transp-text">
+      Nossos processos são públicos e verificáveis diretamente no <strong>eproc · TRF4</strong>.
+      Pesquise pelos números de OAB dos advogados do escritório para consultar o histórico completo de atuações.
+    </p>
+
+    <a href="https://eproc.trf4.jus.br/eproc/externo_controlador.php?acao=processo_seleciona_publica&txtOab=50779&uf_oab=RS"
+       target="_blank" rel="noopener" class="btn-trf4">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+      Verificar no eproc · TRF4
+    </a>
+
+    <div class="oab-pills">
+      <a href="https://eproc.trf4.jus.br/eproc/externo_controlador.php?acao=processo_seleciona_publica&txtOab=50779&uf_oab=RS"
+         target="_blank" rel="noopener" class="oab-pill">OAB/RS 50.779</a>
+      <a href="https://eproc.trf4.jus.br/eproc/externo_controlador.php?acao=processo_seleciona_publica&txtOab=64744&uf_oab=RS"
+         target="_blank" rel="noopener" class="oab-pill">OAB/RS 64.744</a>
+      <a href="https://eproc.trf4.jus.br/eproc/externo_controlador.php?acao=processo_seleciona_publica&txtOab=55988&uf_oab=RS"
+         target="_blank" rel="noopener" class="oab-pill">OAB/RS 55.988</a>
+      <a href="https://eproc.trf4.jus.br/eproc/externo_controlador.php?acao=processo_seleciona_publica&txtOab=52461&uf_oab=RS"
+         target="_blank" rel="noopener" class="oab-pill">OAB/RS 52.461</a>
+    </div>
   </div>
 </section>
 
@@ -1207,6 +1330,42 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+  // ── CONTADOR DE PROCESSOS ──────────────────────────────
+  // ↓↓ ATUALIZAR COM OS NÚMEROS REAIS DO ESCRITÓRIO ↓↓
+  const TOTAL_PROCESSOS = 1200;  // total histórico (ativos + arquivados)
+  const PROCESSOS_ATIVOS = 450;  // processos ativos atualmente
+  const PROCESSOS_ARQV  = 750;   // processos arquivados
+
+  function animCount(el, target, dur, suffix) {
+    if (!el) return;
+    const step = target / (dur / 16);
+    let val = 0;
+    const t = setInterval(() => {
+      val += step;
+      if (val >= target) { val = target; clearInterval(t); }
+      el.textContent = Math.floor(val).toLocaleString('pt-BR') + (suffix || '');
+    }, 16);
+  }
+
+  const transpSection = document.getElementById('transparencia');
+  if (transpSection) {
+    // Preenche o número na highlight-bar de imediato
+    const barEl = document.getElementById('bar-processos');
+    if (barEl) barEl.textContent = TOTAL_PROCESSOS.toLocaleString('pt-BR') + '+';
+
+    let fired = false;
+    const cObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !fired) {
+          fired = true;
+          animCount(document.getElementById('processos-counter'), TOTAL_PROCESSOS, 1800, '+');
+          cObs.disconnect();
+        }
+      });
+    }, { threshold: 0.25 });
+    cObs.observe(transpSection);
+  }
 
   // ===== Roteador da subpágina Consulta Online =====
   const areaIds = ['area-revisional', 'area-isencao-ir', 'area-auxilio-acidente', 'area-concessao'];
