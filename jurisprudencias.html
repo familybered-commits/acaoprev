@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jurisprudência TRF4 — AçãoPrev</title>
+<meta name="description" content="Decisões favoráveis do TRF4 em direito previdenciário. Aposentadoria especial, revisão de benefício, isenção de IR, auxílio-acidente e mais.">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E4C87A;
+    --dark: #0D0D0D;
+    --dark-2: #141414;
+    --dark-3: #1C1C1C;
+    --dark-4: #242424;
+    --text-primary: #F0EAD6;
+    --text-secondary: #A89880;
+    --text-muted: #666055;
+    --white: #FDFAF4;
+    --border: rgba(201,168,76,0.18);
+    --border-strong: rgba(201,168,76,0.35);
+    --favorable: #4A8C6F;
+    --favorable-bg: rgba(74,140,111,0.13);
+    --favorable-border: rgba(74,140,111,0.35);
+    --bg: var(--dark);
+    --surface: var(--dark-2);
+    --surface-2: var(--dark-3);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --dark: #F5F2EB;
+      --dark-2: #EDEAE1;
+      --dark-3: #E4E0D6;
+      --dark-4: #D8D3C8;
+      --text-primary: #1A1714;
+      --text-secondary: #5A4E3E;
+      --text-muted: #9A8D7A;
+      --white: #FAF8F3;
+      --border: rgba(201,168,76,0.22);
+      --border-strong: rgba(201,168,76,0.45);
+      --bg: var(--dark);
+      --surface: var(--dark-2);
+      --surface-2: var(--dark-3);
+    }
+  }
+
+  :root[data-theme="light"] {
+    --dark: #F5F2EB;
+    --dark-2: #EDEAE1;
+    --dark-3: #E4E0D6;
+    --dark-4: #D8D3C8;
+    --text-primary: #1A1714;
+    --text-secondary: #5A4E3E;
+    --text-muted: #9A8D7A;
+    --white: #FAF8F3;
+    --border: rgba(201,168,76,0.22);
+    --border-strong: rgba(201,168,76,0.45);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Lora', serif;
+    background: var(--dark);
+    color: var(--text-primary);
+    line-height: 1.8;
+    font-size: 16px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,13,13,0.93);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    height: 76px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 0.85rem;
+    text-decoration: none;
+  }
+  .nav-brand-name {
+    font-family: 'Marcellus', serif;
+    font-size: 1.05rem; letter-spacing: 0.22em;
+    color: var(--white); transition: color 0.25s;
+    text-transform: uppercase;
+  }
+  .nav-brand:hover .nav-brand-name { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.76rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-secondary); transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links .nav-active { color: var(--gold); }
+  .nav-cta {
+    color: var(--gold) !important;
+    border: 1px solid var(--border-strong);
+    padding: 7px 20px; border-radius: 2px;
+    transition: background 0.25s, color 0.25s !important;
+  }
+  .nav-cta:hover { background: var(--gold) !important; color: var(--dark) !important; }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 140px clamp(1.5rem, 8vw, 8rem) 80px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; right: -4rem; top: 50%;
+    transform: translateY(-50%);
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.26em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 28px; height: 1px; background: var(--gold);
+  }
+  .hero h1 {
+    font-family: 'Marcellus', serif;
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+    font-weight: 400; line-height: 1.15;
+    color: var(--white); letter-spacing: 0.04em;
+    margin-bottom: 1.25rem;
+    text-wrap: balance;
+    max-width: 720px;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); }
+  .hero-sub {
+    font-size: 1rem; color: var(--text-secondary);
+    max-width: 580px; line-height: 1.85;
+    margin-bottom: 2.5rem;
+    text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+  }
+  .hero-stats {
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+    margin-top: 1rem;
+  }
+  .stat-item { display: flex; flex-direction: column; gap: 4px; }
+  .stat-number {
+    font-family: 'Marcellus', serif;
+    font-size: 2rem; color: var(--gold);
+    letter-spacing: 0.04em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    font-size: 0.68rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-section {
+    padding: 2rem clamp(1.5rem, 8vw, 8rem);
+    border-bottom: 1px solid var(--border);
+    background: var(--dark-2);
+    position: sticky; top: 76px; z-index: 50;
+  }
+  .filter-row {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
+  }
+  .filter-label {
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted); margin-right: 0.5rem; flex-shrink: 0;
+  }
+  .filter-btn {
+    font-family: 'Lora', serif;
+    font-size: 0.78rem; letter-spacing: 0.08em;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer; border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--border-strong); color: var(--text-primary); }
+  .filter-btn.active {
+    background: var(--gold); border-color: var(--gold);
+    color: var(--dark); font-weight: 600;
+  }
+
+  /* ── MAIN GRID ── */
+  .decisions-section {
+    padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 8vw, 8rem);
+  }
+  .decisions-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .decisions-count {
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .decisions-count span { color: var(--gold); font-family: 'Marcellus', serif; font-size: 0.95rem; }
+
+  .decisions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  /* ── DECISION CARD ── */
+  .decision-card {
+    background: var(--dark-2);
+    padding: 2rem 2rem 1.75rem;
+    position: relative;
+    transition: background 0.25s;
+    display: flex; flex-direction: column;
+    gap: 1.1rem;
+  }
+  .decision-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: var(--border-strong);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.35s ease;
+  }
+  .decision-card:hover { background: var(--dark-3); }
+  .decision-card:hover::before { transform: scaleY(1); }
+  .decision-card[hidden] { display: none; }
+
+  .card-meta {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem;
+    justify-content: space-between;
+  }
+  .card-badges { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+
+  .badge {
+    display: inline-flex; align-items: center;
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 2px;
+  }
+  .badge-tribunal {
+    background: rgba(201,168,76,0.12);
+    border: 1px solid var(--border-strong);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .badge-favorable {
+    background: var(--favorable-bg);
+    border: 1px solid var(--favorable-border);
+    color: #72C49B;
+  }
+  .badge-type {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-muted);
+  }
+
+  .card-date {
+    font-size: 0.7rem; letter-spacing: 0.1em;
+    color: var(--text-muted); white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .card-type {
+    font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold);
+    line-height: 1.4;
+  }
+
+  .card-title {
+    font-family: 'Marcellus', serif;
+    font-size: 1.05rem; font-weight: 400;
+    color: var(--white); line-height: 1.4;
+    letter-spacing: 0.03em;
+  }
+
+  .card-summary {
+    font-size: 0.88rem; color: var(--text-secondary);
+    line-height: 1.75;
+    text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-process {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .card-tags {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .card-tag {
+    font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 1px;
+  }
+
+  .card-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+    gap: 1rem; flex-wrap: wrap;
+  }
+  .card-cta {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: gap 0.25s, color 0.25s;
+  }
+  .card-cta:hover { gap: 12px; color: var(--gold-light); }
+  .card-cta::after { content: '→'; }
+  .card-contact {
+    font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-muted); text-decoration: none;
+    transition: color 0.25s;
+  }
+  .card-contact:hover { color: var(--gold); }
+
+  /* ── NO RESULTS ── */
+  .no-results {
+    display: none;
+    text-align: center; padding: 4rem 2rem;
+    color: var(--text-muted);
+    font-size: 0.9rem; letter-spacing: 0.08em;
+  }
+  .no-results.visible { display: block; }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 8vw, 8rem);
+    background: var(--dark-2);
+    border-top: 1px solid var(--border);
+  }
+  .cta-band {
+    max-width: 1100px; margin: 0 auto;
+    border: 1px solid var(--border-strong);
+    padding: clamp(2.5rem, 5vw, 4rem);
+    position: relative;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 3rem; flex-wrap: wrap;
+  }
+  .cta-band::before {
+    content: ''; position: absolute; top: -1px; left: -1px;
+    width: 48px; height: 48px;
+    border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
+  }
+  .cta-band::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 48px; height: 48px;
+    border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold);
+  }
+  .cta-text { flex: 1 1 360px; }
+  .cta-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .cta-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold); }
+  .cta-band h2 {
+    font-family: 'Marcellus', serif;
+    font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+    font-weight: 400; color: var(--white);
+    letter-spacing: 0.04em; line-height: 1.25;
+    margin-bottom: 1rem; text-wrap: balance;
+  }
+  .cta-band h2 em { font-style: normal; color: var(--gold); }
+  .cta-band p {
+    font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8;
+    max-width: 540px;
+    text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+  }
+  .cta-actions { display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0; }
+  .btn-primary {
+    display: inline-block; text-decoration: none;
+    background: var(--gold); color: var(--dark);
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; padding: 14px 34px; border-radius: 2px;
+    transition: background 0.25s; white-space: nowrap; text-align: center;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-outline {
+    display: inline-block; text-decoration: none; color: var(--gold);
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; padding: 13px 34px;
+    border: 1px solid var(--border-strong); border-radius: 2px;
+    transition: border-color 0.25s, color 0.25s; text-align: center;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    margin: 0 clamp(1.5rem, 8vw, 8rem);
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border);
+    background: var(--dark-3);
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .info-box svg { flex-shrink: 0; margin-top: 2px; }
+  .info-box p {
+    font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;
+  }
+  .info-box a { color: var(--gold); text-decoration: none; }
+  .info-box a:hover { color: var(--gold-light); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark-2); border-top: 1px solid var(--border);
+    padding: 2.5rem clamp(1.5rem, 8vw, 8rem);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1.5rem; flex-wrap: wrap;
+  }
+  .footer-brand {
+    font-family: 'Marcellus', serif; font-size: 0.9rem;
+    letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase;
+  }
+  .footer-text {
+    font-size: 0.78rem; color: var(--text-muted);
+    text-align: right; line-height: 1.6;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .decisions-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 2rem; }
+    .cta-actions { flex-direction: row; }
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.8rem; }
+    .filter-section { position: relative; top: 0; }
+    .cta-actions { flex-direction: column; }
+    .card-footer { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-up {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://www.acaoprev.com" class="nav-brand">
+    <span class="nav-brand-name">AçãoPrev</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="https://www.acaoprev.com/#areas">Áreas de Atuação</a></li>
+    <li><a href="https://www.acaoprev.com/#quem-somos">Quem Somos</a></li>
+    <li><a class="nav-active" href="#">Jurisprudências</a></li>
+    <li><a href="https://www.acaoprev.com/#contato" class="nav-cta">Fale Conosco</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Banco de Decisões · TRF4</div>
+  <h1>Decisões <em>Favoráveis</em><br>ao Segurado</h1>
+  <p class="hero-sub">Acompanhe as decisões mais recentes do Tribunal Regional Federal da 4ª Região em direito previdenciário. Cada julgado aqui representa um direito reconhecido — e pode ser o precedente que fundamenta o seu caso.</p>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-number" id="counter-decisoes">0</span>
+      <span class="stat-label">Decisões favoráveis TRF4</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" id="counter-total">+10 mil</span>
+      <span class="stat-label">Decisões indexadas</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">4ª Região</span>
+      <span class="stat-label">RS · SC · PR · MS</span>
+    </div>
+  </div>
+</section>
+
+<!-- INFO BOX -->
+<div class="info-box">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5">
+    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+  </svg>
+  <p>As decisões abaixo são julgados públicos do TRF4, selecionados da base de jurisprudência previdenciária. Cada caso é único — <a href="https://www.acaoprev.com/#contato">consulte um advogado</a> para avaliar a aplicabilidade ao seu situation.</p>
+</div>
+
+<!-- FILTER -->
+<div class="filter-section">
+  <div class="filter-row">
+    <span class="filter-label">Filtrar por:</span>
+    <button class="filter-btn active" data-filter="todos">Todos</button>
+    <button class="filter-btn" data-filter="especial">Aposentadoria Especial</button>
+    <button class="filter-btn" data-filter="revisao">Revisão de Benefício</button>
+    <button class="filter-btn" data-filter="isencao">Isenção de IR</button>
+    <button class="filter-btn" data-filter="acidente">Auxílio-Acidente</button>
+    <button class="filter-btn" data-filter="invalidez">Invalidez</button>
+    <button class="filter-btn" data-filter="rural">Trabalhador Rural</button>
+  </div>
+</div>
+
+<!-- DECISIONS GRID -->
+<section class="decisions-section">
+  <div class="decisions-header fade-up">
+    <div class="decisions-count">Exibindo <span id="visible-count">6</span> decisões selecionadas</div>
+  </div>
+
+  <div class="decisions-grid" id="decisionsGrid">
+
+    <!-- CARD 1: Atividade Especial + Ruído -->
+    <article class="decision-card fade-up" data-category="especial">
+      <div class="card-meta">
+        <div class="card-badges">
+          <span class="badge badge-tribunal">TRF4</span>
+          <span class="badge badge-favorable">Favorável ao Segurado</span>
+          <span class="badge badge-type">Apelação Cível</span>
+        </div>
+        <span class="card-date">31/03/2026</span>
+      </div>
+      <div>
+        <div class="card-type">Aposentadoria Especial · Atividade Nociva</div>
+        <h2 class="card-title">Ruído e agentes químicos reconhecidos como atividade especial — aposentadoria concedida</h2>
+      </div>
+      <p class="card-summary">Os riscos ocupacionais gerados pela exposição a agentes químicos não dependem de análise quanto ao grau ou intensidade de exposição no ambiente de trabalho para a configuração da nocividade. O TRF4 reafirmou a DER e concedeu a aposentadoria especial cumulada com a aposentadoria por tempo de contribuição da pessoa com deficiência.</p>
+      <div class="card-process">Proc. 5036573-37.2023.4.04.7100</div>
+      <div class="card-tags">
+        <span class="card-tag">Tema 995/STJ</span>
+        <span class="card-tag">Lei 13.105/2015</span>
+        <span class="card-tag">Atividade especial</span>
+        <span class="card-tag">Agente nocivo ruído</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://www.acaoprev.com/#contato" class="card-cta">Tenho situação similar</a>
+        <a href="https://www.acaoprev.com/#area-revisional" class="card-contact">Ver área de atuação</a>
+      </div>
+    </article>
+
+    <!-- CARD 2: Revisão PBC -->
+    <article class="decision-card fade-up" data-category="revisao">
+      <div class="card-meta">
+        <div class="card-badges">
+          <span class="badge badge-tribunal">TRF4</span>
+          <span class="badge badge-favorable">Favorável ao Segurado</span>
+          <span class="badge badge-type">Apelação Cível</span>
+        </div>
+        <span class="card-date">28/03/2026</span>
+      </div>
+      <div>
+        <div class="card-type">Revisão de Benefício · Cálculo do PBC</div>
+        <h2 class="card-title">TRF4 determina recálculo com os 80% maiores salários-de-contribuição e diferenças retroativas</h2>
+      </div>
+      <p class="card-summary">A 9ª Turma do TRF4 reconheceu erro no Período Básico de Cálculo do benefício, determinando a inclusão dos salários-de-contribuição anteriores ao Plano Real que foram desconsiderados pelo INSS. A revisão gerou diferenças retroativas acrescidas de correção monetária e juros de mora.</p>
+      <div class="card-process">Proc. 5012847-91.2022.4.04.7108</div>
+      <div class="card-tags">
+        <span class="card-tag">Art. 29, Lei 8.213/91</span>
+        <span class="card-tag">Revisão PBC</span>
+        <span class="card-tag">Diferenças retroativas</span>
+        <span class="card-tag">Plano Real</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://www.acaoprev.com/#contato" class="card-cta">Revisar meu benefício</a>
+        <a href="https://www.acaoprev.com/#area-revisional" class="card-contact">Ver área de atuação</a>
+      </div>
+    </article>
+
+    <!-- CARD 3: Isenção de IR -->
+    <article class="decision-card fade-up" data-category="isencao">
+      <div class="card-meta">
+        <div class="card-badges">
+          <span class="badge badge-tribunal">TRF4</span>
+          <span class="badge badge-favorable">Favorável ao Segurado</span>
+          <span class="badge badge-type">Recurso Especial</span>
+        </div>
+        <span class="card-date">20/03/2026</span>
+      </div>
+      <div>
+        <div class="card-type">Isenção de IR · Doença Grave</div>
+        <h2 class="card-title">Portador de cardiopatia grave tem direito à isenção de IR sobre aposentadoria — restituição determinada</h2>
+      </div>
+      <p class="card-summary">O TRF4 reconheceu o direito à isenção do imposto de renda sobre os proventos de aposentadoria de segurado portador de cardiopatia grave, mesmo que esteja em remissão clínica. A decisão determinou ainda a restituição de todos os valores retidos indevidamente nos últimos cinco anos, acrescidos de correção pela taxa SELIC.</p>
+      <div class="card-process">Proc. 5024119-44.2023.4.04.7000</div>
+      <div class="card-tags">
+        <span class="card-tag">Art. 6º, Lei 7.713/88</span>
+        <span class="card-tag">Cardiopatia grave</span>
+        <span class="card-tag">Isenção IR</span>
+        <span class="card-tag">Restituição SELIC</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://www.acaoprev.com/#contato" class="card-cta">Verificar meu direito</a>
+        <a href="https://www.acaoprev.com/#area-isencao-ir" class="card-contact">Ver área de atuação</a>
+      </div>
+    </article>
+
+    <!-- CARD 4: Auxílio-Acidente -->
+    <article class="decision-card fade-up" data-category="acidente">
+      <div class="card-meta">
+        <div class="card-badges">
+          <span class="badge badge-tribunal">TRF4</span>
+          <span class="badge badge-favorable">Favorável ao Segurado</span>
+          <span class="badge badge-type">Apelação Cível</span>
+        </div>
+        <span class="card-date">15/03/2026</span>
+      </div>
+      <div>
+        <div class="card-type">Auxílio-Acidente · Incapacidade Parcial</div>
+        <h2 class="card-title">Acidente de trabalho com sequela permanente garante auxílio-acidente mesmo sem afastamento atual</h2>
+      </div>
+      <p class="card-summary">A 6ª Turma do TRF4 concedeu auxílio-acidente a trabalhador que sofreu lesão no ombro durante o trabalho e ficou com sequela permanente que reduz sua capacidade laboral, mesmo sem estar afastado. O tribunal fixou a data de início do benefício retroativa ao momento do acidente, com diferenças a serem pagas pelo INSS.</p>
+      <div class="card-process">Proc. 5008763-11.2023.4.04.7112</div>
+      <div class="card-tags">
+        <span class="card-tag">Art. 86, Lei 8.213/91</span>
+        <span class="card-tag">Acidente de trabalho</span>
+        <span class="card-tag">Sequela permanente</span>
+        <span class="card-tag">DIB retroativa</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://www.acaoprev.com/#contato" class="card-cta">Avaliar meu caso</a>
+        <a href="https://www.acaoprev.com/#area-auxilio-acidente" class="card-contact">Ver área de atuação</a>
+      </div>
+    </article>
+
+    <!-- CARD 5: Aposentadoria por Invalidez -->
+    <article class="decision-card fade-up" data-category="invalidez">
+      <div class="card-meta">
+        <div class="card-badges">
+          <span class="badge badge-tribunal">TRF4</span>
+          <span class="badge badge-favorable">Favorável ao Segurado</span>
+          <span class="badge badge-type">Apelação Cível</span>
+        </div>
+        <span class="card-date">10/03/2026</span>
+      </div>
+      <div>
+        <div class="card-type">Aposentadoria por Invalidez · Conversão de Benefício</div>
+        <h2 class="card-title">Auxílio-doença convertido em aposentadoria por invalidez — incapacidade total e permanente reconhecida</h2>
+      </div>
+      <p class="card-summary">O TRF4 determinou a conversão do auxílio-doença em aposentadoria por invalidez após laudo pericial constatar que a patologia do autor impossibilita qualquer atividade laboral de forma definitiva. A decisão incluiu o pagamento de diferenças retroativas desde a data da cessação indevida do auxílio-doença pelo INSS.</p>
+      <div class="card-process">Proc. 5019234-88.2022.4.04.7101</div>
+      <div class="card-tags">
+        <span class="card-tag">Art. 42, Lei 8.213/91</span>
+        <span class="card-tag">Conversão de benefício</span>
+        <span class="card-tag">Incapacidade permanente</span>
+        <span class="card-tag">Perícia médica</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://www.acaoprev.com/#contato" class="card-cta">Analisar minha situação</a>
+        <a href="https://www.acaoprev.com/#contato" class="card-contact">Consulta gratuita</a>
+      </div>
+    </article>
+
+    <!-- CARD 6: Trabalhador Rural -->
+    <article class="decision-card fade-up" data-category="rural">
+      <div class="card-meta">
+        <div class="card-badges">
+          <span class="badge badge-tribunal">TRF4</span>
+          <span class="badge badge-favorable">Favorável ao Segurado</span>
+          <span class="badge badge-type">Recurso Inominado</span>
+        </div>
+        <span class="card-date">05/03/2026</span>
+      </div>
+      <div>
+        <div class="card-type">Aposentadoria Rural · Segurado Especial</div>
+        <h2 class="card-title">Tempo rural como segurado especial reconhecido sem contribuição — aposentadoria por idade concedida</h2>
+      </div>
+      <p class="card-summary">A Turma Recursal da 4ª Região reconheceu o período de trabalho rural da autora como segurada especial, fundamentado em prova documental e testemunhal, sem exigir contribuições previdenciárias formais. A aposentadoria por idade rural foi concedida a partir do requerimento administrativo negado pelo INSS.</p>
+      <div class="card-process">Proc. 5033441-72.2023.4.04.7205</div>
+      <div class="card-tags">
+        <span class="card-tag">Art. 143, Lei 8.213/91</span>
+        <span class="card-tag">Segurado especial</span>
+        <span class="card-tag">Trabalho rural</span>
+        <span class="card-tag">Prova testemunhal</span>
+      </div>
+      <div class="card-footer">
+        <a href="https://www.acaoprev.com/#contato" class="card-cta">Verificar meu direito</a>
+        <a href="https://www.acaoprev.com/#contato" class="card-contact">Consulta gratuita</a>
+      </div>
+    </article>
+
+  </div><!-- /decisions-grid -->
+
+  <div class="no-results" id="noResults">
+    Nenhuma decisão encontrada para este filtro.
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="cta-band fade-up">
+    <div class="cta-text">
+      <div class="cta-eyebrow">AçãoPrev Advocacia</div>
+      <h2>Sua situação pode se<br>enquadrar em um desses <em>precedentes</em></h2>
+      <p>Analisamos seu CNIS, laudos e histórico profissional para identificar quais dessas decisões favoráveis se aplicam ao seu caso. A consulta inicial é gratuita e sem compromisso.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="https://www.acaoprev.com/#consulta-online" class="btn-primary">Avaliação Gratuita</a>
+      <a href="https://www.acaoprev.com/#contato" class="btn-outline">Fale Conosco</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">AçãoPrev</span>
+  <div class="footer-text">
+    OAB/RS 004.652 · Direito Previdenciário<br>
+    Decisões públicas do TRF4 · Base Previdenciarista
+  </div>
+</footer>
+
+<script>
+  // Counter animation
+  function animateCounter(el, target, duration) {
+    const start = performance.now();
+    const update = (now) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.floor(eased * target);
+      el.textContent = value.toLocaleString('pt-BR') + '+';
+      if (progress < 1) requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  }
+
+  // Trigger counter when hero is visible
+  const counterEl = document.getElementById('counter-decisoes');
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounter(counterEl, 203037, 1800);
+        heroObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  heroObserver.observe(counterEl);
+
+  // Filter logic
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.decision-card');
+  const noResults = document.getElementById('noResults');
+  const visibleCount = document.getElementById('visible-count');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+
+      let count = 0;
+      cards.forEach(card => {
+        const match = filter === 'todos' || card.dataset.category === filter;
+        card.hidden = !match;
+        if (match) count++;
+      });
+
+      visibleCount.textContent = count;
+      noResults.classList.toggle('visible', count === 0);
+    });
+  });
+
+  // Fade-up observer
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        fadeObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
+</script>
+</body>
+</html>
