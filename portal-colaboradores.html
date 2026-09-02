@@ -1845,105 +1845,129 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 
 <script>
 // ═══════════════════════════════════════════════════════════
-// SUPABASE CONFIG
-// Preencha com suas credenciais (Supabase > Settings > API)
+// GOOGLE APPS SCRIPT CONFIG
+// Após publicar o script, cole a URL abaixo
 // ═══════════════════════════════════════════════════════════
-const SB_URL  = 'https://vzbqclzgfpcivmzzmiqc.supabase.co';
-const SB_ANON = 'sb_publishable_m3Mv60glgCgnMeMMHdfLHQ_2a1oCJlv'; // ← cole aqui a chave anon
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwGe4eNwtGrXRzufLpFVq9JkRMI8yPhyE7E7LvJOYtpWm06N-4zhkCJ3TXHVRrP7Akc/exec';
 
 async function sbFetch(path, opts = {}) {
-  const res = await fetch(SB_URL + path, {
-    ...opts,
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SB_ANON,
-      'Authorization': `Bearer ${SB_ANON}`,
-      ...(opts.headers || {}),
-    },
-  });
-  if (!res.ok) throw new Error(await res.text());
-  if (res.status === 204) return null;
-  const txt = await res.text();
-  return txt ? JSON.parse(txt) : null;
-}
+  const method = (opts.method || 'GET').toUpperCase();
+  const body   = opts.body ? JSON.parse(opts.body) : null;
 
-// ═══════════════════════════════════════════════════════════
-// POTENCIAIS — dados em localStorage
-// ═══════════════════════════════════════════════════════════
-const POT_KEY = 'acaoprev_potenciais_v1';
+  // Extrai sheet e parâmetros do caminho estilo Supabase (/rest/v1/casos?...)
+  const clean  = path.replace('/rest/v1/', '');
+  const [entity, queryStr] = clean.split('?');
+  const params = new URLSearchParams(queryStr || '');
+  const sheet  = entity.split('?')[0]; // 'casos' ou 'clientes'
 
-// Dados de exemplo pré-carregados (somente se localStorage estiver vazio)
-const POT_EXEMPLOS = [
-  {
-    id: 'ex-1',
-    nome: 'José Antônio Ferreira',
-    cpf: '012.345.678-90',
-    whatsapp: '(54) 99123-4567',
-    cidade: 'Caxias do Sul',
-    uf: 'RS',
-    tese: 'ACP dos Tetos',
-    pretensao: 182000,
-    status: 'pronto',
-    drive_link: 'https://drive.google.com',
-    obs: 'CNIS extraído do processo nº 5001234. Recolhimentos acima do teto entre 1994–1999. Revisão de benefício com potencial de R$ 182 mil em atrasados.',
-    created_at: new Date(Date.now() - 7 * 86400000).toISOString()
-  },
-  {
-    id: 'ex-2',
-    nome: 'Maria Helena dos Santos',
-    cpf: '234.567.890-12',
-    whatsapp: '(51) 98765-4321',
-    cidade: 'Porto Alegre',
-    uf: 'RS',
-    tese: 'Isenção de IR',
-    pretensao: 48000,
-    status: 'pronto',
-    drive_link: 'https://drive.google.com',
-    obs: 'Laudos médicos comprovando doença grave (neoplasia maligna) extraídos do processo de benefício. Faz jus à isenção de IR sobre a aposentadoria há 4 anos.',
-    created_at: new Date(Date.now() - 5 * 86400000).toISOString()
-  },
-  {
-    id: 'ex-3',
-    nome: 'Carlos Eduardo Machado',
-    cpf: '345.678.901-23',
-    whatsapp: '(54) 97654-3210',
-    cidade: 'Bento Gonçalves',
-    uf: 'RS',
-    tese: 'Auxílio-Acidente',
-    pretensao: 72000,
-    status: 'pendente',
-    drive_link: 'https://drive.google.com',
-    obs: 'Acidente de trabalho em 2021 documentado no processo judicial. Redução de capacidade laboral comprovada. Falta CAT para completar documentação.',
-    created_at: new Date(Date.now() - 3 * 86400000).toISOString()
-  },
-  {
-    id: 'ex-4',
-    nome: 'Ana Lúcia Pereira',
-    cpf: '456.789.012-34',
-    whatsapp: '(54) 96543-2109',
-    cidade: 'Farroupilha',
-    uf: 'RS',
-    tese: 'ACP dos Tetos',
-    pretensao: 215000,
-    status: 'em_analise',
-    drive_link: 'https://drive.google.com',
-    obs: 'Extraído do processo de ACP coletiva. CNIS demonstra contribuições acima do teto entre 1991–2003. Alto potencial de atrasados.',
-    created_at: new Date(Date.now() - 1 * 86400000).toISOString()
+  if (method === 'GET') {
+    const url = new URL(GAS_URL);
+    url.searchParams.set('sheet', sheet);
+    // Traduz filtros Supabase (chave=eq.valor) para parâmetros simples
+    for (const [key, val] of params) {
+      if (['order','limit','select'].includes(key)) continue;
+      if (val.startsWith('eq.')) url.searchParams.set(key, decodeURIComponent(val.slice(3)));
+    }
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
   }
-];
 
-function getPotenciais() {
+  if (method === 'POST') {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'create', sheet, data: body }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const txt = await res.text();
+    return txt ? JSON.parse(txt) : null;
+  }
+
+  if (method === 'PATCH') {
+    const idParam = params.get('id');
+    const id = idParam?.startsWith('eq.') ? idParam.slice(3) : idParam;
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'update', sheet, id, data: body }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return null;
+  }
+
+  if (method === 'DELETE') {
+    const idParam = params.get('id');
+    const id = idParam?.startsWith('eq.') ? idParam.slice(3) : idParam;
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'delete', sheet, id }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return null;
+  }
+
+  throw new Error('Método não suportado: ' + method);
+}
+
+// ═══════════════════════════════════════════════════════════
+// ESTADO GLOBAL — dados carregados do GAS na entrada da equipe
+// ═══════════════════════════════════════════════════════════
+let leadsAll      = [];  // todos os leads (todos os colaboradores)
+let ativAll       = [];  // todas as atividades
+let potenciaisAll = [];  // clientes em potencial
+let finAll        = [];  // lançamentos financeiros
+
+// Helper: operação no GAS (fire-and-forget para writes)
+function gasOp(action, sheet, id, data) {
+  const body = { action, sheet };
+  if (id)   body.id   = id;
+  if (data) body.data = data;
+  return fetch(GAS_URL, { method: 'POST', body: JSON.stringify(body) })
+    .catch(function(e) { console.error('gasOp error', sheet, action, e); });
+}
+
+// Carrega todos os dados do GAS ao entrar no escritório (após senha correta)
+async function loadAllGasData() {
   try {
-    const raw = localStorage.getItem(POT_KEY);
-    if (raw) return JSON.parse(raw);
-    // Primeira vez: carrega exemplos
-    localStorage.setItem(POT_KEY, JSON.stringify(POT_EXEMPLOS));
-    return POT_EXEMPLOS;
-  } catch(e) { return []; }
+    const [leads, ativ, pot, fin] = await Promise.all([
+      fetch(GAS_URL + '?sheet=leads').then(r => r.json()).catch(() => []),
+      fetch(GAS_URL + '?sheet=atividades').then(r => r.json()).catch(() => []),
+      fetch(GAS_URL + '?sheet=potenciais').then(r => r.json()).catch(() => []),
+      fetch(GAS_URL + '?sheet=financeiro').then(r => r.json()).catch(() => []),
+    ]);
+    leadsAll      = Array.isArray(leads) ? leads : [];
+    ativAll       = Array.isArray(ativ)  ? ativ  : [];
+    potenciaisAll = Array.isArray(pot)   ? pot   : [];
+    finAll        = Array.isArray(fin)   ? fin   : [];
+
+    // Normaliza leads: ts como número, scriptHist como array
+    leadsAll.forEach(l => {
+      l.ts = Number(l.ts) || 0;
+      l.id = l.id || String(l.ts);
+      try { l.scriptHist = l.script_hist ? JSON.parse(l.script_hist) : []; } catch { l.scriptHist = []; }
+    });
+    // Normaliza atividades: ts como número
+    ativAll.forEach(a => { a.ts = Number(a.ts) || 0; a.id = a.id || String(a.ts); });
+    // Normaliza financeiro: valor como float, pago como bool
+    finAll.forEach(f => {
+      f.valor = parseFloat(f.valor) || 0;
+      f.pago = f.pago === true || f.pago === 'true' || f.pago === 1;
+    });
+    // Se financeiro vazio, semeia dados de exemplo
+    if (!finAll.length) {
+      finAll = FIN_SEED.map(l => ({...l}));
+      finAll.forEach(l => gasOp('create', 'financeiro', null, l));
+    }
+  } catch(e) {
+    console.error('loadAllGasData error', e);
+  }
+  renderPotenciais();
 }
-function setPotenciais(arr) {
-  try { localStorage.setItem(POT_KEY, JSON.stringify(arr)); } catch(e) {}
-}
+
+// ═══════════════════════════════════════════════════════════
+// POTENCIAIS — dados em Google Sheets (via GAS)
+// ═══════════════════════════════════════════════════════════
+function getPotenciais() { return potenciaisAll; }
+function setPotenciais(arr) { potenciaisAll = arr; }
 function potFmtVal(n) {
   if (!n && n !== 0) return '—';
   return 'R$ ' + Number(n).toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0});
@@ -2052,7 +2076,7 @@ function savePotencial() {
   if (potEditId) {
     const idx = todos.findIndex(x => x.id === potEditId);
     if (idx >= 0) {
-      todos[idx] = { ...todos[idx],
+      const upd = {
         nome, cpf: document.getElementById('potCpf').value.trim(),
         whatsapp: document.getElementById('potWa').value.trim(),
         cidade: document.getElementById('potCidade').value.trim(),
@@ -2060,9 +2084,11 @@ function savePotencial() {
         tese, pretensao, status: document.getElementById('potStatus').value,
         drive_link: drive, obs: document.getElementById('potObs').value.trim()
       };
+      todos[idx] = { ...todos[idx], ...upd };
+      gasOp('update', 'potenciais', potEditId, upd);
     }
   } else {
-    todos.unshift({
+    const novo = {
       id: 'pot-' + Date.now(),
       nome, cpf: document.getElementById('potCpf').value.trim(),
       whatsapp: document.getElementById('potWa').value.trim(),
@@ -2071,7 +2097,9 @@ function savePotencial() {
       tese, pretensao, status: document.getElementById('potStatus').value,
       drive_link: drive, obs: document.getElementById('potObs').value.trim(),
       created_at: new Date().toISOString()
-    });
+    };
+    todos.unshift(novo);
+    gasOp('create', 'potenciais', null, novo);
   }
   setPotenciais(todos);
   closeModPotencial();
@@ -2083,6 +2111,7 @@ function deletePotencial(id) {
   if (!confirm('Remover este cliente em potencial?')) return;
   const todos = getPotenciais().filter(x => x.id !== delId);
   setPotenciais(todos);
+  gasOp('delete', 'potenciais', delId, null);
   closeModPotencial();
   renderPotenciais();
 }
@@ -2117,7 +2146,7 @@ async function reloadCasos() {
   } catch (e) {
     console.error(e);
     grid.innerHTML = `<div style="color:#d9534f;font-size:.82rem;text-align:center;padding:3rem">
-      Erro ao carregar casos.<br><span style="font-size:.73rem;color:var(--t3)">Verifique a chave Supabase no código.</span>
+      Erro ao carregar casos.<br><span style="font-size:.73rem;color:var(--t3)">Verifique a URL do Apps Script no código.</span>
     </div>`;
   }
 }
@@ -2225,7 +2254,7 @@ async function reloadClientes() {
     const b = document.getElementById('clientes-badge');
     if(b){ if(clientesAll.length){ b.textContent=clientesAll.length; b.style.display='inline'; } else b.style.display='none'; }
   } catch(e) {
-    grid.innerHTML = '<div style="color:#d47878;font-size:.82rem;text-align:center;padding:3rem">Erro ao carregar. Verifique o Supabase.</div>';
+    grid.innerHTML = '<div style="color:#d47878;font-size:.82rem;text-align:center;padding:3rem">Erro ao carregar. Verifique a URL do Apps Script.</div>';
   }
 }
 
@@ -2596,16 +2625,54 @@ let genAbort = null;
 let pwCtx = null;
 
 // ═══════════════════════════════════════════════════════════
-// STORAGE (localStorage)
+// STORAGE — in-memory (leadsAll / ativAll carregados do GAS)
 // ═══════════════════════════════════════════════════════════
-const lk  = t => `acp_${cu.id}_${t}`;
 const pk  = id => `acp_${id}_pw`;
+// Senha de equipe ainda em localStorage (config simples, não crítico)
 const lsG = k => { try{ const v=localStorage.getItem(k); return v?JSON.parse(v):null }catch{return null} };
 const lsS = (k,v) => { try{ localStorage.setItem(k,JSON.stringify(v)) }catch{} };
-const getLeads = () => lsG(lk('leads')) || [];
-const setLeads = v => { lsS(lk('leads'),v); updateStats(); renderLeads(); renderFunil(); renderPerfilCards(); };
-const getAtiv  = () => lsG(lk('ativ'))  || [];
-const addAtiv  = (txt) => { const a=getAtiv(); a.unshift({txt,ts:Date.now()}); if(a.length>40)a.pop(); lsS(lk('ativ'),a); renderAtiv(); };
+
+function getLeads() { return leadsAll.filter(l => l.colaborador_id === cu.id); }
+
+function setLeads(v) {
+  // Mapas antigo × novo para detectar creates, updates e deletes
+  const oldMap = {};
+  leadsAll.filter(l => l.colaborador_id === cu.id).forEach(l => { oldMap[l.id] = l; });
+  const newMap = {};
+  v.forEach(l => {
+    l.id = l.id || String(l.ts);
+    l.colaborador_id = cu.id;
+    l.script_hist = JSON.stringify(l.scriptHist || []);
+    newMap[l.id] = l;
+  });
+  // Deletes
+  Object.keys(oldMap).forEach(k => { if (!newMap[k]) gasOp('delete', 'leads', k, null); });
+  // Creates / Updates
+  v.forEach(l => {
+    if (!oldMap[l.id]) gasOp('create', 'leads', null, l);
+    else               gasOp('update', 'leads', l.id, l);
+  });
+  // Atualiza memória
+  leadsAll = leadsAll.filter(l => l.colaborador_id !== cu.id).concat(v);
+  updateStats(); renderLeads(); renderFunil(); renderPerfilCards();
+}
+
+function getAtiv() { return ativAll.filter(a => a.colaborador_id === cu.id); }
+
+function addAtiv(txt) {
+  const a = { txt, ts: Date.now(), colaborador_id: cu.id };
+  a.id = String(a.ts);
+  if (!a.created_at) a.created_at = new Date().toISOString();
+  gasOp('create', 'atividades', null, a);
+  ativAll.unshift(a);
+  // Limita a 40 por colaborador
+  const mine = ativAll.filter(x => x.colaborador_id === cu.id);
+  if (mine.length > 40) {
+    const toDelete = mine.slice(40);
+    toDelete.forEach(d => { gasOp('delete', 'atividades', d.id, null); ativAll = ativAll.filter(x => x !== d); });
+  }
+  renderAtiv();
+}
 
 // ═══════════════════════════════════════════════════════════
 // LOGIN
@@ -2629,7 +2696,7 @@ function doTeamLogin(){
     populateRespSelects();
     loadLoginCasos();
     loadLoginClientes();
-    renderPotenciais();
+    loadAllGasData(); // carrega leads, atividades, potenciais e financeiro do GAS
   } else {
     document.getElementById('perr').textContent='Senha incorreta. Tente novamente.';
     document.getElementById('pinIn').value='';
@@ -2743,7 +2810,7 @@ async function deleteCaso(id){
     if(document.getElementById('loginCasosGrid')) loadLoginCasos();
     if(typeof reloadCasos === 'function') reloadCasos();
   } catch(e){
-    alert('Erro ao deletar. Adicione a política no Supabase:\nCREATE POLICY "public_delete" ON casos FOR DELETE TO anon USING (true);');
+    alert('Erro ao deletar. Verifique a URL do Apps Script e tente novamente.');
   }
 }
 function selUser(id){
@@ -3390,8 +3457,7 @@ renderLoginGrid();
 // ═══════════════════════════════════════════════════════════
 // FINANCEIRO — Gestão de Lançamentos (Vinícius)
 // ═══════════════════════════════════════════════════════════
-const FIN_KEY       = 'acaoprev_lancamentos';
-const FIN_SALDO_KEY = 'acaoprev_saldo_inicial';
+const FIN_SALDO_KEY = 'acaoprev_saldo_inicial'; // saldo inicial ainda em localStorage (config simples)
 
 // Dados pré-carregados do Astrea (agosto/2026)
 const FIN_SEED = [
@@ -3411,9 +3477,8 @@ let lancamentoAtual = null;
 const FIN_MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
 function initFin() {
-  const stored = localStorage.getItem(FIN_KEY);
-  finData = stored ? JSON.parse(stored) : FIN_SEED.map(l=>({...l}));
-  if(!stored) localStorage.setItem(FIN_KEY, JSON.stringify(finData));
+  // finAll já foi carregado pelo loadAllGasData()
+  finData = finAll.length ? finAll : FIN_SEED.map(l=>({...l}));
   const s = localStorage.getItem(FIN_SALDO_KEY);
   if(s) finSaldoInicial = parseFloat(s);
   // Ir para mês atual se houver dados, senão ficar em ago/2026
@@ -3424,7 +3489,8 @@ function initFin() {
   renderFin();
 }
 
-function finSalvar() { localStorage.setItem(FIN_KEY, JSON.stringify(finData)); }
+// finSalvar: dados persistidos individualmente via gasOp nas funções toggle/save/delete
+function finSalvar() { /* no-op: cada operação usa gasOp individualmente */ }
 
 function finPrevMonth(){ finMes--; if(finMes<1){finMes=12;finAno--;} renderFin(); }
 function finNextMonth(){ finMes++; if(finMes>12){finMes=1;finAno++;} renderFin(); }
@@ -3502,7 +3568,7 @@ function renderFin(){
 
 function togglePago(id,checked){
   const l=finData.find(x=>x.id===id);
-  if(l){ l.pago=checked; finSalvar(); renderFin(); }
+  if(l){ l.pago=checked; gasOp('update','financeiro',id,{pago:checked}); renderFin(); }
 }
 
 function openAddLancamento(){
@@ -3553,9 +3619,15 @@ function saveLancamento(){
     descricao:desc, categoria:document.getElementById('lancCat').value,
     valor, pago:document.getElementById('lancPago').checked,
   };
-  if(lancamentoAtual){ Object.assign(lancamentoAtual,body); }
-  else { finData.push({id:'fin-'+Date.now(),...body}); }
-  finSalvar(); closeLancamento();
+  if(lancamentoAtual){
+    Object.assign(lancamentoAtual,body);
+    gasOp('update','financeiro',lancamentoAtual.id,body);
+  } else {
+    const novo={id:'fin-'+Date.now(),...body,created_at:new Date().toISOString()};
+    finData.push(novo);
+    gasOp('create','financeiro',null,novo);
+  }
+  closeLancamento();
   // Ajusta mês exibido para o do lançamento
   const d=new Date(body.data+'T00:00:00'); finAno=d.getFullYear(); finMes=d.getMonth()+1;
   renderFin();
@@ -3563,8 +3635,9 @@ function saveLancamento(){
 
 function deleteLancamento(){
   if(!lancamentoAtual||!confirm('Excluir este lançamento permanentemente?')) return;
+  gasOp('delete','financeiro',lancamentoAtual.id,null);
   finData=finData.filter(x=>x.id!==lancamentoAtual.id);
-  finSalvar(); closeLancamento(); renderFin();
+  closeLancamento(); renderFin();
 }
 
 function openFinConfig(){
