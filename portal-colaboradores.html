@@ -1422,6 +1422,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
         </select>
       </div>
       <div class="fld"><label>Nº do processo</label><input type="text" id="cliProc" placeholder="Ex: 5001234-12.2023.4.04.7107"></div>
+      <div class="fld"><label>Justiça</label>
+        <select id="cliJuris" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">-</option>
+          <option value="Federal">Federal</option>
+          <option value="Estadual">Estadual</option>
+        </select>
+      </div>
       <div class="fld"><label>Fase processual</label>
         <select id="cliFase" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
           <option value="">-</option>
@@ -1499,6 +1506,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       </div>
       <div class="fld" style="grid-column:1/-1"><label>Advogado(s) responsável(is)</label>
         <div id="ncRespBoxes" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 10px"></div>
+      </div>
+      <div class="fld"><label>Nº do processo</label><input type="text" id="ncProc" placeholder="Ex: 5001234-12.2023.4.04.7107"></div>
+      <div class="fld"><label>Justiça</label>
+        <select id="ncJuris" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%">
+          <option value="">-</option>
+          <option value="Federal">Federal</option>
+          <option value="Estadual">Estadual</option>
+        </select>
       </div>
       <div class="fld"><label>Link Google Drive</label><input type="url" id="ncDrive" placeholder="https://drive.google.com/..."></div>
     </div>
@@ -2290,7 +2305,7 @@ function renderClientes() {
       </div>
       ${c.whatsapp ? fmtTels(c.whatsapp) : ''}
       ${c.nb ? `<div style="font-size:.75rem;color:var(--t3);margin-bottom:.2rem">NB: ${escH(c.nb)}</div>` : ''}
-      ${c.numero_processo ? `<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">Proc.: ${escH(c.numero_processo)}</div>` : ''}
+      ${c.numero_processo ? `<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">Proc.: ${escH(c.numero_processo)}${c.jurisdicao ? ` <span style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:3px;padding:0 4px;font-size:.68rem;color:var(--gold)">${escH(c.jurisdicao)}</span>` : ''}</div>` : ''}
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;padding-top:.45rem;border-top:1px solid var(--brd)">
         <div>${advBadge}<span style="font-size:.7rem;color:var(--t3)">${c.fase_processual||''}</span></div>
         ${c.drive_link ? `<a href="${escH(c.drive_link)}" target="_blank" onclick="event.stopPropagation()" style="font-size:.7rem;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:2px 7px">📁 Drive</a>` : ''}
@@ -2383,6 +2398,7 @@ function openCliDetalhe(id) {
   document.getElementById('cliComp').value   = c.competencia_inicial||'';
   document.getElementById('cliTipo').value   = c.tipo_beneficio||'';
   document.getElementById('cliProc').value   = c.numero_processo||'';
+  document.getElementById('cliJuris').value  = c.jurisdicao||'';
   document.getElementById('cliFase').value   = c.fase_processual||'';
   document.getElementById('cliVara').value   = c.vara_tribunal||'';
   setCheckedResps('cliRespBoxes', c.responsavel||null);
@@ -2413,6 +2429,7 @@ async function saveCliDetalhe() {
     competencia_inicial: document.getElementById('cliComp').value.trim()||null,
     tipo_beneficio: document.getElementById('cliTipo').value||null,
     numero_processo: document.getElementById('cliProc').value.trim()||null,
+    jurisdicao: document.getElementById('cliJuris').value||null,
     fase_processual: document.getElementById('cliFase').value||null,
     vara_tribunal: document.getElementById('cliVara').value.trim()||null,
     responsavel: getCheckedResps('cliRespBoxes'),
@@ -2458,6 +2475,8 @@ async function saveAddCliente() {
     cidade: document.getElementById('ncCidade').value.trim()||null,
     uf: document.getElementById('ncUf').value||null,
     tipo_beneficio: document.getElementById('ncTipo').value||null,
+    numero_processo: document.getElementById('ncProc').value.trim()||null,
+    jurisdicao: document.getElementById('ncJuris').value||null,
     responsavel: getCheckedResps('ncRespBoxes'),
     drive_link: document.getElementById('ncDrive').value.trim()||null,
     status: 'ativo',
@@ -2786,7 +2805,7 @@ function renderLoginClientes(){
       </div>
       ${c.whatsapp?fmtTels(c.whatsapp):''}
       ${c.nb?`<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">NB: ${c.nb}</div>`:''}
-      ${c.numero_processo?`<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">Proc.: ${c.numero_processo}</div>`:''}
+      ${c.numero_processo?`<div style="font-size:.73rem;color:var(--t3);margin-bottom:.2rem">Proc.: ${c.numero_processo}${c.jurisdicao?` <span style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:3px;padding:0 4px;font-size:.68rem;color:var(--gold)">${c.jurisdicao}</span>`:''}</div>`:''}
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.45rem;padding-top:.4rem;border-top:1px solid var(--brd)">
         <div style="display:flex;align-items:center;gap:5px">${advBadge}<span style="font-size:.7rem;color:var(--t3)">${c.fase_processual||''}</span></div>
         ${c.drive_link?`<a href="${c.drive_link}" target="_blank" onclick="event.stopPropagation()" style="font-size:.7rem;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:2px 7px">📁 Drive</a>`:''}
