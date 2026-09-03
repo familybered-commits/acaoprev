@@ -2205,21 +2205,20 @@ function savePotencial() {
       gasOp('update', 'potenciais', potEditId, upd);
     }
   } else {
-    const _tempId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
+    // Gera UUID válido para o campo id da tabela potenciais (NOT NULL, sem default)
+    const novoId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
     const novo = {
-      id: _tempId,
+      id: novoId,
       nome, cpf: document.getElementById('potCpf').value.trim(),
       whatsapp: document.getElementById('potWa').value.trim(),
       cidade: document.getElementById('potCidade').value.trim(),
       uf: document.getElementById('potUf').value,
       tese, pretensao, status: document.getElementById('potStatus').value,
-      drive_link: drive, obs: document.getElementById('potObs').value.trim(),
-      created_at: new Date().toISOString()
+      drive_link: drive, obs: document.getElementById('potObs').value.trim()
+      // sem created_at — coluna não existe na tabela potenciais
     };
     todos.unshift(novo);
-    // Envia ao Supabase sem o id local (deixa o banco gerar o id real)
-    const { id: _dropId, ...novoSemId } = novo;
-    gasOp('create', 'potenciais', null, novoSemId);
+    gasOp('create', 'potenciais', null, novo);
   }
   setPotenciais(todos);
   closeModPotencial();
@@ -2820,16 +2819,17 @@ function aplicarCache(c) {
   _normalizarDados();
 }
 
-function getLeads() { return leadsAll.filter(l => l.colaborador_id === cu.id); }
+function getLeads() { return leadsAll.filter(l => (l.user_id || l.colaborador_id) === cu.id); }
 
 function setLeads(v) {
   // Mapas antigo × novo para detectar creates, updates e deletes
   const oldMap = {};
-  leadsAll.filter(l => l.colaborador_id === cu.id).forEach(l => { oldMap[l.id] = l; });
+  leadsAll.filter(l => (l.user_id || l.colaborador_id) === cu.id).forEach(l => { oldMap[l.id] = l; });
   const newMap = {};
   v.forEach(l => {
     l.id = l.id || String(l.ts);
-    l.colaborador_id = cu.id;
+    l.user_id = cu.id;          // nome real da coluna no DB
+    l.colaborador_id = cu.id;   // mantém para compatibilidade local
     l.script_hist = JSON.stringify(l.scriptHist || []);
     newMap[l.id] = l;
   });
@@ -2841,19 +2841,22 @@ function setLeads(v) {
     else               gasOp('update', 'leads', l.id, l);
   });
   // Atualiza memória
-  leadsAll = leadsAll.filter(l => l.colaborador_id !== cu.id).concat(v);
+  leadsAll = leadsAll.filter(l => (l.user_id || l.colaborador_id) !== cu.id).concat(v);
   updateStats(); renderLeads(); renderFunil(); renderPerfilCards();
 }
 
-function getAtiv() { return ativAll.filter(a => a.colaborador_id === cu.id); }
+function getAtiv() { return ativAll.filter(a => (a.user_id || a.colaborador_id) === cu.id); }
 
 function addAtiv(txt) {
-  const a = { txt, created_at: new Date().toISOString(), colaborador_id: cu.id };
-  a.id = String(Date.now());
-  gasOp('create', 'atividades', null, a);
+  // Payload para o Supabase: usa user_id (nome real da coluna no DB)
+  // id e created_at são auto-gerados pelo banco
+  const payload = { txt, user_id: cu.id };
+  gasOp('create', 'atividades', null, payload);
+  // Estado local inclui id temporário e campo colaborador_id para compatibilidade
+  const a = { ...payload, colaborador_id: cu.id, id: String(Date.now()), created_at: new Date().toISOString() };
   ativAll.unshift(a);
   // Limita a 40 por colaborador
-  const mine = ativAll.filter(x => x.colaborador_id === cu.id);
+  const mine = ativAll.filter(x => (x.user_id || x.colaborador_id) === cu.id);
   if (mine.length > 40) {
     const toDelete = mine.slice(40);
     toDelete.forEach(d => { gasOp('delete', 'atividades', d.id, null); ativAll = ativAll.filter(x => x !== d); });
