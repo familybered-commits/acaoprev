@@ -1865,6 +1865,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
 // ═══════════════════════════════════════════════════════════
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwGe4eNwtGrXRzufLpFVq9JkRMI8yPhyE7E7LvJOYtpWm06N-4zhkCJ3TXHVRrP7Akc/exec';
 
+// ── PRÉ-AQUECIMENTO ──────────────────────────────────────────
+// Ping silencioso ao GAS assim que a página carrega,
+// para o container já estar aquecido quando o usuário entrar.
+fetch(GAS_URL + '?sheet=ping').catch(() => {});
+
 async function sbFetch(path, opts = {}) {
   const method = (opts.method || 'GET').toUpperCase();
   const body   = opts.body ? JSON.parse(opts.body) : null;
@@ -1940,42 +1945,124 @@ function gasOp(action, sheet, id, data) {
     .catch(function(e) { console.error('gasOp error', sheet, action, e); });
 }
 
-// Carrega todos os dados do GAS ao entrar no escritório (após senha correta)
-async function loadAllGasData() {
+// ── Normalização comum dos dados ─────────────────────────────
+function _normalizarDados() {
+  leadsAll.forEach(l => {
+    l.ts = Number(l.ts) || 0;
+    l.id = l.id || String(l.ts);
+    try { l.scriptHist = l.script_hist ? JSON.parse(l.script_hist) : []; } catch { l.scriptHist = []; }
+  });
+  ativAll.forEach(a => { a.ts = Number(a.ts) || 0; a.id = a.id || String(a.ts); });
+  finAll.forEach(f => {
+    f.valor = parseFloat(f.valor) || 0;
+    f.pago = f.pago === true || f.pago === 'true' || f.pago === 1;
+  });
+  if (!finAll.length) {
+    finAll = FIN_SEED.map(l => ({...l}));
+    finAll.forEach(l => gasOp('create', 'financeiro', null, l));
+  }
+}
+
+// ── Helper: renderiza seção de Casos na tela de entrada ───────
+function _renderLoginCasosGrid(data) {
+  const msg   = document.getElementById('loginCasosMsg');
+  const grid  = document.getElementById('loginCasosGrid');
+  const badge = document.getElementById('loginCasosBadge');
+  if (!grid) return;
+  if (!msg || !data || !data.length) { if(msg) msg.textContent = 'Nenhum caso encontrado.'; return; }
+  if(msg) msg.textContent = '';
+  if(badge) badge.textContent = data.length + ' casos';
+  const SL = { novo:'Novo', em_analise:'Em análise', convertido:'Convertido', descartado:'Descartado' };
+  grid.innerHTML = data.map(c => {
+    const dt = new Date(c.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const emAnd = c.status === 'em_analise';
+    const cardStyle = emAnd ? 'border-color:var(--gold);background:rgba(201,168,76,.06)' : '';
+    const advBadge = makeAdvBadges(c.responsavel, 24, '.62rem');
+    return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;cursor:pointer;${cardStyle}"
+      onclick='openLoginCasoDetalhe("${c.id}")'>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.35rem">
+        <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text);line-height:1.3">${c.nome}</div>
+        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+          ${advBadge}
+          <span class="caso-status ${c.status}" style="white-space:nowrap">${SL[c.status]||c.status}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.3rem">
+        <span class="caso-tag">${c.tipo_caso}</span>
+        ${c.cidade?`<span class="caso-tag">${c.cidade}/${c.uf}</span>`:''}
+      </div>
+      ${c.whatsapp?`<div style="font-size:.77rem;color:var(--t2);margin-bottom:.25rem">📱 ${c.whatsapp}</div>`:''}
+      <div style="font-size:.72rem;color:var(--t3)">${dt}</div>
+      ${c.relato?`<div style="margin-top:.4rem;font-size:.79rem;color:var(--t2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${c.relato}</div>`:''}
+      <div style="margin-top:.5rem;text-align:right">
+        <button onclick='event.stopPropagation();deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑 Deletar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Helper: renderiza seção de Clientes na tela de entrada ────
+function _renderLoginClientesGrid() {
+  const msg   = document.getElementById('loginClientesMsg');
+  const badge = document.getElementById('loginCliBadge');
+  if(msg) msg.textContent = '';
+  if(badge) badge.textContent = clientesAll.length + ' clientes';
+  renderLoginClientes();
+}
+
+// ── Carrega TODOS os dados do GAS em uma única rodada ─────────
+// silentRefresh=true → não exibe "Carregando..." (usado para refresh em background)
+async function loadAllGasData(silentRefresh = false) {
+  // ① Tenta usar cache imediatamente (abertura instantânea)
+  if (!silentRefresh) {
+    const cached = carregarCache();
+    if (cached) {
+      aplicarCache(cached);
+      renderPotenciais();
+      _renderLoginCasosGrid(casosAll);
+      _renderLoginClientesGrid();
+      // Atualiza em background sem bloquear a UI
+      loadAllGasData(true);
+      return;
+    }
+  }
+
+  // ② Busca todas as 6 planilhas em paralelo (1 cold-start, 6 leituras simultâneas)
   try {
-    const [leads, ativ, pot, fin] = await Promise.all([
+    const [leads, ativ, pot, fin, casos, clientes] = await Promise.all([
       fetch(GAS_URL + '?sheet=leads').then(r => r.json()).catch(() => []),
       fetch(GAS_URL + '?sheet=atividades').then(r => r.json()).catch(() => []),
       fetch(GAS_URL + '?sheet=potenciais').then(r => r.json()).catch(() => []),
       fetch(GAS_URL + '?sheet=financeiro').then(r => r.json()).catch(() => []),
+      fetch(GAS_URL + '?sheet=casos').then(r => r.json()).catch(() => []),
+      fetch(GAS_URL + '?sheet=clientes').then(r => r.json()).catch(() => []),
     ]);
-    leadsAll      = Array.isArray(leads) ? leads : [];
-    ativAll       = Array.isArray(ativ)  ? ativ  : [];
-    potenciaisAll = Array.isArray(pot)   ? pot   : [];
-    finAll        = Array.isArray(fin)   ? fin   : [];
 
-    // Normaliza leads: ts como número, scriptHist como array
-    leadsAll.forEach(l => {
-      l.ts = Number(l.ts) || 0;
-      l.id = l.id || String(l.ts);
-      try { l.scriptHist = l.script_hist ? JSON.parse(l.script_hist) : []; } catch { l.scriptHist = []; }
-    });
-    // Normaliza atividades: ts como número
-    ativAll.forEach(a => { a.ts = Number(a.ts) || 0; a.id = a.id || String(a.ts); });
-    // Normaliza financeiro: valor como float, pago como bool
-    finAll.forEach(f => {
-      f.valor = parseFloat(f.valor) || 0;
-      f.pago = f.pago === true || f.pago === 'true' || f.pago === 1;
-    });
-    // Se financeiro vazio, semeia dados de exemplo
-    if (!finAll.length) {
-      finAll = FIN_SEED.map(l => ({...l}));
-      finAll.forEach(l => gasOp('create', 'financeiro', null, l));
-    }
+    leadsAll      = Array.isArray(leads)    ? leads    : [];
+    ativAll       = Array.isArray(ativ)     ? ativ     : [];
+    potenciaisAll = Array.isArray(pot)      ? pot      : [];
+    finAll        = Array.isArray(fin)      ? fin      : [];
+    casosAll      = Array.isArray(casos)    ? casos    : [];
+    clientesAll   = Array.isArray(clientes) ? clientes : [];
+
+    _normalizarDados();
+
+    // ③ Salva cache para a próxima abertura
+    salvarCache({ leads: leadsAll, ativ: ativAll, pot: potenciaisAll,
+                  fin: finAll, casos: casosAll, clientes: clientesAll });
+
   } catch(e) {
     console.error('loadAllGasData error', e);
   }
+
+  // ④ Renderiza tudo
   renderPotenciais();
+  _renderLoginCasosGrid(casosAll);
+  _renderLoginClientesGrid();
+  // Se o portal já estiver aberto (refresh em background), atualiza as abas visíveis
+  if (silentRefresh && document.getElementById('s-portal').classList.contains('on')) {
+    updateStats(); renderLeads(); renderFunil(); renderAtiv(); renderPerfilCards();
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2651,6 +2738,30 @@ const pk  = id => `acp_${id}_pw`;
 const lsG = k => { try{ const v=localStorage.getItem(k); return v?JSON.parse(v):null }catch{return null} };
 const lsS = (k,v) => { try{ localStorage.setItem(k,JSON.stringify(v)) }catch{} };
 
+// ── CACHE LOCAL (5 minutos) ───────────────────────────────────
+const CACHE_KEY = 'acaoprev_data_v1';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutos em ms
+
+function salvarCache(dados) {
+  lsS(CACHE_KEY, { ts: Date.now(), dados });
+}
+
+function carregarCache() {
+  const c = lsG(CACHE_KEY);
+  if (!c || !c.ts || (Date.now() - c.ts) > CACHE_TTL) return null;
+  return c.dados;
+}
+
+function aplicarCache(c) {
+  leadsAll      = Array.isArray(c.leads)    ? c.leads    : [];
+  ativAll       = Array.isArray(c.ativ)     ? c.ativ     : [];
+  potenciaisAll = Array.isArray(c.pot)      ? c.pot      : [];
+  finAll        = Array.isArray(c.fin)      ? c.fin      : [];
+  casosAll      = Array.isArray(c.casos)    ? c.casos    : [];
+  clientesAll   = Array.isArray(c.clientes) ? c.clientes : [];
+  _normalizarDados();
+}
+
 function getLeads() { return leadsAll.filter(l => l.colaborador_id === cu.id); }
 
 function setLeads(v) {
@@ -2713,9 +2824,9 @@ function doTeamLogin(){
     // Expande lbox e carrega casos + clientes
     document.querySelector('.lbox').style.maxWidth='960px';
     populateRespSelects();
-    loadLoginCasos();
-    loadLoginClientes();
-    loadAllGasData(); // carrega leads, atividades, potenciais e financeiro do GAS
+    // loadAllGasData carrega todas as 6 planilhas de uma vez (casos, clientes,
+    // leads, atividades, potenciais, financeiro) e exibe do cache se disponível.
+    loadAllGasData();
   } else {
     document.getElementById('perr').textContent='Senha incorreta. Tente novamente.';
     document.getElementById('pinIn').value='';
@@ -2723,62 +2834,29 @@ function doTeamLogin(){
   }
 }
 
+// loadLoginCasos: busca casos frescos do GAS e renderiza a grade da tela de entrada.
+// Usado como refresh explícito (após salvar/deletar). Na entrada inicial, os dados
+// já vêm do loadAllGasData — sem fetch redundante.
 async function loadLoginCasos(){
   const msg = document.getElementById('loginCasosMsg');
-  const grid = document.getElementById('loginCasosGrid');
-  const badge = document.getElementById('loginCasosBadge');
-  msg.textContent='Carregando...';
+  if(msg) msg.textContent = 'Carregando...';
   try {
     const data = await sbFetch('/rest/v1/casos?order=created_at.desc&limit=50');
-    msg.textContent='';
-    if(!data||!data.length){ msg.textContent='Nenhum caso encontrado.'; return; }
-    // Armazena para que openCasoDetalhe funcione a partir da tela de entrada
-    casosAll = data;
-    badge.textContent=data.length+' casos';
-    const SL={'novo':'Novo','em_analise':'Em análise','convertido':'Convertido','descartado':'Descartado'};
-    grid.innerHTML = data.map(c=>{
-      const dt = new Date(c.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
-      const emAnd = c.status==='em_analise';
-      const cardStyle = emAnd ? 'border-color:var(--gold);background:rgba(201,168,76,.06)' : '';
-      const advBadge = makeAdvBadges(c.responsavel, 24, '.62rem');
-      return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;cursor:pointer;${cardStyle}"
-        onclick='openLoginCasoDetalhe("${c.id}")'>
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.35rem">
-          <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text);line-height:1.3">${c.nome}</div>
-          <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
-            ${advBadge}
-            <span class="caso-status ${c.status}" style="white-space:nowrap">${SL[c.status]||c.status}</span>
-          </div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.3rem">
-          <span class="caso-tag">${c.tipo_caso}</span>
-          ${c.cidade?`<span class="caso-tag">${c.cidade}/${c.uf}</span>`:''}
-        </div>
-        ${c.whatsapp?`<div style="font-size:.77rem;color:var(--t2);margin-bottom:.25rem">📱 ${c.whatsapp}</div>`:''}
-        <div style="font-size:.72rem;color:var(--t3)">${dt}</div>
-        ${c.relato?`<div style="margin-top:.4rem;font-size:.79rem;color:var(--t2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${c.relato}</div>`:''}
-        <div style="margin-top:.5rem;text-align:right">
-          <button onclick='event.stopPropagation();deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑 Deletar</button>
-        </div>
-      </div>`;
-    }).join('');
+    casosAll = Array.isArray(data) ? data : [];
+    _renderLoginCasosGrid(casosAll);
   } catch(e){
-    msg.textContent='Erro ao carregar casos.';
+    if(msg) msg.textContent = 'Erro ao carregar casos.';
   }
 }
 
+// loadLoginClientes: busca clientes frescos e renderiza. Refresh explícito.
 async function loadLoginClientes(){
-  const grid  = document.getElementById('loginClientesGrid');
-  const msg   = document.getElementById('loginClientesMsg');
-  const badge = document.getElementById('loginCliBadge');
-  if(!grid) return;
-  msg.textContent='Carregando...';
+  const msg = document.getElementById('loginClientesMsg');
+  if(msg) msg.textContent = 'Carregando...';
   try {
     clientesAll = await sbFetch('/rest/v1/clientes?order=created_at.desc&limit=200') || [];
-    msg.textContent='';
-    badge.textContent = clientesAll.length + ' clientes';
-    renderLoginClientes();
-  } catch(e){ msg.textContent='Erro ao carregar clientes.'; }
+    _renderLoginClientesGrid();
+  } catch(e){ if(msg) msg.textContent = 'Erro ao carregar clientes.'; }
 }
 
 function renderLoginClientes(){
@@ -2884,10 +2962,8 @@ function backToTeamArea(){
   document.getElementById('ugridWrap').style.display='block';
   document.getElementById('loginSub').textContent='Selecione seu perfil para entrar';
   document.querySelector('.lbox').style.maxWidth='960px';
-  // Atualiza casos, clientes e potenciais na tela geral
-  loadLoginCasos();
-  loadLoginClientes();
-  renderPotenciais();
+  // Atualiza tudo — refresh silencioso em background
+  loadAllGasData(true);
 }
 
 // ═══════════════════════════════════════════════════════════
