@@ -2554,6 +2554,8 @@ function openAddCliente() {
   ['ncNome','ncCpf','ncEmail','ncCidade','ncDrive'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   ['ncNasc','ncUf','ncTipo'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   renderTelRows('ncTelBlk',[]);
+  // Pré-adiciona uma linha de telefone para facilitar o preenchimento
+  addTelRow('ncTelBlk', 'WhatsApp', '');
   clearCheckedResps('ncRespBoxes');
   document.getElementById('nc-err').textContent='';
   // Esconde banner de conversão
@@ -2687,7 +2689,7 @@ async function saveAddCaso() {
         relato,
         origem:    document.getElementById('ac-origem').value,
         responsavel: cu ? cu.id : null,
-        status:    'novo',
+        status:    'em_analise',
       }),
     });
     closeAddCaso();
@@ -2695,6 +2697,7 @@ async function saveAddCaso() {
     ['ac-nome','ac-wa','ac-idade','ac-cidade','ac-relato'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
     ['ac-uf','ac-tipo'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
     reloadCasos();
+    loadLoginCasos();
   } catch(e) {
     errEl.textContent = 'Erro ao salvar: ' + e.message; errEl.style.display = 'block';
   }
