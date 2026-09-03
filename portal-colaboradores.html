@@ -2028,28 +2028,37 @@ async function loadAllGasData(silentRefresh = false) {
   }
 
   // ② Busca todas as 6 planilhas em paralelo (1 cold-start, 6 leituras simultâneas)
+  // Cada fetch preserva o array existente em caso de falha (não sobrescreve com [])
   try {
+    const gasJson = (sheet, fallback) =>
+      fetch(GAS_URL + '?sheet=' + sheet)
+        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(d => Array.isArray(d) && d.length > 0 ? d : fallback)
+        .catch(() => fallback);
+
     const [leads, ativ, pot, fin, casos, clientes] = await Promise.all([
-      fetch(GAS_URL + '?sheet=leads').then(r => r.json()).catch(() => []),
-      fetch(GAS_URL + '?sheet=atividades').then(r => r.json()).catch(() => []),
-      fetch(GAS_URL + '?sheet=potenciais').then(r => r.json()).catch(() => []),
-      fetch(GAS_URL + '?sheet=financeiro').then(r => r.json()).catch(() => []),
-      fetch(GAS_URL + '?sheet=casos').then(r => r.json()).catch(() => []),
-      fetch(GAS_URL + '?sheet=clientes').then(r => r.json()).catch(() => []),
+      gasJson('leads',      leadsAll),
+      gasJson('atividades', ativAll),
+      gasJson('potenciais', potenciaisAll),
+      gasJson('financeiro', finAll),
+      gasJson('casos',      casosAll),
+      gasJson('clientes',   clientesAll),
     ]);
 
-    leadsAll      = Array.isArray(leads)    ? leads    : [];
-    ativAll       = Array.isArray(ativ)     ? ativ     : [];
-    potenciaisAll = Array.isArray(pot)      ? pot      : [];
-    finAll        = Array.isArray(fin)      ? fin      : [];
-    casosAll      = Array.isArray(casos)    ? casos    : [];
-    clientesAll   = Array.isArray(clientes) ? clientes : [];
+    leadsAll      = leads;
+    ativAll       = ativ;
+    potenciaisAll = pot;
+    finAll        = fin;
+    casosAll      = casos;
+    clientesAll   = clientes;
 
     _normalizarDados();
 
-    // ③ Salva cache para a próxima abertura
-    salvarCache({ leads: leadsAll, ativ: ativAll, pot: potenciaisAll,
-                  fin: finAll, casos: casosAll, clientes: clientesAll });
+    // ③ Salva cache apenas se os dados críticos vieram com sucesso
+    if (casosAll.length > 0 || clientesAll.length > 0) {
+      salvarCache({ leads: leadsAll, ativ: ativAll, pot: potenciaisAll,
+                    fin: finAll, casos: casosAll, clientes: clientesAll });
+    }
 
   } catch(e) {
     console.error('loadAllGasData error', e);
@@ -2749,7 +2758,14 @@ function salvarCache(dados) {
 function carregarCache() {
   const c = lsG(CACHE_KEY);
   if (!c || !c.ts || (Date.now() - c.ts) > CACHE_TTL) return null;
-  return c.dados;
+  // Rejeita cache salvo com dados críticos vazios (resultado de erro anterior)
+  const d = c.dados;
+  if (!d || (!Array.isArray(d.casos) && !Array.isArray(d.clientes))) return null;
+  if (d.casos && d.casos.length === 0 && d.clientes && d.clientes.length === 0) {
+    lsS(CACHE_KEY, null); // limpa cache inválido
+    return null;
+  }
+  return d;
 }
 
 function aplicarCache(c) {
