@@ -1315,6 +1315,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       </select>
     </div>
     <div class="fld">
+      <label>Link Google Drive</label>
+      <div style="display:flex;gap:6px">
+        <input type="url" id="mcdDrive" placeholder="https://drive.google.com/drive/folders/..." style="flex:1;background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--brds)'">
+        <button onclick="const u=document.getElementById('mcdDrive').value.trim();if(u)window.open(u,'_blank');else alert('Insira o link do Google Drive antes de abrir.')" style="background:var(--d4);border:1px solid var(--brd);border-radius:6px;padding:8px 12px;color:var(--t2);cursor:pointer;white-space:nowrap;font-size:.8rem">📁 Abrir</button>
+      </div>
+    </div>
+    <div class="fld">
       <label>Observações internas</label>
       <textarea id="mcdObs" rows="3" style="background:var(--d3);border:1px solid var(--brds);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Lora',serif;font-size:.85rem;width:100%;resize:vertical"></textarea>
     </div>
@@ -2284,7 +2291,7 @@ function renderCasos(lista) {
     const dtStr = dt.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
     const emAnd = c.status === 'em_analise';
     const cardStyle = emAnd ? 'border-color:var(--gold);background:rgba(201,168,76,.06)' : '';
-    const advBadge = makeAdvBadges(c.responsavel);
+    const advBadge = makeAdvBadges(c.responsavel, 26, '.63rem');
     return `<div class="caso-card" onclick='openCasoDetalhe("${c.id}")' style="${cardStyle}">
       <div class="caso-tag">${TIPO_ICON[c.tipo_caso] || '📁'} ${escH(c.tipo_caso)}</div>
       <div class="caso-relato">${escH(c.relato)}</div>
@@ -2296,10 +2303,14 @@ function renderCasos(lista) {
       </div>
       <div class="caso-footer">
         <span class="caso-status ${c.status}">${STATUS_LABEL[c.status] || c.status}</span>
-        <span class="caso-data">${advBadge}${dtStr} · <span class="caso-origem">${ORIGEM_LABEL[c.origem] || c.origem}</span></span>
+        <span class="caso-data">${dtStr} · <span class="caso-origem">${ORIGEM_LABEL[c.origem] || c.origem}</span></span>
       </div>
-      <div style="margin-top:.55rem;text-align:right">
-        <button onclick='event.stopPropagation();deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑 Deletar</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;padding-top:.45rem;border-top:1px solid var(--brd)">
+        <div style="display:flex;align-items:center;gap:4px">${advBadge}</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${c.drive_link ? `<a href="${escH(c.drive_link)}" target="_blank" onclick="event.stopPropagation()" style="font-size:.7rem;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:2px 8px">📁 Drive</a>` : ''}
+          <button onclick='event.stopPropagation();deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑</button>
+        </div>
       </div>
     </div>`;
   }).join('') + '</div>';
@@ -2632,6 +2643,7 @@ async function openCasoDetalhe(id) {
   document.getElementById('mcdRelato').textContent  = c.relato;
   document.getElementById('mcdStatus').value        = c.status;
   document.getElementById('mcdResponsavel').value   = c.responsavel || '';
+  document.getElementById('mcdDrive').value         = c.drive_link || '';
   document.getElementById('mcdObs').value           = c.observacoes || '';
 
   document.getElementById('modCasoDetalhe').style.display = 'flex';
@@ -2648,6 +2660,7 @@ async function saveCasoDetalhe() {
       body: JSON.stringify({
         status:       document.getElementById('mcdStatus').value,
         responsavel:  document.getElementById('mcdResponsavel').value || null,
+        drive_link:   document.getElementById('mcdDrive').value.trim() || null,
         observacoes:  document.getElementById('mcdObs').value.trim() || null,
       }),
     });
