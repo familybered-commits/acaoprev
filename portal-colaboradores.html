@@ -2000,6 +2000,7 @@ function _renderLoginCasosGrid(data) {
           style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);border-radius:4px;color:var(--gold);font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif;flex:1">
           ✅ Converter em Cliente
         </button>
+        ${c.drive_link ? `<a href="${escH(c.drive_link)}" target="_blank" onclick="event.stopPropagation()" style="font-size:.7rem;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:3px 9px;cursor:pointer;font-family:Lora,serif;white-space:nowrap">📁 Drive</a>` : ''}
         <button onclick='event.stopPropagation();deleteCaso("${c.id}")'
           style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">
           🗑
