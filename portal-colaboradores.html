@@ -2043,8 +2043,8 @@ async function loadAllGasData(silentRefresh = false) {
 
   try {
     const [leads, ativ, pot, fin, casos, clientes] = await Promise.all([
-      sbGet('leads',      'ts.asc',           leadsAll),
-      sbGet('atividades', 'ts.asc',           ativAll),
+      sbGet('leads',      'created_at.asc',    leadsAll),
+      sbGet('atividades', 'created_at.asc',   ativAll),
       sbGet('potenciais', 'nome.asc',         potenciaisAll),
       sbGet('financeiro', 'data.desc',        finAll),
       sbGet('casos',      'created_at.desc',  casosAll),
@@ -2205,8 +2205,9 @@ function savePotencial() {
       gasOp('update', 'potenciais', potEditId, upd);
     }
   } else {
+    const _tempId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
     const novo = {
-      id: 'pot-' + Date.now(),
+      id: _tempId,
       nome, cpf: document.getElementById('potCpf').value.trim(),
       whatsapp: document.getElementById('potWa').value.trim(),
       cidade: document.getElementById('potCidade').value.trim(),
@@ -2216,7 +2217,9 @@ function savePotencial() {
       created_at: new Date().toISOString()
     };
     todos.unshift(novo);
-    gasOp('create', 'potenciais', null, novo);
+    // Envia ao Supabase sem o id local (deixa o banco gerar o id real)
+    const { id: _dropId, ...novoSemId } = novo;
+    gasOp('create', 'potenciais', null, novoSemId);
   }
   setPotenciais(todos);
   closeModPotencial();
@@ -2845,9 +2848,8 @@ function setLeads(v) {
 function getAtiv() { return ativAll.filter(a => a.colaborador_id === cu.id); }
 
 function addAtiv(txt) {
-  const a = { txt, ts: Date.now(), colaborador_id: cu.id };
-  a.id = String(a.ts);
-  if (!a.created_at) a.created_at = new Date().toISOString();
+  const a = { txt, created_at: new Date().toISOString(), colaborador_id: cu.id };
+  a.id = String(Date.now());
   gasOp('create', 'atividades', null, a);
   ativAll.unshift(a);
   // Limita a 40 por colaborador
