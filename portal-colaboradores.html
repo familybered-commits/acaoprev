@@ -676,7 +676,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       <!-- Casos recentes na tela de entrada -->
       <div style="margin-top:2.5rem;text-align:left">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem">
-          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Casos Recentes</div>
+          <div style="font-size:.69rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Casos em Análise</div>
           <div style="flex:1;height:1px;background:var(--brd)"></div>
           <span id="loginCasosBadge" style="font-size:.67rem;color:var(--t2)"></span>
         </div>
@@ -1517,6 +1517,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(13,13,13,.97
       </div>
       <div class="fld"><label>Link Google Drive</label><input type="url" id="ncDrive" placeholder="https://drive.google.com/..."></div>
     </div>
+    <div id="nc-caso-banner" style="display:none;margin-top:.6rem;padding:.6rem .9rem;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.4);border-radius:6px;font-size:.78rem;color:var(--gold);letter-spacing:.02em">
+      ⚡ Convertendo caso em cliente — ao cadastrar, o caso será marcado como <strong>Convertido</strong> automaticamente.
+    </div>
     <div class="merr" id="nc-err"></div>
     <div class="mbtns">
       <button class="btn-cancel" onclick="closeAddCliente()">Cancelar</button>
@@ -1942,39 +1945,57 @@ function _normalizarDados() {
   }
 }
 
-// ── Helper: renderiza seção de Casos na tela de entrada ───────
+// ── Helper: renderiza seção de Casos em Análise na tela de entrada ─
 function _renderLoginCasosGrid(data) {
   const msg   = document.getElementById('loginCasosMsg');
   const grid  = document.getElementById('loginCasosGrid');
   const badge = document.getElementById('loginCasosBadge');
   if (!grid) return;
-  if (!msg || !data || !data.length) { if(msg) msg.textContent = 'Nenhum caso encontrado.'; return; }
+  // Filtra apenas casos em análise
+  const lista = (data || []).filter(c => c.status === 'em_analise');
+  if (!lista.length) {
+    if(msg) msg.textContent = 'Nenhum caso em análise no momento.';
+    if(grid) grid.innerHTML = '';
+    if(badge) badge.textContent = '';
+    return;
+  }
   if(msg) msg.textContent = '';
-  if(badge) badge.textContent = data.length + ' casos';
+  if(badge) badge.textContent = lista.length + ' em análise';
   const SL = { novo:'Novo', em_analise:'Em análise', convertido:'Convertido', descartado:'Descartado' };
-  grid.innerHTML = data.map(c => {
+  grid.innerHTML = lista.map(c => {
     const dt = new Date(c.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
-    const emAnd = c.status === 'em_analise';
-    const cardStyle = emAnd ? 'border-color:var(--gold);background:rgba(201,168,76,.06)' : '';
     const advBadge = makeAdvBadges(c.responsavel, 24, '.62rem');
-    return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;cursor:pointer;${cardStyle}"
+    // Serializa dados do caso para pré-preenchimento (sem aspas problemáticas)
+    const casoData = encodeURIComponent(JSON.stringify({
+      id: c.id, nome: c.nome, cpf: c.cpf||'', whatsapp: c.whatsapp||'',
+      cidade: c.cidade||'', uf: c.uf||'', tipo_beneficio: c.tipo_caso||'',
+      responsavel: c.responsavel||''
+    }));
+    return `<div class="caso-card" style="padding:.75rem 1rem;font-size:.82rem;cursor:pointer;border-color:var(--gold);background:rgba(201,168,76,.06)"
       onclick='openLoginCasoDetalhe("${c.id}")'>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:.35rem">
         <div style="font-family:'Marcellus',serif;font-size:.88rem;color:var(--text);line-height:1.3">${c.nome}</div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
           ${advBadge}
-          <span class="caso-status ${c.status}" style="white-space:nowrap">${SL[c.status]||c.status}</span>
+          <span class="caso-status em_analise" style="white-space:nowrap">Em análise</span>
         </div>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.3rem">
-        <span class="caso-tag">${c.tipo_caso}</span>
+        ${c.tipo_caso?`<span class="caso-tag">${c.tipo_caso}</span>`:''}
         ${c.cidade?`<span class="caso-tag">${c.cidade}/${c.uf}</span>`:''}
       </div>
       ${c.whatsapp?`<div style="font-size:.77rem;color:var(--t2);margin-bottom:.25rem">📱 ${c.whatsapp}</div>`:''}
       <div style="font-size:.72rem;color:var(--t3)">${dt}</div>
       ${c.relato?`<div style="margin-top:.4rem;font-size:.79rem;color:var(--t2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${c.relato}</div>`:''}
-      <div style="margin-top:.5rem;text-align:right">
-        <button onclick='event.stopPropagation();deleteCaso("${c.id}")' style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">🗑 Deletar</button>
+      <div style="margin-top:.5rem;display:flex;justify-content:space-between;align-items:center;gap:6px">
+        <button onclick='event.stopPropagation();openAddClienteFromCaso("${casoData}")'
+          style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);border-radius:4px;color:var(--gold);font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif;flex:1">
+          ✅ Converter em Cliente
+        </button>
+        <button onclick='event.stopPropagation();deleteCaso("${c.id}")'
+          style="background:none;border:1px solid rgba(212,120,120,.35);border-radius:4px;color:#d47878;font-size:.67rem;padding:3px 9px;cursor:pointer;letter-spacing:.06em;font-family:Lora,serif">
+          🗑
+        </button>
       </div>
     </div>`;
   }).join('');
@@ -2525,16 +2546,25 @@ async function deleteCliente() {
   } catch(e) { alert('Erro ao deletar.'); }
 }
 
+let _casoConvertendoId = null; // ID do caso sendo convertido em cliente
+
 function openAddCliente() {
+  _casoConvertendoId = null;
   ['ncNome','ncCpf','ncEmail','ncCidade','ncDrive'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   ['ncNasc','ncUf','ncTipo'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   renderTelRows('ncTelBlk',[]);
   clearCheckedResps('ncRespBoxes');
   document.getElementById('nc-err').textContent='';
+  // Esconde banner de conversão
+  const banner = document.getElementById('nc-caso-banner');
+  if(banner) banner.style.display = 'none';
   document.getElementById('modAddCliente').style.display='flex';
 }
 
-function closeAddCliente() { document.getElementById('modAddCliente').style.display='none'; }
+function closeAddCliente() {
+  _casoConvertendoId = null;
+  document.getElementById('modAddCliente').style.display='none';
+}
 
 async function saveAddCliente() {
   const nome = document.getElementById('ncNome').value.trim();
@@ -2556,7 +2586,22 @@ async function saveAddCliente() {
   };
   try {
     await sbFetch('/rest/v1/clientes', { method:'POST', headers:{'Prefer':'return=minimal'}, body:JSON.stringify(body) });
-    closeAddCliente(); reloadClientes(); loadLoginClientes();
+    // Se veio de um caso em análise, marca o caso como convertido
+    if (_casoConvertendoId) {
+      try {
+        await sbFetch('/rest/v1/casos?id=eq.' + encodeURIComponent(_casoConvertendoId), {
+          method: 'PATCH',
+          headers: { 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ status: 'convertido' }),
+        });
+        // Remove da lista local para atualizar imediatamente
+        casosAll = casosAll.map(c => c.id === _casoConvertendoId ? { ...c, status: 'convertido' } : c);
+      } catch(eCaso) { console.warn('Erro ao converter caso:', eCaso); }
+    }
+    closeAddCliente();
+    reloadClientes();
+    loadLoginClientes();
+    _renderLoginCasosGrid(casosAll);
   } catch(e) { document.getElementById('nc-err').textContent='Erro: ' + (e.message||e); }
 }
 
@@ -2834,12 +2879,51 @@ async function loadLoginCasos(){
   const msg = document.getElementById('loginCasosMsg');
   if(msg) msg.textContent = 'Carregando...';
   try {
-    const data = await sbFetch('/rest/v1/casos?order=created_at.desc&limit=50');
-    casosAll = Array.isArray(data) ? data : [];
+    const data = await sbFetch('/rest/v1/casos?status=eq.em_analise&order=created_at.desc&limit=100');
+    // Mescla: substitui os em_analise no array global sem perder os outros
+    const outros = casosAll.filter(c => c.status !== 'em_analise');
+    casosAll = [...(Array.isArray(data) ? data : []), ...outros];
     _renderLoginCasosGrid(casosAll);
   } catch(e){
     if(msg) msg.textContent = 'Erro ao carregar casos.';
   }
+}
+
+// Abre modal de novo cliente pré-preenchido com dados de um caso
+function openAddClienteFromCaso(encodedData) {
+  try {
+    const c = JSON.parse(decodeURIComponent(encodedData));
+    // Limpa campos primeiro
+    openAddCliente();
+    // Marca o caso que está sendo convertido
+    _casoConvertendoId = c.id || null;
+    // Exibe banner de conversão
+    const banner = document.getElementById('nc-caso-banner');
+    if (banner && _casoConvertendoId) banner.style.display = 'block';
+    // Pré-preenche com dados do caso
+    const set = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
+    set('ncNome',   c.nome);
+    set('ncCpf',    c.cpf);
+    set('ncCidade', c.cidade);
+    set('ncUf',     c.uf);
+    set('ncTipo',   c.tipo_beneficio);
+    // WhatsApp: adiciona como linha de telefone se houver
+    if (c.whatsapp) {
+      const blk = document.getElementById('ncTelBlk');
+      if (blk) {
+        blk.innerHTML = '';
+        addTelRow('ncTelBlk', 'WhatsApp', c.whatsapp);
+      }
+    }
+    // Responsável: marca os checkboxes correspondentes
+    if (c.responsavel) {
+      setTimeout(() => {
+        document.querySelectorAll('#ncRespBoxes input[type=checkbox]').forEach(cb => {
+          if (c.responsavel.includes(cb.value)) cb.checked = true;
+        });
+      }, 50);
+    }
+  } catch(e) { console.warn('openAddClienteFromCaso', e); openAddCliente(); }
 }
 
 // loadLoginClientes: busca clientes frescos e renderiza. Refresh explícito.
